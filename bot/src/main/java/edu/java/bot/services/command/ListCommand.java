@@ -1,14 +1,13 @@
 package edu.java.bot.services.command;
 
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.data.repository.URLRepository;
 import edu.java.bot.services.command.handler.CommandHandler;
-import org.apache.kafka.common.protocol.types.Field;
-import org.springframework.web.util.UriBuilder;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class ListCommand extends CommandHandler {
     private final String name = "/list";
+    private final String messageListIsEmpty = "Список пуст.";
 
     @Override
     public String getCommandName() {
@@ -16,15 +15,30 @@ public class ListCommand extends CommandHandler {
     }
 
     @Override
-    public void handlerCommand(Update update) {
+    public String getDescription() {
+        return "Показать список отслеживаемых ссылок";
+    }
+
+    @Override
+    public CommandHandler handlerCommand(Update update) {
+        String chatId = update.message().chat().id().toString();
         if (update.message().text().equals(name)) {
+            URLRepository urlRepository = new URLRepository();
 
+            String message = urlRepository.getAllInString();
 
+            if (message != null) {
+                bot.execute(new SendMessage(chatId, message));
+            } else {
+                bot.execute(new SendMessage(chatId, messageListIsEmpty));
+            }
+
+            return commandHandler;
         } else {
             if (commandHandler != null) {
-                commandHandler.handlerCommand(update);
+                return commandHandler.handlerCommand(update);
             } else {
-                return;
+                return null;
             }
         }
     }

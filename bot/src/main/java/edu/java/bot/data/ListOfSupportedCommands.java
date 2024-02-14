@@ -1,19 +1,20 @@
 package edu.java.bot.data;
 
-import org.apache.kafka.common.protocol.types.Field;
+import com.pengrad.telegrambot.model.BotCommand;
+import com.pengrad.telegrambot.request.SetMyCommands;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ListOfSupportedCommands {
-    private static List<String> commands = new ArrayList<>();
+    private static List<BotCommand> commands = new ArrayList<>();
 
-    public void addCommandName(String command) {
-        commands.add(command + "\n");
-        return;
+    public void addCommandName(String commandName, String description) {
+        BotCommand botCommand = new BotCommand(commandName, description);
+        SetMyCommands setMyCommands = new SetMyCommands(botCommand);
+        commands.add(botCommand);
     }
 
-    public List<String> getCommandsName() {
+    public List<BotCommand> getCommands() {
         return commands;
     }
 }

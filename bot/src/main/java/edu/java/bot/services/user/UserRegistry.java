@@ -1,6 +1,5 @@
 package edu.java.bot.services.user;
 
-import org.apache.kafka.common.protocol.types.Field;
 import java.util.HashMap;
 
 public class UserRegistry {
@@ -13,6 +12,10 @@ public class UserRegistry {
             users.put(id, name);
             return true;
         }
+    }
+
+    public boolean checkUserById(Long id) {
+        return !users.containsKey(id);
     }
 
     public String getUserNameById(Long id) {

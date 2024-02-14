@@ -1,8 +1,9 @@
 package edu.java.bot.services.command.chain;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.data.ListOfSupportedCommands;
+import edu.java.bot.services.bot.StaticBotInstance;
 import edu.java.bot.services.command.HelpCommand;
 import edu.java.bot.services.command.ListCommand;
 import edu.java.bot.services.command.StartCommand;
@@ -18,9 +19,9 @@ public class ChainOfCommand {
     private CommandHandler untrackCommand;
     private ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
 
-    public ChainOfCommand(TelegramBot bot) {
-        helpCommand = new HelpCommand(bot);
-        startCommand = new StartCommand(bot);
+    public ChainOfCommand() {
+        helpCommand = new HelpCommand();
+        startCommand = new StartCommand();
         listCommand = new ListCommand();
         trackCommand = new TrackCommand();
         untrackCommand = new UntrackCommand();
@@ -31,14 +32,17 @@ public class ChainOfCommand {
         /*  *
          * add all commands name
          */
-        listOfSupportedCommands.addCommandName(startCommand.getCommandName());
-        listOfSupportedCommands.addCommandName(helpCommand.getCommandName());
-        listOfSupportedCommands.addCommandName(listCommand.getCommandName());
-        listOfSupportedCommands.addCommandName(trackCommand.getCommandName());
-        listOfSupportedCommands.addCommandName(untrackCommand.getCommandName());
+        listOfSupportedCommands.addCommandName(startCommand.getCommandName(), startCommand.getDescription());
+        listOfSupportedCommands.addCommandName(helpCommand.getCommandName(), helpCommand.getDescription());
+        listOfSupportedCommands.addCommandName(listCommand.getCommandName(), listCommand.getDescription());
+        listOfSupportedCommands.addCommandName(trackCommand.getCommandName(), trackCommand.getDescription());
+        listOfSupportedCommands.addCommandName(untrackCommand.getCommandName(), untrackCommand.getDescription());
     }
 
     public void assemblingTheChain(Update update) {
-        helpCommand.handlerCommand(update);
+        if (helpCommand.handlerCommand(update) == null) {
+            StaticBotInstance.telegramBot.execute(new SendMessage(
+                update.message().from().id(), "Команда не поддерживается или произошла ошибка ввода"));
+        }
     }
 }
