@@ -7,18 +7,18 @@ import java.util.Set;
 public class URLRepository {
     private static HashMap<String, Set<String>> url = new HashMap<>(); // (user_id, url)
 
-    public String getAllInString() {
+    public String getAllInString(String userId) {
         StringBuilder allUrls = new StringBuilder();
-        for (Set<String> urls : url.values()) {
+        Set<String> urls = url.get(userId);
+
+        if (urls == null || urls.isEmpty()) {
+            return null;
+        } else {
             int i = 0;
             for (String ur : urls) {
                 i++;
                 allUrls.append(i).append(") ").append(ur).append("\n");
             }
-        }
-        if (url.isEmpty()) {
-            return null;
-        } else {
             return allUrls.toString();
         }
     }

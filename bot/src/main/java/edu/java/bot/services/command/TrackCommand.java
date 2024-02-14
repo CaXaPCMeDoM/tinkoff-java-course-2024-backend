@@ -27,7 +27,7 @@ public class TrackCommand extends CommandHandler {
     }
 
     @Override
-    public CommandHandler handlerCommand(Update update) {
+    public boolean handlerCommand(Update update) {
         String userId = getDataFromUpdate.userIdString(update);
         String messageText = update.message().text();
 
@@ -44,6 +44,7 @@ public class TrackCommand extends CommandHandler {
                 domainCommand = chainOfURL.assemblingTheChain(update);
                 if (domainCommand == null) {
                     bot.execute(new SendMessage(chatId, "Данный домен не поддерживается, либо ссылка некорректна!"));
+                    return true;
                 } else {
                     domainCommand.startTracking(userId, messageText);
                 }
@@ -52,15 +53,15 @@ public class TrackCommand extends CommandHandler {
             userState.remove(userId);
             bot.execute(new SendMessage(chatId, messageEnd));
 
-            return commandHandler;
+            return true;
         } else {
             if (commandHandler != null) {
                 return commandHandler.handlerCommand(update);
             } else {
-                return null;
+                return false;
             }
         }
-        return commandHandler;
+        return true;
     }
 }
 

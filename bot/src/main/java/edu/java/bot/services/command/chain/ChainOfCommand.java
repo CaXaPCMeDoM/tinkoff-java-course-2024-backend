@@ -40,7 +40,7 @@ public class ChainOfCommand {
     }
 
     public void assemblingTheChain(Update update) {
-        if (helpCommand.handlerCommand(update) == null) {
+        if (helpCommand.handlerCommand(update) == false) {
             StaticBotInstance.telegramBot.execute(new SendMessage(
                 update.message().from().id(), "Команда не поддерживается или произошла ошибка ввода"));
         }

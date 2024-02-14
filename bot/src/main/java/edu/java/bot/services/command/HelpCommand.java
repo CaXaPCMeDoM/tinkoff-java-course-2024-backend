@@ -20,7 +20,7 @@ public class HelpCommand extends CommandHandler {
     }
 
     @Override
-    public CommandHandler handlerCommand(Update update) {
+    public boolean handlerCommand(Update update) {
         if (update.message().text().equals(name)) {
             String chatId = update.message().chat().id().toString();
             StringBuilder stringBuilder = new StringBuilder(messageAvailableCommands);
@@ -29,12 +29,12 @@ public class HelpCommand extends CommandHandler {
                 stringBuilder.append("\n");
             }
             bot.execute(new SendMessage(chatId, stringBuilder.toString()));
-            return commandHandler;
+            return true;
         } else {
             if (commandHandler != null) {
                 return commandHandler.handlerCommand(update);
             } else {
-                return null;
+                return false;
             }
         }
     }

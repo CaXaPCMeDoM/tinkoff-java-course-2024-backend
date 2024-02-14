@@ -24,5 +24,5 @@ public abstract class CommandHandler {
 
     public abstract String getDescription();
 
-    public abstract CommandHandler handlerCommand(Update update);
+    public abstract boolean handlerCommand(Update update);
 }

@@ -34,7 +34,7 @@ public class StartCommand extends CommandHandler {
     }
 
     @Override
-    public CommandHandler handlerCommand(Update update) {
+    public boolean handlerCommand(Update update) {
         if (update.message().text().equals(name)) {
             if (userRegistry.tryAddNewUser(update.message().from().id(), update.message().from().firstName())) {
                 StringBuilder stringBuilder = new StringBuilder(messageFromUserName);
@@ -56,7 +56,7 @@ public class StartCommand extends CommandHandler {
                 );
             }
 
-            return commandHandler;
+            return true;
         } else {
             if (userRegistry.checkUserById(update.message().from().id())) {
                 bot.execute(new SendMessage(
@@ -64,12 +64,12 @@ public class StartCommand extends CommandHandler {
                         messageFromUserYouNeedRegistry
                     )
                 );
-                return null;
+                return true;
             } else {
                 if (commandHandler != null) {
                     return commandHandler.handlerCommand(update);
                 } else {
-                    return null;
+                    return false;
                 }
             }
         }
