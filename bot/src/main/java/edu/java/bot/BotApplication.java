@@ -21,7 +21,7 @@ public class BotApplication {
 
         StaticBotInstance.telegramBot = new TelegramBot(token);
 
-        Bot bot = new Bot(token);
+        Bot bot = new Bot();
 
         bot.listenerBot();
     }

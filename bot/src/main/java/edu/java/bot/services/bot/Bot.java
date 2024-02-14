@@ -16,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
 public class Bot {
     private final TelegramBot telegramBot;
     private final ChainOfCommand chainOfCommand;
-    private ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
+    private final ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
 
-    public Bot(String token) {
+    public Bot() {
         telegramBot = StaticBotInstance.telegramBot;
         CommandHandler.bot = telegramBot;
         chainOfCommand = new ChainOfCommand();
