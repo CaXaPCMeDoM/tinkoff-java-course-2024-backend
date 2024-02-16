@@ -56,60 +56,51 @@ public class ListCommandTest {
 
     @Test
     public void testHandlerCommandWithEmptyList() throws Exception {
+        // Настраиваем моки
         when(getDataFromUpdate.userIdString(update)).thenReturn("123");
         when(urlRepository.getAllInString(anyString())).thenReturn(null);
-
         when(message.text()).thenReturn("/list");
-        // Создайте мок-объект TelegramBot
+
         TelegramBot bot = mock(TelegramBot.class);
-        // Получите поле 'bot' в классе ListCommand
         Field botField = CommandHandler.class.getDeclaredField("bot");
         botField.setAccessible(true);
 
-        // Установите поле 'bot' в ваш мок-объект TelegramBot
         botField.set(listCommand, bot);
 
-        // Вызовите метод, который вы тестируете
+        // Вызываем метод, который хотим вызывать
         listCommand.handlerCommand(update);
 
-        // Получите поле 'messageListIsEmpty' в классе ListCommand
+        // Рефлексией получаем значение поля
         Field messageListIsEmptyField = ListCommand.class.getDeclaredField("message");
         messageListIsEmptyField.setAccessible(true);
 
-        // Получите значение поля 'messageListIsEmpty'
         String messageListIsEmpty = (String) messageListIsEmptyField.get(listCommand);
 
-        // Проверьте, что значение поля 'messageListIsEmpty' соответствует ожидаемому
+        // проверка результатов
         assertEquals("Список пуст.", messageListIsEmpty);
     }
 
     @Test
     public void testHandlerCommandWithNonEmptyList() throws Exception {
-
+        // Настраиваем моки
         when(getDataFromUpdate.userIdString(update)).thenReturn("123");
         when(urlRepository.getAllInString(anyString())).thenReturn("https://");
-
         when(message.text()).thenReturn("/list");
-        // Создайте мок-объект TelegramBot
+
         TelegramBot bot = mock(TelegramBot.class);
-        // Получите поле 'bot' в классе ListCommand
         Field botField = CommandHandler.class.getDeclaredField("bot");
         botField.setAccessible(true);
-
-        // Установите поле 'bot' в ваш мок-объект TelegramBot
         botField.set(listCommand, bot);
 
-        // Вызовите метод, который вы тестируете
+        // Вызываем метод, который хотим вызывать
         listCommand.handlerCommand(update);
 
-        // Получите поле 'messageListIsEmpty' в классе ListCommand
+        // Рефлексией получаем значение поля
         Field messageListIsEmptyField = ListCommand.class.getDeclaredField("message");
         messageListIsEmptyField.setAccessible(true);
-
-        // Получите значение поля 'messageListIsEmpty'
         String messageListIsEmpty = (String) messageListIsEmptyField.get(listCommand);
 
-        // Проверьте, что значение поля 'messageListIsEmpty' соответствует ожидаемому
+        // проверка результатов
         assertEquals("https://", messageListIsEmpty);
     }
 }
