@@ -12,6 +12,7 @@ import edu.java.bot.services.command.UntrackCommand;
 import edu.java.bot.services.command.handler.CommandHandler;
 
 public class ChainOfCommand {
+    private String messageFinal = null;
     private CommandHandler helpCommand;
     private CommandHandler startCommand;
     private CommandHandler listCommand;
@@ -29,20 +30,13 @@ public class ChainOfCommand {
             startCommand.setNextHandler(
                 listCommand.setNextHandler(
                     trackCommand.setNextHandler(untrackCommand))));
-        /*  *
-         * add all commands name
-         */
-        listOfSupportedCommands.addCommandName(startCommand.getCommandName(), startCommand.getDescription());
-        listOfSupportedCommands.addCommandName(helpCommand.getCommandName(), helpCommand.getDescription());
-        listOfSupportedCommands.addCommandName(listCommand.getCommandName(), listCommand.getDescription());
-        listOfSupportedCommands.addCommandName(trackCommand.getCommandName(), trackCommand.getDescription());
-        listOfSupportedCommands.addCommandName(untrackCommand.getCommandName(), untrackCommand.getDescription());
     }
 
     public void assemblingTheChain(Update update) {
-        if (helpCommand.handlerCommand(update) == false) {
+        if (!helpCommand.handlerCommand(update)) {
+            messageFinal = "Команда не поддерживается или произошла ошибка ввода";
             StaticBotInstance.telegramBot.execute(new SendMessage(
-                update.message().from().id(), "Команда не поддерживается или произошла ошибка ввода"));
+                update.message().from().id(), messageFinal));
         }
     }
 }

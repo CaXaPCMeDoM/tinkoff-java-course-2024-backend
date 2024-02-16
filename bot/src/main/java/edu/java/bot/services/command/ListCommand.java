@@ -8,8 +8,10 @@ import edu.java.bot.services.url.parser.GetDataFromUpdate;
 
 public class ListCommand extends CommandHandler {
     private final String name = "/list";
-    private GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
+    private final GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
     private final String messageListIsEmpty = "Список пуст.";
+    private URLRepository urlRepository = new URLRepository();
+    private String message = null;
 
     @Override
     public String getCommandName() {
@@ -26,13 +28,13 @@ public class ListCommand extends CommandHandler {
         String userId = getDataFromUpdate.userIdString(update);
         String chatId = update.message().chat().id().toString();
         if (update.message().text().equals(name)) {
-            URLRepository urlRepository = new URLRepository();
 
-            String message = urlRepository.getAllInString(userId);
+            message = urlRepository.getAllInString(userId);
 
             if (message != null) {
                 bot.execute(new SendMessage(chatId, message));
             } else {
+                message = messageListIsEmpty;
                 bot.execute(new SendMessage(chatId, messageListIsEmpty));
             }
 

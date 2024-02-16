@@ -52,8 +52,6 @@ public class UntrackCommand extends CommandHandler {
 
             userState.remove(userId);
             bot.execute(new SendMessage(chatId, messageEnd));
-
-            return true;
         } else {
             if (commandHandler != null) {
                 return commandHandler.handlerCommand(update);

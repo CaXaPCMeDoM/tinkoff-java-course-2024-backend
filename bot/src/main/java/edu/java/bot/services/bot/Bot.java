@@ -22,7 +22,9 @@ public class Bot {
         telegramBot = StaticBotInstance.telegramBot;
         CommandHandler.bot = telegramBot;
         chainOfCommand = new ChainOfCommand();
+    }
 
+    public void createMenu() {
         /**
          *  Инициализация кнопки меню
          *  и инициализация ее полей команадми
@@ -34,6 +36,11 @@ public class Bot {
         SetMyCommands setMyCommands = new SetMyCommands(botCommandArray);
 
         telegramBot.execute(setMyCommands);
+    }
+
+    public void start() {
+        createMenu();
+        listenerBot();
     }
 
     public void listenerBot() {

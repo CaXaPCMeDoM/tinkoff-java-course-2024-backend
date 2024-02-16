@@ -23,7 +23,7 @@ public class BotApplication {
 
         Bot bot = new Bot();
 
-        bot.listenerBot();
+        bot.start();
     }
 }
 

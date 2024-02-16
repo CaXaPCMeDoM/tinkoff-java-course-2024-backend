@@ -17,11 +17,7 @@ public class StartCommand extends CommandHandler {
     private final String messageFromUserYouNeedRegistry = "Сначала вы должны зарегистрироваться!\nКоманда: /start";
     // you need to concatenate with the name
     private UserRegistry userRegistry = new UserRegistry();
-    private TelegramBot bot;
-
-    public StartCommand() {
-        this.bot = StaticBotInstance.telegramBot;
-    }
+    private TelegramBot bot = StaticBotInstance.telegramBot;
 
     @Override
     public String getCommandName() {

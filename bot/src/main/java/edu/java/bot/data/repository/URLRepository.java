@@ -6,9 +6,10 @@ import java.util.Set;
 
 public class URLRepository {
     private static HashMap<String, Set<String>> url = new HashMap<>(); // (user_id, url)
+    private StringBuilder allUrls;
 
     public String getAllInString(String userId) {
-        StringBuilder allUrls = new StringBuilder();
+        allUrls = new StringBuilder();
         Set<String> urls = url.get(userId);
 
         if (urls == null || urls.isEmpty()) {

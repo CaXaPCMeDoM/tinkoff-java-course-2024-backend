@@ -3,7 +3,7 @@ package edu.java.bot.services.user;
 import java.util.HashMap;
 
 public class UserRegistry {
-    private final HashMap<Long, String> users = new HashMap<>(); // a temporary solution. Next, the database will be connected
+    private final HashMap<Long, String> users = new HashMap<>();
 
     public boolean tryAddNewUser(Long id, String name) {
         if (users.containsKey(id)) {

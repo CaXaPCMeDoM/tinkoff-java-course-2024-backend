@@ -1,8 +1,8 @@
 package edu.java.bot.services.url.parser;
 
-import lombok.Getter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import lombok.Getter;
 
 @Getter public class URLParser {
     private boolean wasExceptionCaught = false;
