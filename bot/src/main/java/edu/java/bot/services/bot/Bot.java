@@ -27,7 +27,7 @@ public class Bot {
     public void createMenu() {
         /**
          *  Инициализация кнопки меню
-         *  и инициализация ее полей команадми
+         *  и инициализация ее полей команадмиw
          */
         List<BotCommand> commandsAndDescriptions = listOfSupportedCommands.getCommands();
 

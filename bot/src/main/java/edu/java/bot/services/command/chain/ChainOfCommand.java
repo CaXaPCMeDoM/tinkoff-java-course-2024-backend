@@ -13,12 +13,12 @@ import edu.java.bot.services.command.handler.CommandHandler;
 
 public class ChainOfCommand {
     private String messageFinal = null;
-    private CommandHandler helpCommand;
-    private CommandHandler startCommand;
-    private CommandHandler listCommand;
-    private CommandHandler trackCommand;
-    private CommandHandler untrackCommand;
-    private ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
+    private final CommandHandler helpCommand;
+    private final CommandHandler startCommand;
+    private final CommandHandler listCommand;
+    private final CommandHandler trackCommand;
+    private final CommandHandler untrackCommand;
+    private final ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
 
     public ChainOfCommand() {
         helpCommand = new HelpCommand();
