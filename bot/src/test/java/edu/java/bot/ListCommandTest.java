@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Field;
-import static edu.java.bot.services.command.handler.CommandHandler.bot;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

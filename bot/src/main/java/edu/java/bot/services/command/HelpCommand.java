@@ -1,27 +1,24 @@
 package edu.java.bot.services.command;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.data.ListOfSupportedCommands;
-import edu.java.bot.services.bot.StaticBotInstance;
 import edu.java.bot.services.command.handler.CommandHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelpCommand extends CommandHandler {
-    private final String name = "/help";
-    private final String messageAvailableCommands = "Список доступных команд:\n";
-    private ListOfSupportedCommands listOfSupportedCommands;
-    private final TelegramBot bot;
+    private static final String name = "/help";
+    private static final String messageAvailableCommands = "Список доступных команд:\n";
 
-    public HelpCommand() {
-        this.bot = StaticBotInstance.telegramBot;
-        listOfSupportedCommands = new ListOfSupportedCommands();
-    }
+    @Autowired
+    private ListOfSupportedCommands listOfSupportedCommands;
 
     @Override
     public boolean handlerCommand(Update update) {
-        if (update.message().text().equals(name)) {
+        if (name.equals(update.message().text())) {
             String chatId = update.message().chat().id().toString();
             StringBuilder stringBuilder = new StringBuilder(messageAvailableCommands);
             for (BotCommand listCommands : listOfSupportedCommands.getCommands()) {
@@ -31,10 +28,10 @@ public class HelpCommand extends CommandHandler {
             bot.execute(new SendMessage(chatId, stringBuilder.toString()));
             return true;
         } else {
-            if (commandHandler != null) {
-                return commandHandler.handlerCommand(update);
-            } else {
+            if (commandHandler == null) {
                 return false;
+            } else {
+                return commandHandler.handlerCommand(update);
             }
         }
     }

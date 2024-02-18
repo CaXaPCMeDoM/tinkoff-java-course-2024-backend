@@ -2,17 +2,22 @@ package edu.java.bot.services.url;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.services.url.handler.URLHandler;
-import edu.java.bot.services.url.strategy.IDomainSetCommand;
+import edu.java.bot.services.url.strategy.DomainSetCommand;
 import edu.java.bot.services.url.strategy.resources.support.stackoverflow.StackOverflowCommand;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StackOverflow extends URLHandler {
-    private final String nameDomain = "stackoverflow.com";
+    private static final String nameDomain = "stackoverflow.com";
+    @Autowired
+    private StackOverflowCommand stackOverflowCommand;
 
     @Override
-    public IDomainSetCommand handlerURL(Update update) {
+    public DomainSetCommand handlerURL(Update update) {
         String domain = urlParser.getDomainName(update.message().text());
         if (nameDomain.equals(domain)) {
-            return new StackOverflowCommand();
+            return stackOverflowCommand;
         } else {
             if (urlHandler != null) {
                 return urlHandler.handlerURL(update);

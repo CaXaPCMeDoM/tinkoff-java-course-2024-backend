@@ -12,17 +12,19 @@ import edu.java.bot.services.command.chain.ChainOfCommand;
 import edu.java.bot.services.command.handler.CommandHandler;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Bot {
-    private final TelegramBot telegramBot;
-    private final ChainOfCommand chainOfCommand;
-    private final ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
+    @Autowired
+    private TelegramBot telegramBot;
 
-    public Bot() {
-        telegramBot = StaticBotInstance.telegramBot;
-        CommandHandler.bot = telegramBot;
-        chainOfCommand = new ChainOfCommand();
-    }
+    @Autowired
+    private ChainOfCommand chainOfCommand;
+
+    @Autowired
+    private ListOfSupportedCommands listOfSupportedCommands;
 
     public void createMenu() {
         /**

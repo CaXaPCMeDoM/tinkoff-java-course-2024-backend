@@ -1,9 +1,7 @@
 package edu.java.bot;
 
-import com.pengrad.telegrambot.TelegramBot;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.services.bot.Bot;
-import edu.java.bot.services.bot.StaticBotInstance;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,13 +13,8 @@ public class BotApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(BotApplication.class, args);
-        ApplicationConfig config = context.getBean(ApplicationConfig.class);
 
-        String token = config.telegramToken();
-
-        StaticBotInstance.telegramBot = new TelegramBot(token);
-
-        Bot bot = new Bot();
+        Bot bot = context.getBean(Bot.class);
 
         bot.start();
     }

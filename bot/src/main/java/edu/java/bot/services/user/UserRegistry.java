@@ -1,9 +1,10 @@
 package edu.java.bot.services.user;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class UserRegistry {
-    private final HashMap<Long, String> users = new HashMap<>();
+    private final Map<Long, String> users = new HashMap<>();
 
     public boolean tryAddNewUser(Long id, String name) {
         if (users.containsKey(id)) {

@@ -5,16 +5,19 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
 import edu.java.bot.services.url.parser.URLParser;
-import edu.java.bot.services.url.strategy.IDomainSetCommand;
+import edu.java.bot.services.url.strategy.DomainSetCommand;
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class TrackCommand extends CommandHandler {
-    private final String name = "/track";
-    private final String messageEnd = "URL отслеживается";
-    private IDomainSetCommand domainCommand = null;
-    private GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
-    private Map<String, Boolean> userState = new ConcurrentHashMap<>();
+    private static final String name = "/track";
+    private static final String messageEnd = "URL отслеживается";
+    private DomainSetCommand domainCommand = null;
+    private final GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
+    private final Map<String, Boolean> userState = new ConcurrentHashMap<>();
 
     @Override
     public String getCommandName() {
@@ -31,32 +34,27 @@ public class TrackCommand extends CommandHandler {
         String userId = getDataFromUpdate.userIdString(update);
         String messageText = update.message().text();
 
-        if (messageText.equals(name)) {
+        if (name.equals(messageText)) {
             userState.put(userId, true);
             String chatId = update.message().chat().id().toString();
             bot.execute(new SendMessage(chatId, "Теперь отправьте ссылку"));
         } else if (userState.getOrDefault(userId, false)) {
-            URLParser urlParser = new URLParser();
-
             String chatId = update.message().chat().id().toString();
-
-            if (!urlParser.isWasExceptionCaught()) {
-                domainCommand = chainOfURL.assemblingTheChain(update);
-                if (domainCommand == null) {
-                    bot.execute(new SendMessage(chatId, "Данный домен не поддерживается, либо ссылка некорректна!"));
-                    return true;
-                } else {
-                    domainCommand.startTracking(userId, messageText);
-                }
+            domainCommand = chainOfURL.assemblingTheChain(update);
+            if (domainCommand == null) {
+                bot.execute(new SendMessage(chatId, "Данный домен не поддерживается, либо ссылка некорректна!"));
+                return true;
+            } else {
+                domainCommand.startTracking(userId, messageText);
             }
 
             userState.remove(userId);
             bot.execute(new SendMessage(chatId, messageEnd));
         } else {
-            if (commandHandler != null) {
-                return commandHandler.handlerCommand(update);
-            } else {
+            if (commandHandler == null) {
                 return false;
+            } else {
+                return commandHandler.handlerCommand(update);
             }
         }
         return true;

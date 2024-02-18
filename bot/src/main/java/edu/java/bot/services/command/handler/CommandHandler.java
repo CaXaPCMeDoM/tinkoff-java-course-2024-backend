@@ -3,11 +3,18 @@ package edu.java.bot.services.command.handler;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.services.url.chain.ChainOfURL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public abstract class CommandHandler {
-    public CommandHandler commandHandler;
-    public static TelegramBot bot;
-    protected ChainOfURL chainOfURL = new ChainOfURL();
+    protected CommandHandler commandHandler;
+
+    @Autowired
+    protected TelegramBot bot;
+
+    @Autowired
+    protected ChainOfURL chainOfURL;
 
 
     public CommandHandler setNextHandler(CommandHandler nextHandler) {

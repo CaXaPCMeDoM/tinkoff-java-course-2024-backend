@@ -1,13 +1,9 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
-import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.services.bot.StaticBotInstance;
-import edu.java.bot.services.command.ListCommand;
 import edu.java.bot.services.command.chain.ChainOfCommand;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.user.UserRegistry;
@@ -56,7 +52,7 @@ public class ChainOfCommandTest {
 
     @Test
     public void testUnknownCommand() throws NoSuchFieldException, IllegalAccessException {
-        StaticBotInstance.telegramBot = telegramBot;
+        telegramBot = telegramBot;
 
         // Настраиваем моки
         Mockito.when(user.id()).thenReturn(123L);

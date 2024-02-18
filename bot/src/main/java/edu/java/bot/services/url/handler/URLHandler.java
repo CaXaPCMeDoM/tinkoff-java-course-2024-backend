@@ -2,8 +2,10 @@ package edu.java.bot.services.url.handler;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.services.url.parser.URLParser;
-import edu.java.bot.services.url.strategy.IDomainSetCommand;
+import edu.java.bot.services.url.strategy.DomainSetCommand;
+import org.springframework.stereotype.Service;
 
+@Service
 public abstract class URLHandler {
     protected URLHandler urlHandler;
     protected URLParser urlParser = new URLParser();
@@ -18,5 +20,5 @@ public abstract class URLHandler {
         return this;
     }
 
-    public abstract IDomainSetCommand handlerURL(Update update);
+    public abstract DomainSetCommand handlerURL(Update update);
 }

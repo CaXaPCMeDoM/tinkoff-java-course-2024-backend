@@ -6,7 +6,7 @@ public class GetDataFromUpdate {
     private Update update;
 
     public String userIdString(Update upd) {
-        this.update = upd;
+        update = upd;
         return update.message().from().id().toString();
     }
 }

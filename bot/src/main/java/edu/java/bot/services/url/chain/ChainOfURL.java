@@ -1,22 +1,25 @@
 package edu.java.bot.services.url.chain;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.data.ListOfSupportedCommands;
 import edu.java.bot.services.url.GitHub;
 import edu.java.bot.services.url.StackOverflow;
 import edu.java.bot.services.url.handler.URLHandler;
-import edu.java.bot.services.url.strategy.IDomainSetCommand;
+import edu.java.bot.services.url.strategy.DomainSetCommand;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ChainOfURL {
-    private URLHandler gitHub = new GitHub();
-    private URLHandler stackOverflow = new StackOverflow();
-    private ListOfSupportedCommands listOfSupportedCommands = new ListOfSupportedCommands();
+    private final URLHandler gitHub;
+    private final URLHandler stackOverflow;
 
-    public ChainOfURL() {
+    public ChainOfURL(URLHandler gitHub, URLHandler stackOverflow) {
+        this.gitHub = gitHub;
+        this.stackOverflow = stackOverflow;
         gitHub.setNextHandler(stackOverflow);
     }
 
-    public IDomainSetCommand assemblingTheChain(Update update) {
+    public DomainSetCommand assemblingTheChain(Update update) {
         return gitHub.handlerURL(update);
     }
 }

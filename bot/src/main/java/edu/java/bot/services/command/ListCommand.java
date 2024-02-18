@@ -5,12 +5,14 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.data.repository.URLRepository;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ListCommand extends CommandHandler {
-    private final String name = "/list";
-    private final GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
-    private final String messageListIsEmpty = "Список пуст.";
-    private URLRepository urlRepository = new URLRepository();
+    private static final String name = "/list";
+    private static final GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
+    private static final String messageListIsEmpty = "Список пуст.";
+    private final URLRepository urlRepository = new URLRepository();
     private String message = null;
 
     @Override
@@ -40,10 +42,10 @@ public class ListCommand extends CommandHandler {
 
             return true;
         } else {
-            if (commandHandler != null) {
-                return commandHandler.handlerCommand(update);
-            } else {
+            if (commandHandler == null) {
                 return false;
+            } else {
+                return commandHandler.handlerCommand(update);
             }
         }
     }
