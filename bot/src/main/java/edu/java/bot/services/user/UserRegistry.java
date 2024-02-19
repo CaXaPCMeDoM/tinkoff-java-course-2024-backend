@@ -1,8 +1,11 @@
 package edu.java.bot.services.user;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class UserRegistry {
     private final Map<Long, String> users = new HashMap<>();
 

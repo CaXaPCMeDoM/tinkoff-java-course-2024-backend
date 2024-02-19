@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.user.UserRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +17,9 @@ public class StartCommand extends CommandHandler {
     private static final String MESSAGE_FROM_USER_ALREADY_REGISTERED = "вы уже зарегистрированы, ";
     private static final String MESSAGE_FROM_USER_YOU_NEED_REGISTRY = "Сначала вы должны зарегистрироваться!"
         + "\nКоманда: /start";
-    private final UserRegistry userRegistry = new UserRegistry();
+
+    @Autowired
+    private UserRegistry userRegistry;
 
     @Override
     public String getCommandName() {

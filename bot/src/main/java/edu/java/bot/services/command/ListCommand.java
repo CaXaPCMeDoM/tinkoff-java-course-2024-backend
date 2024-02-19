@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.data.repository.URLRepository;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +13,8 @@ public class ListCommand extends CommandHandler {
     private static final String NAME = "/list";
     private static final GetDataFromUpdate GET_DATA_FROM_UPDATE = new GetDataFromUpdate();
     private static final String MESSAGE_LIST_IS_EMPTY = "Список пуст.";
-    private final URLRepository urlRepository = new URLRepository();
+    @Autowired
+    private URLRepository urlRepository;
     private String message = null;
 
     @Override
