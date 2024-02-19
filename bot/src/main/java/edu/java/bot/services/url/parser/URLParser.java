@@ -2,7 +2,6 @@ package edu.java.bot.services.url.parser;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import lombok.Getter;
 
 public class URLParser {
 

@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ListCommand extends CommandHandler {
-    private static final String name = "/list";
-    private static final GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
-    private static final String messageListIsEmpty = "Список пуст.";
+    private static final String NAME = "/list";
+    private static final GetDataFromUpdate GET_DATA_FROM_UPDATE = new GetDataFromUpdate();
+    private static final String MESSAGE_LIST_IS_EMPTY = "Список пуст.";
     private final URLRepository urlRepository = new URLRepository();
     private String message = null;
 
     @Override
     public String getCommandName() {
-        return name;
+        return NAME;
     }
 
     @Override
@@ -27,17 +27,17 @@ public class ListCommand extends CommandHandler {
 
     @Override
     public boolean handlerCommand(Update update) {
-        String userId = getDataFromUpdate.userIdString(update);
+        String userId = GET_DATA_FROM_UPDATE.userIdString(update);
         String chatId = update.message().chat().id().toString();
-        if (update.message().text().equals(name)) {
+        if (update.message().text().equals(NAME)) {
 
             message = urlRepository.getAllInString(userId);
 
             if (message != null) {
                 bot.execute(new SendMessage(chatId, message));
             } else {
-                message = messageListIsEmpty;
-                bot.execute(new SendMessage(chatId, messageListIsEmpty));
+                message = MESSAGE_LIST_IS_EMPTY;
+                bot.execute(new SendMessage(chatId, MESSAGE_LIST_IS_EMPTY));
             }
 
             return true;

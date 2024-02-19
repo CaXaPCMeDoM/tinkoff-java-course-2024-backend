@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HelpCommand extends CommandHandler {
-    private static final String name = "/help";
-    private static final String messageAvailableCommands = "Список доступных команд:\n";
+    private static final String NAME = "/help";
+    private static final String MESSAGE_AVAILABLE_COMMANDS = "Список доступных команд:\n";
 
     @Autowired
     private ListOfSupportedCommands listOfSupportedCommands;
 
     @Override
     public boolean handlerCommand(Update update) {
-        if (name.equals(update.message().text())) {
+        if (NAME.equals(update.message().text())) {
             String chatId = update.message().chat().id().toString();
-            StringBuilder stringBuilder = new StringBuilder(messageAvailableCommands);
+            StringBuilder stringBuilder = new StringBuilder(MESSAGE_AVAILABLE_COMMANDS);
             for (BotCommand listCommands : listOfSupportedCommands.getCommands()) {
                 stringBuilder.append(listCommands.command());
                 stringBuilder.append("\n");
@@ -38,7 +38,7 @@ public class HelpCommand extends CommandHandler {
 
     @Override
     public String getCommandName() {
-        return name;
+        return NAME;
     }
 
     @Override

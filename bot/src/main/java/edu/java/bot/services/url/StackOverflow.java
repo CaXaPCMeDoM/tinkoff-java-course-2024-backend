@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StackOverflow extends URLHandler {
-    private static final String nameDomain = "stackoverflow.com";
+    private static final String NAME_DOMAIN = "stackoverflow.com";
     @Autowired
     private StackOverflowCommand stackOverflowCommand;
 
     @Override
     public DomainSetCommand handlerURL(Update update) {
         String domain = urlParser.getDomainName(update.message().text());
-        if (nameDomain.equals(domain)) {
+        if (NAME_DOMAIN.equals(domain)) {
             return stackOverflowCommand;
         } else {
             if (urlHandler != null) {

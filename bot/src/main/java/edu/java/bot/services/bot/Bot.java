@@ -9,7 +9,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.data.ListOfSupportedCommands;
 import edu.java.bot.services.command.chain.ChainOfCommand;
-import edu.java.bot.services.command.handler.CommandHandler;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

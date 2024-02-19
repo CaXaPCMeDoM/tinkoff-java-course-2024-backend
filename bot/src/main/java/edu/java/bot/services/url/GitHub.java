@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GitHub extends URLHandler {
-    private static final String nameDomain = "github.com";
+    private static final String NAME_DOMAIN = "github.com";
     @Autowired
     private GitHubCommand gitHubCommand;
 
     @Override
     public DomainSetCommand handlerURL(Update update) {
         String domain = urlParser.getDomainName(update.message().text());
-        if (nameDomain.equals(domain)) {
+        if (NAME_DOMAIN.equals(domain)) {
             return gitHubCommand;
         } else {
             if (urlHandler != null) {

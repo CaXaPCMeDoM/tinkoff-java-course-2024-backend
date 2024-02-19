@@ -1,11 +1,8 @@
 package edu.java.bot.services.url.chain;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.services.url.GitHub;
-import edu.java.bot.services.url.StackOverflow;
 import edu.java.bot.services.url.handler.URLHandler;
 import edu.java.bot.services.url.strategy.DomainSetCommand;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -4,24 +4,23 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
-import edu.java.bot.services.url.parser.URLParser;
 import edu.java.bot.services.url.strategy.DomainSetCommand;
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Component;
+
 
 @Component
 public class TrackCommand extends CommandHandler {
-    private static final String name = "/track";
-    private static final String messageEnd = "URL отслеживается";
+    private static final String NAME = "/track";
+    private static final String MESSAGE_END = "URL отслеживается";
     private DomainSetCommand domainCommand = null;
     private final GetDataFromUpdate getDataFromUpdate = new GetDataFromUpdate();
     private final Map<String, Boolean> userState = new ConcurrentHashMap<>();
 
     @Override
     public String getCommandName() {
-        return name;
+        return NAME;
     }
 
     @Override
@@ -34,7 +33,7 @@ public class TrackCommand extends CommandHandler {
         String userId = getDataFromUpdate.userIdString(update);
         String messageText = update.message().text();
 
-        if (name.equals(messageText)) {
+        if (NAME.equals(messageText)) {
             userState.put(userId, true);
             String chatId = update.message().chat().id().toString();
             bot.execute(new SendMessage(chatId, "Теперь отправьте ссылку"));
@@ -49,7 +48,7 @@ public class TrackCommand extends CommandHandler {
             }
 
             userState.remove(userId);
-            bot.execute(new SendMessage(chatId, messageEnd));
+            bot.execute(new SendMessage(chatId, MESSAGE_END));
         } else {
             if (commandHandler == null) {
                 return false;

@@ -4,13 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.data.ListOfSupportedCommands;
-import edu.java.bot.services.command.HelpCommand;
-import edu.java.bot.services.command.ListCommand;
-import edu.java.bot.services.command.StartCommand;
-import edu.java.bot.services.command.TrackCommand;
-import edu.java.bot.services.command.UntrackCommand;
 import edu.java.bot.services.command.handler.CommandHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
