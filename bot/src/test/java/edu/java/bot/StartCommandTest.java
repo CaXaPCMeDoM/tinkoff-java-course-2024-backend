@@ -4,16 +4,15 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.StartCommand;
 import edu.java.bot.services.user.UserRegistry;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -56,7 +55,7 @@ public class StartCommandTest {
         boolean result = startCommand.handlerCommand(update);
 
         // Проверяем результат
-        assertTrue(result);
+        Assertions.assertTrue(result);
 
         // Проверяем, что методы были вызваны с правильными аргументами
         verify(userRegistry).tryAddNewUser(123L, "Test");
