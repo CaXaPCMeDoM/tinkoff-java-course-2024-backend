@@ -1,88 +1,70 @@
 package edu.java.scrapper;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import edu.java.ScrapperApplication;
-import edu.java.client.stackoverflow.DataForRequestStackoverflow;
-import edu.java.client.stackoverflow.client.StackOverflowClient;
-import lombok.SneakyThrows;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+import org.springframework.test.web.servlet.MvcResult;
 
-import java.net.MalformedURLException;
 import java.time.OffsetDateTime;
-import java.util.List;
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.junit.Assert.assertEquals;
-
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
-import reactor.test.StepVerifier;
-import scala.Product;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.CoreMatchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 @WireMockTest
-@Import(TestConfig.class)
 public class StackOverflowClientTest {
     @Autowired
     private WebTestClient webTestClient;
+    @Autowired
+    protected MockMvc mockMvc;
 
-    private final ObjectMapper mapper = new ObjectMapper();
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
     @RegisterExtension
-    static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
+    static WireMockExtension wireMockServer = WireMockExtension.newInstance()
         .options(wireMockConfig().dynamicPort().dynamicPort())
         .build();
 
     @DynamicPropertySource
-    static void registerMockProperties(DynamicPropertyRegistry registry) {
-        registry.add("stackoverflow.base-url", () -> "http://localhost:" + wireMockExtension.getHttpsPort());
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("stackoverflow.base-url", wireMockServer::baseUrl);
     }
 
     @Test
-    public void checkingTheCorrectnessOfTheDataReturn() {
-        stubFor(get(urlEqualTo("/questions/17432735?site=stackoverflow"))
-            .willReturn(aResponse()
-                .withHeader("Content-type", MediaType.APPLICATION_JSON_VALUE)
-                .withBody("{\"items\":[{\"question_id\":\"17432735\",\"last_activity_date\":\"2021-03-30T09:21:50Z\"}]}")));
-        webTestClient.get().uri("/api/stackoverflow/question/17432735")
+    void checkingTheCorrectnessOfTheData() {
+        String question_id = "17432735";
+        String products = "{\"items\":[{\"question_id\":\"%s\",\"last_activity_date\":\"2021-03-30T09:21:50Z\"}]}";
+        wireMockServer.stubFor(WireMock.get(urlEqualTo("/questions/17432735?site=stackoverflow"))
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                    .withBody(products.formatted(question_id))));
+
+        webTestClient.get().uri("/api/stackoverflow/question/{question_id}", question_id)
             .exchange()
             .expectStatus().isOk()
             .expectBody()
-            .json("{\"items\":[{\"question_id\":\"17432735\",\"last_activity_date\":\"2021-03-30T09:21:50Z\"}]}");
+            .jsonPath("$.items[0].question_id").isEqualTo(question_id)
+            .jsonPath("$.items[0].last_activity_date").isEqualTo("2021-03-30T09:21:50Z");
     }
-
-
 }
+
+
+
 
 
 /*@RunWith(SpringRunner.class)
