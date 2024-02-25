@@ -17,7 +17,10 @@ public class LinkProcessService {
     private final List<LinkProcess> linkProcessors;
 
     public LinkProcessService(GitHubClient gitHubClient, StackOverflowClient stackOverflowClient) {
-        linkProcessors = Arrays.asList(new GitHubLinkProcessor(gitHubClient), new StackOverflowLinkProcessor(stackOverflowClient));
+        linkProcessors = Arrays.asList(
+            new GitHubLinkProcessor(gitHubClient),
+            new StackOverflowLinkProcessor(stackOverflowClient)
+        );
     }
 
     public boolean processLink(String link) {

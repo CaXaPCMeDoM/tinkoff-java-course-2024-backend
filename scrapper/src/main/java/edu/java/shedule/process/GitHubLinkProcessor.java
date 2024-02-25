@@ -4,14 +4,14 @@ import edu.java.client.github.DataForRepositoryGitHub;
 import edu.java.client.github.ParserForGitHub;
 import edu.java.client.github.client.GitHubClient;
 import edu.java.client.github.responceDTO.ReposResponce;
-import org.springframework.stereotype.Service;
 import java.net.URISyntaxException;
+import org.springframework.stereotype.Service;
 
 @Service
 class GitHubLinkProcessor implements LinkProcess {
     private final GitHubClient gitHubClient;
 
-    public GitHubLinkProcessor(GitHubClient gitHubClient) {
+    GitHubLinkProcessor(GitHubClient gitHubClient) {
         this.gitHubClient = gitHubClient;
     }
 

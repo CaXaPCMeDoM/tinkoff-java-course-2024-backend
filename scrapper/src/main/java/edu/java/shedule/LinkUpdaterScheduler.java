@@ -1,9 +1,9 @@
 package edu.java.shedule;
 
+import edu.java.shedule.process.LinkProcessService;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import edu.java.shedule.process.LinkProcessService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.EnableScheduling;

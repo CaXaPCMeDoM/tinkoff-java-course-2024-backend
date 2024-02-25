@@ -3,12 +3,11 @@ package edu.java.shedule.process;
 import edu.java.client.stackoverflow.DataForRequestStackoverflow;
 import edu.java.client.stackoverflow.ParserForStackOverflow;
 import edu.java.client.stackoverflow.client.StackOverflowClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.net.MalformedURLException;
+import org.springframework.stereotype.Service;
 
 @Service
-public class StackOverflowLinkProcessor implements LinkProcess{
+public class StackOverflowLinkProcessor implements LinkProcess {
     private final StackOverflowClient stackOverflowClient;
 
     public StackOverflowLinkProcessor(StackOverflowClient stackOverflowClient) {
