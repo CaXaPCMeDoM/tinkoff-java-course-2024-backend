@@ -1,14 +1,12 @@
 package edu.java.client.stackoverflow;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.kafka.common.protocol.types.Field;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 @Getter
 @Data
@@ -18,4 +16,13 @@ import java.util.List;
 @Setter
 public class DataForRequestStackoverflow {
     private List<Item> items;
+
+    @Override
+    public String toString() {
+        StringBuilder resultString = new StringBuilder();
+        for (Item s : items) {
+            resultString.append(s.getQuestionId().toString());
+        }
+        return String.valueOf(resultString);
+    }
 }

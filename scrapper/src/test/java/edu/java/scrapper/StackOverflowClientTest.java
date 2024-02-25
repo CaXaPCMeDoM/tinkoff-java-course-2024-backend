@@ -20,10 +20,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.CoreMatchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -47,7 +43,7 @@ public class StackOverflowClientTest {
     @Test
     void checkingTheCorrectnessOfTheData() {
         String question_id = "17432735";
-        String products = "{\"items\":[{\"question_id\":\"%s\",\"last_activity_date\":\"2021-03-30T09:21:50Z\"}]}";
+        String products = "{\"items\":[{\"tags\":[\"java\",\"unix-timestamp\"],\"owner\":{\"account_id\":2988131,\"reputation\":1318,\"user_id\":%s,\"user_type\":\"registered\",\"accept_rate\":30,\"profile_image\":\"https://www.gravatar.com/avatar/3198a347ebfa8007b44d9adf42959f35?s=256&d=identicon&r=PG&f=y&so-version=2\",\"display_name\":\"bigData\",\"link\":\"https://stackoverflow.com/users/2536373/bigdata\"},\"is_answered\":true,\"view_count\":170289,\"closed_date\":1489645493,\"accepted_answer_id\":17433005,\"answer_count\":3,\"score\":70,\"last_activity_date\":1617096110,\"creation_date\":1372788431,\"last_edit_date\":1617096110,\"question_id\":17432735,\"link\":\"https://stackoverflow.com/questions/17432735/convert-unix-timestamp-to-date-in-java\",\"closed_reason\":\"Duplicate\",\"title\":\"Convert unix timestamp to date in java\"}],\"has_more\":false,\"quota_max\":300,\"quota_remaining\":299}";
         wireMockServer.stubFor(WireMock.get(urlEqualTo("/questions/17432735?site=stackoverflow"))
             .willReturn(
                 aResponse()

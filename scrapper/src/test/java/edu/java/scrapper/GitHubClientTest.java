@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.client.github.client.GitHubClient;
 import edu.java.client.github.responceDTO.ReposResponce;
 import edu.java.client.stackoverflow.DataForRequestStackoverflow;
@@ -14,8 +15,14 @@ import org.junit.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -28,45 +35,36 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@WireMockTest
 public class GitHubClientTest {
-
     @Autowired
-    private GitHubClient client;
+    private WebTestClient webTestClient;
+    @Autowired
+    private MockMvc mockMvc;
 
     @RegisterExtension
-    static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
+    static WireMockExtension wireMockServer = WireMockExtension.newInstance()
         .options(wireMockConfig().dynamicPort().dynamicPort())
         .build();
 
-    private int wiremockServerPort = 8089;
-
-    private WireMockServer wireMockServer;
-
-    @Before
-    public void setup() {
-        wireMockServer = new WireMockServer(wireMockConfig().port(wiremockServerPort));
-        wireMockServer.start();
-        WireMock.configureFor("localhost", wiremockServerPort);
-    }
-
-    @After
-    public void teardown() {
-        wireMockServer.stop();
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("github.base-url", wireMockServer::baseUrl);
     }
 
     @Test
-    public void fetchQuestion() throws MalformedURLException {
+    public void fetchQuestion() {
         String owner = "sanyarnd";
-        Long id = 35884156443L;
+        String id = "35884156443";
         String repo = "java-course-2023-backend-template";
         OffsetDateTime created_at = OffsetDateTime.parse("2024-02-21T19:07:17Z");
 
-        stubFor(get(urlEqualTo("/repos/" + owner + "?site=stackoverflow"))
+        wireMockServer.stubFor(WireMock.get(urlEqualTo("/repos/" + owner + repo + "/events"))
             .willReturn(aResponse()
                 .withStatus(200)
-                .withHeader("Content-Type", "application/json")
+                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .withBody("[\n" +
                     "  {\n" +
                     "    \"id\": \"35884156443\",\n" +
@@ -107,6 +105,9 @@ public class GitHubClientTest {
                     "    },\n" +
                     "    \"public\": true,\n" +
                     "    \"created_at\": \"2024-02-21T19:07:17Z\"}]")));
-
+        webTestClient.get().uri("api/{github}/{repo}/events", owner, repo)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody();
     }
 }

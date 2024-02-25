@@ -9,7 +9,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.data.ListOfSupportedCommands;
 import edu.java.bot.services.command.chain.ChainOfCommand;
-import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,6 @@ public class Bot {
 
     @Autowired
     private ListOfSupportedCommands listOfSupportedCommands;
-
-    @Autowired
-    Test test;
 
     public void createMenu() {
         /**
@@ -45,28 +41,7 @@ public class Bot {
 
     public void start() {
         createMenu();
-        while (true) {
-            try {
-                List<String> bossList = new ArrayList<>();
-                test.getRepositoryData("CaXaPCMeDoM", "Lab2")
-                    .doOnNext(boss -> {
-                        String bossString = boss.toString();
-                        System.out.println("Data: " + bossString);
-                        bossList.add(bossString);
-                    })
-                    .doOnComplete(() -> {
-                        String[] bossArray = bossList.toArray(new String[0]);
-                        // Теперь у вас есть массив строк bossArray, который содержит данные каждого объекта Boss
-                        for (int i = 0; i < bossList.size(); i++) {
-                            System.out.println(bossList.get(i));
-                        }
-                    })
-                    .subscribe();
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                System.out.println("ОШибка");
-            }
-        }
+        listenerBot();
     }
 
     public void listenerBot() {

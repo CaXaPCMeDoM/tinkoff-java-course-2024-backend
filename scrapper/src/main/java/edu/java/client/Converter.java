@@ -5,7 +5,10 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 public class Converter {
-    public static OffsetDateTime UnixToOffsetDateTime(long unix){
+    private Converter() {
+    }
+
+    public static OffsetDateTime unixLongToOffsetDateTime(long unix) {
         return Instant.ofEpochSecond(unix).atOffset(ZoneOffset.UTC);
     }
 }

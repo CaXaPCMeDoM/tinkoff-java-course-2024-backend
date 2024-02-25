@@ -1,17 +1,28 @@
 package edu.java.client.stackoverflow;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.java.client.Converter;
+import java.net.MalformedURLException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import lombok.Getter;
 import lombok.Setter;
-import java.time.OffsetDateTime;
 
 @Getter
 @Setter
 public class Item {
-    private String question_id;
-    private OffsetDateTime last_activity_date;
+    @JsonProperty("question_id")
+    private String questionId;
+    @JsonProperty("last_activity_date")
+    private OffsetDateTime lastActivityDate;
 
-    public void setLast_activity_date(long last_activity_date) {
-        this.last_activity_date = Converter.UnixToOffsetDateTime(last_activity_date);
+    public void setLastActivityDate(Long unixDate) throws MalformedURLException {
+        this.lastActivityDate = Converter.unixLongToOffsetDateTime(unixDate);
+    }
+
+    public void setLastActivityDate(String unixTime) {
+        long epochSeconds = Long.parseLong(unixTime);
+        this.lastActivityDate = OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneOffset.UTC);
     }
 }
