@@ -12,13 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.OffsetDateTime;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,8 +23,6 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 public class StackOverflowClientTest {
     @Autowired
     private WebTestClient webTestClient;
-    @Autowired
-    protected MockMvc mockMvc;
 
     @RegisterExtension
     static WireMockExtension wireMockServer = WireMockExtension.newInstance()
@@ -58,54 +52,5 @@ public class StackOverflowClientTest {
             .jsonPath("$.items[0].last_activity_date").isEqualTo("2021-03-30T09:21:50Z");
     }
 }
-
-
-
-
-
-/*@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class StackOverflowClientTest {
-
-    @Autowired
-    private StackOverflowClient client;
-
-    private int wiremockServerPort = 8089;
-
-    private WireMockServer wireMockServer;
-
-    @Before
-    public void setup() {
-        wireMockServer = new WireMockServer(wireMockConfig().port(wiremockServerPort));
-        wireMockServer.start();
-        WireMock.configureFor("localhost", wiremockServerPort);
-    }
-
-    @After
-    public void teardown() {
-        wireMockServer.stop();
-    }
-
-    @Test
-    public void fetchQuestion() throws MalformedURLException {
-        String questionId = "17432735";
-        OffsetDateTime lastActivityDate = OffsetDateTime.parse("2021-03-30T09:21:50Z");
-
-        stubFor(get(urlEqualTo("/questions/" + questionId + "?site=stackoverflow"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody("{\"items\":[{\"question_id\":\"" + questionId + "\",\"last_activity_date\":\"" + lastActivityDate + "\"}]}")));
-
-        Mono<DataForRequestStackoverflow> result = client.fetchQuestion("https://stackoverflow.com/questions/" + questionId);
-
-        StepVerifier.create(result)
-            .assertNext(data -> {
-                assertEquals(questionId, data.getItems().get(0).getQuestion_id());
-                assertEquals(lastActivityDate, data.getItems().get(0).getLast_activity_date());
-            })
-            .verifyComplete();
-    }
-}*/
 
 
