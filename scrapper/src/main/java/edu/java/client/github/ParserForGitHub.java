@@ -23,4 +23,10 @@ public class ParserForGitHub {
             return null;
         }
     }
+
+    public static boolean checkIsGitHubHost(String urlString) throws URISyntaxException {
+        URI uri = new URI(urlString);
+        String host = uri.getHost();
+        return GIT_HUB_HOST.equals(host);
+    }
 }
