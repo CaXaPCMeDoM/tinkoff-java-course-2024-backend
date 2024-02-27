@@ -29,8 +29,7 @@ public class StackOverflowLinkProcessor implements LinkProcess {
                     return dataForRequestStackoverflow.toString();
                 }
             }
-        } catch (MalformedURLException e) {
-            // Обработка исключения
+        } catch (MalformedURLException ignored) {
         }
         return null;
     }

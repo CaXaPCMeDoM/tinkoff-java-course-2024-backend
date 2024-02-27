@@ -3,6 +3,7 @@ package edu.java.client.stackoverflow.client;
 import edu.java.client.stackoverflow.DataForRequestStackoverflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-@RestController
-@RequestMapping("/api/stackoverflow")
+@Component
 public class StackOverflowClient {
     private WebClient webClient;
 
@@ -20,7 +20,6 @@ public class StackOverflowClient {
         webClient = stackOverflowWebClient;
     }
 
-    @GetMapping("/question/{questionId}")
     public Mono<DataForRequestStackoverflow> fetchQuestion(@PathVariable String questionId) {
 
         return webClient.get()

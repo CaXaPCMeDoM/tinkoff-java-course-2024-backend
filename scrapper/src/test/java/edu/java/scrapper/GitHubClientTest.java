@@ -3,6 +3,9 @@ package edu.java.scrapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import edu.java.client.github.client.GitHubClient;
+import edu.java.client.github.responceDTO.ReposResponce;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.OffsetDateTime;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -24,7 +28,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 @WireMockTest
 public class GitHubClientTest {
     @Autowired
-    private WebTestClient webTestClient;
+    private GitHubClient gitHubClient;
 
     @RegisterExtension
     static WireMockExtension wireMockServer = WireMockExtension.newInstance()
@@ -38,6 +42,8 @@ public class GitHubClientTest {
 
     @Test
     void checkingTheCorrectnessOfTheData() throws IOException {
+        String owner = "sanyarnd";
+        String repo = "java-course-2023-backend-template";
         String question_id = "17432735";
         String jsonContent = new String(Files.readAllBytes(Paths.get("src/test/java/edu/java/scrapper/data/testDataGitHub.json")));
         wireMockServer.stubFor(WireMock.get(urlEqualTo("/repos/sanyarnd/java-course-2023-backend-template/events"))
@@ -46,11 +52,9 @@ public class GitHubClientTest {
                     .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                     .withBody(jsonContent)));
 
-        webTestClient.get().uri("/api/github/repos/sanyarnd/java-course-2023-backend-template/events")
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody()
-            .jsonPath("$.id").isEqualTo(35982505038L)
-            .jsonPath("$.created_at").isEqualTo("2024-02-25T10:19:29Z");
+        ReposResponce response = gitHubClient.getRepositoryData(owner, repo).block();
+
+        Assertions.assertEquals(35982505038L, response.getId());
+        Assertions.assertEquals(OffsetDateTime.parse("2024-02-25T10:19:29Z"), response.getCreatedAt());
     }
 }
