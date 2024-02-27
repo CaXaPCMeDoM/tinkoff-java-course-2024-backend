@@ -9,8 +9,6 @@ import lombok.Setter;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Setter
-@Getter
 public class ReposResponce {
     @JsonProperty("id")
     private Long id;

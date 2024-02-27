@@ -33,8 +33,7 @@ class GitHubLinkProcessor implements LinkProcess {
                     return reposResponce.toString();
                 }
             }
-        } catch (URISyntaxException e) {
-            return null;
+        } catch (URISyntaxException ignored) {
         }
         return null;
     }

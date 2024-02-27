@@ -8,12 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Setter
 public class DataForRequestStackoverflow {
     private List<Item> items;
 

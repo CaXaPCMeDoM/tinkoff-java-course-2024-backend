@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinkProcessService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LinkProcessService.class);
-    private final Map<String, String> linkResponses = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, String> linkResponses = new ConcurrentHashMap<>();
     private final List<LinkProcess> linkProcessors;
 
     public LinkProcessService(GitHubClient gitHubClient, StackOverflowClient stackOverflowClient) {
