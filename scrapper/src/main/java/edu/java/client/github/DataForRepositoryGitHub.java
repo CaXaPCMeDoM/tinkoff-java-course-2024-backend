@@ -2,7 +2,6 @@ package edu.java.client.github;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Builder
 @Getter

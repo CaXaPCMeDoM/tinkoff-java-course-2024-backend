@@ -4,7 +4,6 @@ import edu.java.client.github.client.GitHubClient;
 import edu.java.client.stackoverflow.client.StackOverflowClient;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;

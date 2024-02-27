@@ -1,8 +1,8 @@
 package edu.java.client.github;
 
-import lombok.experimental.UtilityClass;
 import java.net.URI;
 import java.net.URISyntaxException;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ParserForGitHub {
