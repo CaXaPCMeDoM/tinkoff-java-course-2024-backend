@@ -1,8 +1,8 @@
 package edu.java.shedule.process;
 
-import edu.java.client.stackoverflow.DataForRequestStackoverflow;
-import edu.java.client.stackoverflow.ParserForStackOverflow;
-import edu.java.client.stackoverflow.client.StackOverflowClient;
+import edu.java.external.client.stackoverflow.DataForRequestStackoverflow;
+import edu.java.external.client.stackoverflow.ParserForStackOverflow;
+import edu.java.external.client.stackoverflow.client.StackOverflowClient;
 import java.net.MalformedURLException;
 import org.springframework.stereotype.Service;
 

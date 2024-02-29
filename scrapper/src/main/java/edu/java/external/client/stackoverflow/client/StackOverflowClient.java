@@ -1,6 +1,6 @@
-package edu.java.client.stackoverflow.client;
+package edu.java.external.client.stackoverflow.client;
 
-import edu.java.client.stackoverflow.DataForRequestStackoverflow;
+import edu.java.external.client.stackoverflow.DataForRequestStackoverflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

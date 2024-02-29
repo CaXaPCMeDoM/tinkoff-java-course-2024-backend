@@ -1,4 +1,4 @@
-package edu.java.client.github;
+package edu.java.external.client.github;
 
 import lombok.Builder;
 import lombok.Getter;

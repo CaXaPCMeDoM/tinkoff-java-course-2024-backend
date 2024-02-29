@@ -1,4 +1,4 @@
-package edu.java.client.stackoverflow;
+package edu.java.external.client.stackoverflow;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

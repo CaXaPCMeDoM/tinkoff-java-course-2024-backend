@@ -1,4 +1,4 @@
-package edu.java.client.github;
+package edu.java.external.client.github;
 
 import java.net.URI;
 import java.net.URISyntaxException;

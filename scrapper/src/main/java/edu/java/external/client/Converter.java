@@ -1,4 +1,4 @@
-package edu.java.client;
+package edu.java.external.client;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;

@@ -1,7 +1,7 @@
 package edu.java.shedule.process;
 
-import edu.java.client.github.client.GitHubClient;
-import edu.java.client.stackoverflow.client.StackOverflowClient;
+import edu.java.external.client.github.client.GitHubClient;
+import edu.java.external.client.stackoverflow.client.StackOverflowClient;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;

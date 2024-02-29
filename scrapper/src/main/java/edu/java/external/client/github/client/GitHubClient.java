@@ -1,6 +1,6 @@
-package edu.java.client.github.client;
+package edu.java.external.client.github.client;
 
-import edu.java.client.github.responceDTO.ReposResponce;
+import edu.java.external.client.github.responceDTO.ReposResponce;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.client.WebClient;

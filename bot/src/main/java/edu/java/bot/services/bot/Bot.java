@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.MenuButton;
 import com.pengrad.telegrambot.model.MenuButtonCommands;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.data.ListOfSupportedCommands;
 import edu.java.bot.services.command.chain.ChainOfCommand;
@@ -54,6 +55,11 @@ public class Bot {
                 return UpdatesListener.CONFIRMED_UPDATES_ALL;
             }
         });
+    }
+
+    public void sendAMessageAboutUpdatingLinks(Long chatId, String url) {
+        String message = "Произошло обновление ссылки: " + url;
+        telegramBot.execute(new SendMessage(chatId, message));
     }
 
     private void handlerUpdate(@NotNull Update update) {

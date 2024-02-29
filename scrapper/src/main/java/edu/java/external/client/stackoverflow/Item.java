@@ -1,7 +1,7 @@
-package edu.java.client.stackoverflow;
+package edu.java.external.client.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.java.client.Converter;
+import edu.java.external.client.Converter;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.time.OffsetDateTime;

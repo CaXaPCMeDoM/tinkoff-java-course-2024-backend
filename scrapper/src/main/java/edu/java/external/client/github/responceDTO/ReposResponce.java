@@ -1,4 +1,4 @@
-package edu.java.client.github.responceDTO;
+package edu.java.external.client.github.responceDTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
