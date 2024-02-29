@@ -4,7 +4,6 @@ import edu.java.model.LinkData;
 import edu.java.shedule.process.LinkProcessService;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.EnableScheduling;

@@ -6,10 +6,10 @@ import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
 import edu.java.bot.web.client.LinkClient;
 import edu.java.bot.web.client.dto.link.Link;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ListCommand extends CommandHandler {

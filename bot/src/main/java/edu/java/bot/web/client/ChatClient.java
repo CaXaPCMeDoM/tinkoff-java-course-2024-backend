@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class ChatClient {
     private final WebClient webClient;
+    private static final String TG_CHAT_ID = "/tg-chat/{id}";
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatClient.class);
 
     public ChatClient(WebClient scrapperClient) {
@@ -19,9 +20,12 @@ public class ChatClient {
     public void postRegisterChat(Long id) {
         webClient
             .post()
-            .uri("/tg-chat/{id}", id)
+            .uri(TG_CHAT_ID, id)
             .exchangeToMono(response -> {
-                LOGGER.info("Response status: {} {} регистрация id чата. Id: {}", response.statusCode(), getClass(), id);
+                LOGGER.info(
+                    "Response status: {} {} регистрация id чата. Id: {}",
+                    response.statusCode(), getClass(),
+                    id);
                 return Mono.empty();
             })
             .subscribe();
@@ -30,7 +34,7 @@ public class ChatClient {
     public void deleteChat(Long id) {
         webClient
             .method(HttpMethod.DELETE)
-            .uri("/tg-chat/{id}", id)
+            .uri(TG_CHAT_ID, id)
             .exchangeToMono(clientResponse -> {
                 LOGGER.info("Response status: {} удаление чата", clientResponse.statusCode(), getClass());
                 return Mono.empty();

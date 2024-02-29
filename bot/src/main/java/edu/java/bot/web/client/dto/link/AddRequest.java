@@ -1,7 +1,7 @@
 package edu.java.bot.web.client.dto.link;
 
-import lombok.Data;
 import java.net.URI;
+import lombok.Data;
 
 @Data
 public class AddRequest {

@@ -5,11 +5,11 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
 import edu.java.bot.services.url.strategy.DomainSetCommand;
+import edu.java.bot.web.client.LinkClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import edu.java.bot.web.client.LinkClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

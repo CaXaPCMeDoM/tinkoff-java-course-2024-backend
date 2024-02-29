@@ -2,18 +2,20 @@ package edu.java.bot.web.client;
 
 import edu.java.bot.web.client.dto.link.AddRequest;
 import edu.java.bot.web.client.dto.link.GetLinksResponse;
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import java.net.URI;
 
 @Component
 public class LinkClient {
     private final WebClient webClient;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatClient.class);
+    private static final String LINKS_COMMAND = "/links";
+    private static final String TG_CHAT_ID = "Tg-Chat-Id";
 
     public LinkClient(WebClient scrapperClient) {
         webClient = scrapperClient;
@@ -24,8 +26,8 @@ public class LinkClient {
         addRequest.setLink(link);
         webClient
             .post()
-            .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(id))
+            .uri(LINKS_COMMAND)
+            .header(TG_CHAT_ID, String.valueOf(id))
             .body(Mono.just(addRequest), AddRequest.class)
             .exchangeToMono(response -> {
                 LOGGER.info(
@@ -43,8 +45,8 @@ public class LinkClient {
     public Mono<GetLinksResponse> getLinksById(Long id) {
         return webClient
             .get()
-            .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(id))
+            .uri(LINKS_COMMAND)
+            .header(TG_CHAT_ID, String.valueOf(id))
             .retrieve()
             .bodyToMono(GetLinksResponse.class)
             .doOnNext(response -> LOGGER.info(
@@ -58,8 +60,8 @@ public class LinkClient {
         addRequest.setLink(uri);
         webClient
             .method(HttpMethod.DELETE)
-            .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(id))
+            .uri(LINKS_COMMAND)
+            .header(TG_CHAT_ID, String.valueOf(id))
             .body(Mono.just(addRequest), AddRequest.class)
             .exchangeToMono(response -> {
                 LOGGER.info(

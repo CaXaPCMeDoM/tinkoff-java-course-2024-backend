@@ -1,7 +1,7 @@
 package edu.java.bot.web.client.dto.chat;
 
-import lombok.Data;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class ExceptionMessageResponse {

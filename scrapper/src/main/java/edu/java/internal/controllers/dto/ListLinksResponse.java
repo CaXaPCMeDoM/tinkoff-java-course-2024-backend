@@ -19,7 +19,7 @@ public class ListLinksResponse {
         }
     }
 
-    public List<LinkResponse> getLinks(){
+    public List<LinkResponse> getLinks() {
         return links;
     }
 

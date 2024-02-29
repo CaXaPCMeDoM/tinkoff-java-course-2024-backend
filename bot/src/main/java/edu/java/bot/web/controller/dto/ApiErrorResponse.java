@@ -1,8 +1,8 @@
 package edu.java.bot.web.controller.dto;
 
+import java.util.List;
 import lombok.Data;
 import lombok.Getter;
-import java.util.List;
 
 @Data
 @Getter

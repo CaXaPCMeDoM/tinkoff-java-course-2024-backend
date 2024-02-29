@@ -1,8 +1,7 @@
 package edu.java.internal.client.dto;
 
-import lombok.Builder;
-import lombok.Data;
 import java.util.List;
+import lombok.Builder;
 
 @Builder
 public class LinkClientUpdateRequest {
