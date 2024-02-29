@@ -5,18 +5,24 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.User;
-import edu.java.bot.data.repository.URLRepository;
 import edu.java.bot.services.command.ListCommand;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
+import edu.java.bot.web.client.ChatClient;
+import edu.java.bot.web.client.LinkClient;
+import edu.java.bot.web.client.dto.link.GetLinksResponse;
+import edu.java.bot.web.client.dto.link.Link;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,8 +30,6 @@ import static org.mockito.Mockito.*;
 public class ListCommandTest {
     @Mock
     private Update update;
-    @Mock
-    private URLRepository urlRepository;
     @Mock
     private GetDataFromUpdate getDataFromUpdate;
     @Mock
@@ -36,9 +40,13 @@ public class ListCommandTest {
     private Message message;
     @Mock
     private TelegramBot bot;
+    @Mock
+    private ChatClient chatClient;
 
     @InjectMocks
     private ListCommand listCommand;
+    @Mock
+    private LinkClient linkClient;
 
     @BeforeEach
     public void setUp() {
@@ -48,10 +56,20 @@ public class ListCommandTest {
 
         when(message.chat()).thenReturn(chat);
         when(chat.id()).thenReturn(0L);
+
     }
 
     @Test
     public void testHandlerCommandWithEmptyList() throws Exception {
+        // Создаем поддельный список ссылок
+        List<Link> fakeLinks = null;
+
+        // Создаем поддельный GetLinksResponse
+        GetLinksResponse fakeResponse = new GetLinksResponse();
+        fakeResponse.setLinks(fakeLinks);
+
+        // Настраиваем мок linkClient
+        when(linkClient.getLinksById(anyLong())).thenReturn(Mono.just(fakeResponse));
         // Настраиваем моки
         when(message.text()).thenReturn("/list");
 
@@ -74,9 +92,17 @@ public class ListCommandTest {
     }
 
     @Test
-    public void testHandlerCommandWithNonEmptyList() throws Exception {
+    public void testHandlerCommandWithNoneEmptyList() throws Exception {
+        // Создаем поддельный список ссылок
+        List<Link> fakeLinks = Arrays.asList(new Link(1L, "https://"));
+
+        // Создаем поддельный GetLinksResponse
+        GetLinksResponse fakeResponse = new GetLinksResponse();
+        fakeResponse.setLinks(fakeLinks);
+
+        // Настраиваем мок linkClient
+        when(linkClient.getLinksById(anyLong())).thenReturn(Mono.just(fakeResponse));
         // Настраиваем моки
-        when(urlRepository.getAllInString(anyString())).thenReturn("https://");
         when(message.text()).thenReturn("/list");
 
         Field botField = CommandHandler.class.getDeclaredField("bot");
@@ -92,6 +118,6 @@ public class ListCommandTest {
         String messageListIsEmpty = (String) messageListIsEmptyField.get(listCommand);
 
         // проверка результатов
-        assertEquals("https://", messageListIsEmpty);
+        assertEquals("1) https://\n", messageListIsEmpty);
     }
 }

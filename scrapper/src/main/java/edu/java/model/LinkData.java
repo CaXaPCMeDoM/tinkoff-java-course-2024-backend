@@ -43,6 +43,16 @@ public class LinkData {
         return allLinks;
     }
 
+    public List<Long> getIdsWithSameUrl(String url) {
+        List<Long> ids = new ArrayList<>();
+        for (Map.Entry<Long, Set<String>> entry : LINKS.entrySet()) {
+            if (entry.getValue().contains(url)) {
+                ids.add(entry.getKey());
+            }
+        }
+        return ids;
+    }
+
     public void deleteLink(Long id, String url) {
         Set<String> urls = LINKS.get(id);
         if (urls != null) {

@@ -6,6 +6,8 @@ import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
 import edu.java.bot.services.url.parser.URLParser;
 import edu.java.bot.services.url.strategy.DomainSetCommand;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
@@ -47,7 +49,11 @@ public class UntrackCommand extends CommandHandler {
                 bot.execute(new SendMessage(chatId, "Данный домен не поддерживается, либо ссылка некорректна!"));
                 return true;
             } else {
-                domainCommand.stopTracking(userId, messageText);
+                try {
+                    domainCommand.stopTracking(Long.parseLong(userId), new URI(messageText));
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
 

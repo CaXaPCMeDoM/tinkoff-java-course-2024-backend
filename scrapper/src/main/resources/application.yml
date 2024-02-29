@@ -2,6 +2,8 @@ github:
   base-url: https://api.github.com
 stackoverflow:
   base-url: https://api.stackexchange.com/2.3
+bot-local-host:
+  base-url: http://localhost:8090
 
 app:
   scheduler:
