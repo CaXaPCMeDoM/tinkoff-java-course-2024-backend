@@ -16,33 +16,33 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LinkProcessService {
-    @Autowired
-    private UpdateClient updateClient;
+    private final UpdateClient updateClient;
 
     private Long counter = 0L;
     private static final Long MAX_COUNTER = 100000L;
 
     private LinkData linkData = new LinkData();
 
-    LinkClientUpdateRequest linkClientUpdateRequest;
+    private LinkClientUpdateRequest linkClientUpdateRequest;
     private static final Logger LOGGER = LoggerFactory.getLogger(LinkProcessService.class);
     private final ConcurrentMap<String, String> linkResponses = new ConcurrentHashMap<>();
     private final List<LinkProcess> linkProcessors;
 
-    public LinkProcessService(GitHubClient gitHubClient, StackOverflowClient stackOverflowClient) {
+    @Autowired
+    public LinkProcessService(GitHubClient gitHubClient, StackOverflowClient stackOverflowClient,
+        UpdateClient updateClient
+    ) {
         linkProcessors = Arrays.asList(
             new GitHubLinkProcessor(gitHubClient),
             new StackOverflowLinkProcessor(stackOverflowClient)
         );
+        this.updateClient = updateClient;
     }
 
     public boolean processLink(String link) {
         for (LinkProcess linkProcessor : linkProcessors) {
-            if (!linkProcessor.canProcess(link)) {
-                continue;
-            }
             String response = linkProcessor.process(link);
-            if (response == null) {
+            if (!linkProcessor.canProcess(link) && response == null) {
                 continue;
             }
             handleResponse(link, response);

@@ -4,9 +4,10 @@ import edu.java.model.LinkData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import lombok.Getter;
 
-public class ListLinksResponse {
-    private List<LinkResponse> links = new ArrayList<>();
+@Getter public class ListLinksResponse {
+    private final List<LinkResponse> links = new ArrayList<>();
 
     public void setLinks(Long id) {
         LinkData linkData = new LinkData();
@@ -17,10 +18,6 @@ public class ListLinksResponse {
             linkResponse.setUrl(s);
             links.add(linkResponse);
         }
-    }
-
-    public List<LinkResponse> getLinks() {
-        return links;
     }
 
     public int getSize() {

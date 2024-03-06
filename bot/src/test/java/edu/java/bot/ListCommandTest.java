@@ -61,12 +61,7 @@ public class ListCommandTest {
 
     @Test
     public void testHandlerCommandWithEmptyList() throws Exception {
-        // Создаем поддельный список ссылок
-        List<Link> fakeLinks = null;
-
-        // Создаем поддельный GetLinksResponse
         GetLinksResponse fakeResponse = new GetLinksResponse();
-        fakeResponse.setLinks(fakeLinks);
 
         // Настраиваем мок linkClient
         when(linkClient.getLinksById(anyLong())).thenReturn(Mono.just(fakeResponse));

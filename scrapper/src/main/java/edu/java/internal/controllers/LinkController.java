@@ -1,6 +1,6 @@
 package edu.java.internal.controllers;
 
-import edu.java.internal.controllers.dto.ApiErrorResponse;
+import edu.java.ApiErrorResponse;
 import edu.java.internal.controllers.dto.LinkRequest;
 import edu.java.internal.controllers.dto.LinkResponse;
 import edu.java.internal.controllers.dto.ListLinksResponse;

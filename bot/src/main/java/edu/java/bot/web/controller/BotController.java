@@ -1,7 +1,7 @@
 package edu.java.bot.web.controller;
 
+import edu.java.ApiErrorResponse;
 import edu.java.bot.services.bot.Bot;
-import edu.java.bot.web.controller.dto.ApiErrorResponse;
 import edu.java.bot.web.controller.dto.LinkUpdateRequest;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

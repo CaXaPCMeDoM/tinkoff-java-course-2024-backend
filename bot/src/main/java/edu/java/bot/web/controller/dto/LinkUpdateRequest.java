@@ -1,6 +1,7 @@
 package edu.java.bot.web.controller.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.Getter;
 @Data
 @Getter
 public class LinkUpdateRequest {
-    @NotEmpty
+    @NotNull
     private Long id;
     @NotEmpty
     private String url;
