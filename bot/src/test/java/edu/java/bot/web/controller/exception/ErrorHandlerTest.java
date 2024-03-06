@@ -25,8 +25,7 @@ public class ErrorHandlerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isBadRequest())
             .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Некорректные параметры запроса"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.exceptionName")
-                .value(MethodArgumentNotValidException.class.getName()));
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errorId").exists());
     }
 
     @Test

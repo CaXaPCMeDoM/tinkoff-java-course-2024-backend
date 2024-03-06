@@ -2,6 +2,9 @@ package edu.java.internal.controllers.exception;
 
 import edu.java.ApiErrorResponse;
 import java.util.NoSuchElementException;
+import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.support.MethodArgumentTypeMismatchException;
@@ -11,14 +14,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ErrorHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResponse> handleInvalidParameters(MethodArgumentNotValidException ex) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setDescription("Некорректные параметры запроса");
         apiErrorResponse.setCode(ex.getStatusCode().toString());
-        apiErrorResponse.setExceptionName(ex.getClass().getName());
-        apiErrorResponse.setExceptionMessage(ex.getMessage());
+        String errorId = UUID.randomUUID().toString();
+        apiErrorResponse.setErrorId(errorId);
+
+        LOGGER.error("Error ID: " + errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -28,8 +34,10 @@ public class ErrorHandler {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setDescription(ex.getMessage());
         apiErrorResponse.setCode(HttpStatus.NOT_FOUND.toString());
-        apiErrorResponse.setExceptionName(ex.getClass().getName());
-        apiErrorResponse.setExceptionMessage(ex.getMessage());
+        String errorId = UUID.randomUUID().toString();
+        apiErrorResponse.setErrorId(errorId);
+
+        LOGGER.error("Error ID: " + errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
     }
@@ -39,8 +47,10 @@ public class ErrorHandler {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setDescription("Некорректный тип параметра");
         apiErrorResponse.setCode(HttpStatus.BAD_REQUEST.toString());
-        apiErrorResponse.setExceptionName(ex.getClass().getName());
-        apiErrorResponse.setExceptionMessage(ex.getMessage());
+        String errorId = UUID.randomUUID().toString();
+        apiErrorResponse.setErrorId(errorId);
+
+        LOGGER.error("Error ID: " + errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
     }

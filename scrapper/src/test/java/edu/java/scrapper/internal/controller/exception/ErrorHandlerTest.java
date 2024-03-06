@@ -22,6 +22,6 @@ public class ErrorHandlerTest {
         mockMvc.perform(delete("/tg-chat/1"))
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.description").value("Чат с ID 1 не найден."))
-            .andExpect(jsonPath("$.exceptionName").value(NoSuchElementException.class.getName()));
+            .andExpect(jsonPath("$.errorId").exists());
     }
 }
