@@ -13,6 +13,9 @@ public class ClientConfiguration {
     @Value("${stackoverflow.base-url}")
     private String stackoverflowBaseUrl;
 
+    @Value("${bot-local-host.base-url}")
+    private String localHostBaseUrl;
+
     @Bean
     public WebClient gitHubWebClient(WebClient.Builder builder) {
         return builder.baseUrl(gitHubBaseUrl).build();
@@ -21,5 +24,10 @@ public class ClientConfiguration {
     @Bean
     public WebClient stackOverflowWebClient(WebClient.Builder builder) {
         return builder.baseUrl(stackoverflowBaseUrl).build();
+    }
+
+    @Bean
+    public WebClient botClient(WebClient.Builder builder) {
+        return builder.baseUrl(localHostBaseUrl).build();
     }
 }

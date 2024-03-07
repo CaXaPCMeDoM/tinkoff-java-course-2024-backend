@@ -5,13 +5,19 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.url.parser.GetDataFromUpdate;
 import edu.java.bot.services.url.strategy.DomainSetCommand;
+import edu.java.bot.web.client.LinkClient;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class TrackCommand extends CommandHandler {
+    @Autowired
+    private LinkClient linkClient;
+
     private static final String NAME = "/track";
     private static final String MESSAGE_END = "URL отслеживается";
     private DomainSetCommand domainCommand = null;
@@ -44,7 +50,12 @@ public class TrackCommand extends CommandHandler {
                 bot.execute(new SendMessage(chatId, "Данный домен не поддерживается, либо ссылка некорректна!"));
                 return true;
             } else {
-                domainCommand.startTracking(userId, messageText);
+                try {
+                    URI uri = new URI(messageText);
+                    domainCommand.startTracking(Long.parseLong(userId), uri);
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             userState.remove(userId);

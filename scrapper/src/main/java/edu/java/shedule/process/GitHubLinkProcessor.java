@@ -1,9 +1,9 @@
 package edu.java.shedule.process;
 
-import edu.java.client.github.DataForRepositoryGitHub;
-import edu.java.client.github.ParserForGitHub;
-import edu.java.client.github.client.GitHubClient;
-import edu.java.client.github.responceDTO.ReposResponce;
+import edu.java.external.client.github.DataForRepositoryGitHub;
+import edu.java.external.client.github.ParserForGitHub;
+import edu.java.external.client.github.client.GitHubClient;
+import edu.java.external.client.github.responceDTO.ReposResponce;
 import java.net.URISyntaxException;
 import org.springframework.stereotype.Service;
 

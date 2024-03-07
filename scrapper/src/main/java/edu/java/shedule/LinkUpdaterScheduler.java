@@ -1,8 +1,8 @@
 package edu.java.shedule;
 
+import edu.java.model.LinkData;
 import edu.java.shedule.process.LinkProcessService;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class LinkUpdaterScheduler {
     private final Duration schedulerInterval;
     private final LinkProcessService linkProcessService;
+    private final LinkData linkData = new LinkData();
 
     public LinkUpdaterScheduler(
         @Qualifier("schedulerInterval") Duration schedulerInterval,
@@ -27,12 +28,7 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "#{@schedulerInterval.toMillis()}")
     public void update() {
-        List<String> links = Arrays.asList(
-            "https://github.com/sanyarnd/java-course-2023-backend-template",
-            "https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c-c",
-            "https://stackoverflow.com",
-            "https://github.com/CaXaPCMeDoM/TestRep"
-        );
+        List<String> links = linkData.getAllLinks();
         for (String link : links) {
             linkProcessService.processLink(link);
         }

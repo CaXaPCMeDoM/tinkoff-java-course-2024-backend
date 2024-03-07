@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.command.handler.CommandHandler;
 import edu.java.bot.services.user.UserRegistry;
+import edu.java.bot.web.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,9 @@ public class StartCommand extends CommandHandler {
 
     @Autowired
     private UserRegistry userRegistry;
+
+    @Autowired
+    private ChatClient chatClient;
 
     @Override
     public String getCommandName() {
@@ -45,6 +49,11 @@ public class StartCommand extends CommandHandler {
         if (userRegistry.tryAddNewUser(update.message().from().id(), update.message().from().firstName())) {
             String message = MESSAGE_FROM_USER_NAME + userRegistry.getUserNameById(update.message().from().id())
                 + "\n" + MESSAGE_FROM_USER_THANK_YOU_FOR_REGISTERING;
+            // отправляем id чата скрапперу для регистрации :)
+            Long chatId = update.message().chat().id();
+            chatClient.postRegisterChat(chatId);
+
+            //
             bot.execute(new SendMessage(update.message().from().id(), message));
         } else {
             String message =
