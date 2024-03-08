@@ -10,6 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class IntegrationEnvironmentTest extends IntegrationEnvironment{
     @Test
     public void testContainerStarts() {
-        assertTrue(POSTGRES.isRunning(), "The container should be running");
+        assertTrue(POSTGRES.isRunning());
     }
 }
