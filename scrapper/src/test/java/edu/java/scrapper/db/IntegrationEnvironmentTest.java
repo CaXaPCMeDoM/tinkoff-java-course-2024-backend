@@ -1,0 +1,15 @@
+package edu.java.scrapper.db;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@Testcontainers
+@SpringBootTest
+public class IntegrationEnvironmentTest extends IntegrationEnvironment{
+    @Test
+    public void testContainerStarts() {
+        assertTrue(POSTGRES.isRunning(), "The container should be running");
+    }
+}
