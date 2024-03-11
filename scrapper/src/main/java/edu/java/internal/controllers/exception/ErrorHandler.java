@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
-    private final static String ERROR_MESSAGE = "Error ID: ";
+    private final static String ERROR_MESSAGE = "Error ID: {}";
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResponse> handleInvalidParameters(MethodArgumentNotValidException ex) {
@@ -25,7 +25,7 @@ public class ErrorHandler {
         String errorId = UUID.randomUUID().toString();
         apiErrorResponse.setErrorId(errorId);
 
-        LOGGER.error(ERROR_MESSAGE + errorId, ex);
+        LOGGER.error(ERROR_MESSAGE, errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -38,7 +38,7 @@ public class ErrorHandler {
         String errorId = UUID.randomUUID().toString();
         apiErrorResponse.setErrorId(errorId);
 
-        LOGGER.error(ERROR_MESSAGE + errorId, ex);
+        LOGGER.error(ERROR_MESSAGE, errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
     }
@@ -51,7 +51,7 @@ public class ErrorHandler {
         String errorId = UUID.randomUUID().toString();
         apiErrorResponse.setErrorId(errorId);
 
-        LOGGER.error(ERROR_MESSAGE + errorId, ex);
+        LOGGER.error(ERROR_MESSAGE, errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
     }

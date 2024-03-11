@@ -22,7 +22,7 @@ public class ErrorHandler {
         String errorId = UUID.randomUUID().toString();
         errorResponse.setErrorId(errorId);
 
-        LOGGER.error("Error ID: " + errorId, ex);
+        LOGGER.error("Error ID: {}", errorId, ex);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
