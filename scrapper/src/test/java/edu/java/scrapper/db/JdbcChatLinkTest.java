@@ -7,6 +7,7 @@ import edu.java.dao.dto.ChatDto;
 import edu.java.dao.dto.ChatLinkDto;
 import edu.java.dao.dto.LinkDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class JdbcLinkTest extends IntegrationEnvironment {
+public class JdbcChatLinkTest extends IntegrationEnvironment {
     @Autowired
     private ChatLinkDao chatLinkDao;
     @Autowired
@@ -61,14 +62,12 @@ public class JdbcLinkTest extends IntegrationEnvironment {
 
 
         LinkDto linkDto = new LinkDto(1L, "https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
-        linkDao.add(linkDto);
+        Long linkId = linkDao.add(linkDto);
 
         ChatDto chatDto = new ChatDto(CHAT_ID);
         chatDao.add(chatDto);
 
-        Long linkId = linkDao.findAll().getFirst().getUrlId();
         ChatLinkDto chatLinkDto = new ChatLinkDto(CHAT_ID, linkId);
-
         chatLinkDao.add(chatLinkDto);
 
         int sizeBeforeAdd = sizeAfterAdd + 1; // нужна проверка при переполнении
@@ -80,10 +79,12 @@ public class JdbcLinkTest extends IntegrationEnvironment {
 
         int sizeAfterRemove = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
-        chatLinkDao.remove(CHAT_ID, linkDto.getUrlId());
+        chatLinkDao.remove(CHAT_ID, linkId);
 
-        int sizeBeforeRemove = sizeAfterRemove - 1; // нужна проверка при переполнении
+        List<ChatLinkDto> chatLinkDtos = chatLinkDao.findAll();
+        int sizeBeforeRemove = sizeAfterRemove - 1;
 
+        System.out.println(chatLinkDtos);
         assertThat(chatLinkDao.findAll().size()).isEqualTo(sizeBeforeRemove);
     }
 }
