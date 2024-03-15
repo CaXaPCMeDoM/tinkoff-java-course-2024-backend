@@ -7,14 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LinkDto {
-    private Long urlId;
     private String url;
     private LocalDateTime lastCheckTime;
     private LocalDateTime createdAt;
     private String createdBy;
 
-    public LinkDto(Long urlId, String url, LocalDateTime lastCheckTime, LocalDateTime createdAt, String createdBy) {
-        this.urlId = urlId;
+    public LinkDto(String url, LocalDateTime lastCheckTime, LocalDateTime createdAt, String createdBy) {
         this.url = url;
         this.lastCheckTime = lastCheckTime;
         this.createdAt = createdAt;

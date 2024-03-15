@@ -36,13 +36,12 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
         int sizeAfterAdd = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
 
-        LinkDto linkDto = new LinkDto(1L, "https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
-        linkDao.add(linkDto);
+        LinkDto linkDto = new LinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
+        Long linkId = linkDao.add(linkDto);
 
         ChatDto chatDto = new ChatDto(CHAT_ID);
         chatDao.add(chatDto);
 
-        Long linkId = linkDao.findAll().getFirst().getUrlId();
         ChatLinkDto chatLinkDto = new ChatLinkDto(CHAT_ID, linkId);
 
         chatLinkDao.add(chatLinkDto);
@@ -61,7 +60,7 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
         int sizeAfterAdd = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
 
-        LinkDto linkDto = new LinkDto(1L, "https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
+        LinkDto linkDto = new LinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
         Long linkId = linkDao.add(linkDto);
 
         ChatDto chatDto = new ChatDto(CHAT_ID);

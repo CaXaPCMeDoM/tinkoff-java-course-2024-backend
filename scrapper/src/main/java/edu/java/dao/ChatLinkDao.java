@@ -1,6 +1,8 @@
 package edu.java.dao;
 
 import edu.java.dao.dto.ChatLinkDto;
+import edu.java.internal.controllers.dto.ListLinksResponse;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,6 +28,29 @@ public class ChatLinkDao {
             "INSERT INTO CHAT_LINK (chat_id, url_id) VALUES (?, ?)",
             chatLink.getChatId(), chatLink.getUrlId()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public ListLinksResponse getUrlById(Long chatId) {
+        String sqlGetUrlIdByChatId = "SELECT url_id FROM CHAT_LINK WHERE chat_id = ?";
+        String sqlGetUrlByUrlId = "SELECT url FROM Link WHERE url_id = ?";
+
+        RowMapper<Long> rowMapper1 = ((rs, rowNum) ->
+            rs.getLong("url_id")
+        );
+        RowMapper<String> rowMapper2 = ((rs, rowNum) ->
+            rs.getString("url")
+        );
+
+        List<Long> urlIds = jdbcTemplate.query(sqlGetUrlIdByChatId, rowMapper1, chatId);
+        ListLinksResponse response = new ListLinksResponse();
+
+        for(Long urlId : urlIds) {
+            String url = jdbcTemplate.queryForObject(sqlGetUrlByUrlId, rowMapper2, urlId);
+            response.setLinks(Collections.singletonList(url), urlId);
+        }
+
+        return response;
     }
 
     @Transactional

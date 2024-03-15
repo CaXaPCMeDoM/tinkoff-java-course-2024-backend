@@ -1,7 +1,7 @@
 package edu.java.internal.controllers;
 
 import edu.java.ApiErrorResponse;
-import edu.java.model.LinkData;
+import edu.java.service.ChatService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tg-chat")
 public class ChatController {
-    LinkData linkData = new LinkData();
+    private final ChatService chatService;
+
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
+    }
 
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Чат зарегистрирован"),
@@ -24,7 +28,7 @@ public class ChatController {
     })
     @PostMapping("/{id}")
     public void registerChat(@PathVariable Long id) {
-        linkData.registerId(id);
+        chatService.register(id);
     }
 
     @ApiResponses(value = {
@@ -36,6 +40,6 @@ public class ChatController {
     })
     @DeleteMapping("/{id}")
     public void deleteChat(@PathVariable Long id) {
-        linkData.deleteIdAndLinks(id);
+        chatService.unregister(id);
     }
 }
