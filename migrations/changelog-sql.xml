@@ -19,7 +19,7 @@
         <sqlFile path="sql/v1/link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="chat-link_tables_v1" author="some_user">
+    <changeSet id="chat-link_tables_v2" author="some_user">
         <sqlFile path="sql/v1/chat-link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
