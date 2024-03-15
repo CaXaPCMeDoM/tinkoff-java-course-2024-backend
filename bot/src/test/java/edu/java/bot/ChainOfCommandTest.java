@@ -6,14 +6,13 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.services.command.chain.ChainOfCommand;
 import edu.java.bot.services.command.handler.CommandHandler;
-import edu.java.bot.services.user.UserRegistry;
+import java.lang.reflect.Field;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -31,9 +30,6 @@ public class ChainOfCommandTest {
     TelegramBot telegramBot;
 
     @Mock CommandHandler commandHandler;
-
-    @Mock
-    UserRegistry userRegistry;
 
     @InjectMocks
     ChainOfCommand chainOfCommand;

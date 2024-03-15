@@ -4,16 +4,17 @@ import edu.java.dao.dto.LinkDto;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Repository
 public class LinkDao {
     private static final int URL_INDEX = 1;
@@ -44,35 +45,30 @@ public class LinkDao {
     }
 
     @Transactional
-    public Long add(LinkDto linkDto) {
-        // проверяем, существует ли уже запись с данным URL
-        List<Long> ids = jdbcTemplate.query(
-            "SELECT url_id FROM link WHERE url = ?",
-            new Object[] {linkDto.getUrl()},
-            (rs, rowNum) -> rs.getLong("url_id")
-        );
+    public void updateLastCheckTimeByLink(Long linkId) {
+        String sqlQuery = "UPDATE Link SET last_check_time = ? where url_id = ?";
+        jdbcTemplate.update(sqlQuery, Timestamp.valueOf(LocalDateTime.now()), linkId);
+    }
 
-        if (!ids.isEmpty()) {
-            // eсли запись существует, возвращаем ее url_id
-            return ids.get(0);
+    @Transactional
+    public void add(LinkDto linkDto) {
+        try {
+            jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(
+                        "INSERT INTO link (url, last_check_time, created_at, created_by) VALUES (?, ?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS
+                    );
+                    ps.setString(URL_INDEX, linkDto.getUrl());
+                    ps.setTimestamp(LAST_CHECK_TIME_INDEX, Timestamp.valueOf(linkDto.getLastCheckTime()));
+                    ps.setTimestamp(CREATED_AT_INDEX, Timestamp.valueOf(linkDto.getCreatedAt()));
+                    ps.setString(CREATED_BY_INDEX, linkDto.getCreatedBy());
+                    return ps;
+                }
+            );
+        } catch (DuplicateKeyException e) {
+            log.warn("Повторяющийся ключ ");
         }
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(
-            connection -> {
-                PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO link (url, last_check_time, created_at, created_by) VALUES (?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
-                );
-                ps.setString(URL_INDEX, linkDto.getUrl());
-                ps.setTimestamp(LAST_CHECK_TIME_INDEX, Timestamp.valueOf(linkDto.getLastCheckTime()));
-                ps.setTimestamp(CREATED_AT_INDEX, Timestamp.valueOf(linkDto.getCreatedAt()));
-                ps.setString(CREATED_BY_INDEX, linkDto.getCreatedBy());
-                return ps;
-            },
-            keyHolder
-        );
-        return (Long) Objects.requireNonNull(keyHolder.getKeys()).values().iterator().next();
     }
 
     @Transactional
@@ -83,7 +79,17 @@ public class LinkDao {
     @Transactional(readOnly = true)
     public List<LinkDto> findAll() {
         try {
-            return jdbcTemplate.query("SELECT * FROM Link", rowMapper);
+            RowMapper<LinkDto> rowMapper2 = (rs, rowNum) -> {
+                LinkDto linkDtoFromFindAll = new LinkDto(
+                    rs.getString("url"),
+                    rs.getTimestamp("last_check_time").toLocalDateTime(),
+                    rs.getTimestamp("created_at").toLocalDateTime(),
+                    rs.getString("created_by")
+                );
+                linkDtoFromFindAll.setLinkId(rs.getLong("url_id"));
+                return linkDtoFromFindAll;
+            };
+            return jdbcTemplate.query("SELECT * FROM Link", rowMapper2);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

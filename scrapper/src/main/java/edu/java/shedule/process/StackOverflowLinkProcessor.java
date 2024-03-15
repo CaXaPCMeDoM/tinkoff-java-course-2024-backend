@@ -3,6 +3,7 @@ package edu.java.shedule.process;
 import edu.java.external.client.stackoverflow.DataForRequestStackoverflow;
 import edu.java.external.client.stackoverflow.ParserForStackOverflow;
 import edu.java.external.client.stackoverflow.client.StackOverflowClient;
+import edu.java.external.service.CommonDataResponseClient;
 import java.net.MalformedURLException;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,13 @@ public class StackOverflowLinkProcessor implements LinkProcess {
     }
 
     @Override
-    public String process(String link) {
+    public CommonDataResponseClient process(String link) {
         try {
             String id = ParserForStackOverflow.checkingIfThisIsAQuestionAndReturningTheId(link);
             if (id != null) {
                 DataForRequestStackoverflow dataForRequestStackoverflow = stackOverflowClient.fetchQuestion(id).block();
                 if (dataForRequestStackoverflow != null) {
-                    return dataForRequestStackoverflow.toString();
+                    return dataForRequestStackoverflow;
                 }
             }
         } catch (MalformedURLException ignored) {

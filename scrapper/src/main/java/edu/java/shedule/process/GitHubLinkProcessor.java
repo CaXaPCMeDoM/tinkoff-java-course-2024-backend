@@ -3,8 +3,9 @@ package edu.java.shedule.process;
 import edu.java.external.client.github.DataForRepositoryGitHub;
 import edu.java.external.client.github.ParserForGitHub;
 import edu.java.external.client.github.client.GitHubClient;
-import edu.java.external.client.github.responceDTO.ReposResponce;
+import edu.java.external.client.github.responceDTO.ReposResponse;
 import java.net.URISyntaxException;
+import edu.java.external.service.CommonDataResponseClient;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,16 +22,16 @@ class GitHubLinkProcessor implements LinkProcess {
     }
 
     @Override
-    public String process(String link) {
+    public CommonDataResponseClient process(String link) {
         try {
             DataForRepositoryGitHub dataForRepositoryGitHub = ParserForGitHub.getOwnerAndRepo(link);
             if (dataForRepositoryGitHub != null) {
-                ReposResponce reposResponce = gitHubClient.getRepositoryData(
+                ReposResponse reposResponce = gitHubClient.getRepositoryData(
                     dataForRepositoryGitHub.getOwner(),
                     dataForRepositoryGitHub.getRepo()
                 ).block();
                 if (reposResponce != null) {
-                    return reposResponce.toString();
+                    return reposResponce;
                 }
             }
         } catch (URISyntaxException ignored) {

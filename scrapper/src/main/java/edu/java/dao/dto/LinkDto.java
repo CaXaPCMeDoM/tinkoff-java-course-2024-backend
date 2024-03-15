@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LinkDto {
+    private Long linkId;
     private String url;
     private LocalDateTime lastCheckTime;
     private LocalDateTime createdAt;

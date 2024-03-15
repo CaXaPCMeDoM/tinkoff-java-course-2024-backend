@@ -62,7 +62,7 @@ public class LinkController {
     public ResponseEntity<ListLinksResponse> getTrackingLinks(
         @RequestHeader("Tg-Chat-Id") Long id
     ) {
-        return ResponseEntity.ok(linkService.listAll(id));
+        return ResponseEntity.ok(linkService.listAllByChatId(id));
     }
 
     @ApiResponses(value = {

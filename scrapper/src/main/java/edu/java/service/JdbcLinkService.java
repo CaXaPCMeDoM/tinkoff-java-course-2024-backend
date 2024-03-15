@@ -7,6 +7,7 @@ import edu.java.dao.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,8 +26,8 @@ public class JdbcLinkService implements LinkService {
     @Override
     public Long add(long tgChatId, URI url) {
         linkDto = new LinkDto(url.toString(), LocalDateTime.now(), LocalDateTime.now(), String.valueOf(tgChatId));
-        Long linkId = linkDao.add(linkDto);
-
+        linkDao.add(linkDto);
+        Long linkId = linkDao.getIdByUrl(url.toString());
         chatLinkDto = new ChatLinkDto(tgChatId, linkId);
         chatLinkDao.add(chatLinkDto);
 
@@ -43,7 +44,12 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public ListLinksResponse listAll(long tgChatId) {
-        return chatLinkDao.getUrlById(tgChatId);
+    public ListLinksResponse listAllByChatId(long tgChatId) {
+        return chatLinkDao.getUrlByChatId(tgChatId);
+    }
+
+    @Override
+    public List<LinkDto> listAll() {
+        return linkDao.findAll();
     }
 }
