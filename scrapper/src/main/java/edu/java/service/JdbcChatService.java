@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JdbcChatService implements ChatService{
+public class JdbcChatService implements ChatService {
     private final ChatDao chatDao;
     private ChatDto chatDto;
 

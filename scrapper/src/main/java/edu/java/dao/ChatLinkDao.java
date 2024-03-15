@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class ChatLinkDao {
+    private static final String CHAT_ID_FIELD_FROM_SQL = "url_id";
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<ChatLinkDto> rowMapper = (rs, rowNum) -> new ChatLinkDto(
         rs.getLong("chat_id"),
-        rs.getLong("url_id")
+        rs.getLong(CHAT_ID_FIELD_FROM_SQL)
     );
 
     public ChatLinkDao(JdbcTemplate jdbcTemplate) {
@@ -36,7 +37,7 @@ public class ChatLinkDao {
         String sqlGetUrlByUrlId = "SELECT url FROM Link WHERE url_id = ?";
 
         RowMapper<Long> rowMapper1 = ((rs, rowNum) ->
-            rs.getLong("url_id")
+            rs.getLong(CHAT_ID_FIELD_FROM_SQL)
         );
         RowMapper<String> rowMapper2 = ((rs, rowNum) ->
             rs.getString("url")
@@ -45,7 +46,7 @@ public class ChatLinkDao {
         List<Long> urlIds = jdbcTemplate.query(sqlGetUrlIdByChatId, rowMapper1, chatId);
         ListLinksResponse response = new ListLinksResponse();
 
-        for(Long urlId : urlIds) {
+        for (Long urlId : urlIds) {
             String url = jdbcTemplate.queryForObject(sqlGetUrlByUrlId, rowMapper2, urlId);
             response.setLinks(Collections.singletonList(url), urlId);
         }
