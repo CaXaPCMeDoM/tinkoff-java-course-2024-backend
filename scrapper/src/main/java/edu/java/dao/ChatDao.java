@@ -2,6 +2,7 @@ package edu.java.dao;
 
 import edu.java.dao.dto.ChatDto;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,8 +23,12 @@ public class ChatDao {
     }
 
     @Transactional
-    public void remove(Long chatId) {
-        jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId);
+    public Long remove(Long chatId) {
+        if (jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId) > 0) {
+            return chatId;
+        } else {
+            throw new NoSuchElementException(String.format("Чат с ID %s не найден", chatId));
+        }
     }
 
     public List<ChatDto> findAll() {
