@@ -3,10 +3,10 @@ package edu.java.shedule.process;
 import edu.java.external.client.github.DataForRepositoryGitHub;
 import edu.java.external.client.github.ParserForGitHub;
 import edu.java.external.client.github.client.GitHubClient;
-import edu.java.external.client.github.responceDTO.ReposResponse;
 import edu.java.external.service.CommonDataResponseClient;
 import java.net.URISyntaxException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 class GitHubLinkProcessor implements LinkProcess {
@@ -26,13 +26,12 @@ class GitHubLinkProcessor implements LinkProcess {
         try {
             DataForRepositoryGitHub dataForRepositoryGitHub = ParserForGitHub.getOwnerAndRepo(link);
             if (dataForRepositoryGitHub != null) {
-                ReposResponse reposResponce = gitHubClient.getRepositoryData(
-                    dataForRepositoryGitHub.getOwner(),
-                    dataForRepositoryGitHub.getRepo()
-                ).block();
-                if (reposResponce != null) {
-                    return reposResponce;
-                }
+                return gitHubClient.getRepositoryData(
+                        dataForRepositoryGitHub.getOwner(),
+                        dataForRepositoryGitHub.getRepo()
+                    ).onErrorResume(e -> Mono.empty())
+                    .blockOptional()
+                    .orElse(null);
             }
         } catch (URISyntaxException ignored) {
         }
