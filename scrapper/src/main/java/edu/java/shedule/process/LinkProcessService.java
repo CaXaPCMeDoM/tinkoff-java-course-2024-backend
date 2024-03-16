@@ -51,6 +51,7 @@ public class LinkProcessService {
             CommonDataResponseClient response = linkProcessor.process(linkDto.getUrl());
             if (response != null && linkProcessor.canProcess(linkDto.getUrl())) {
                 handleResponse(linkDto, response);
+                linkUpdater.updateLinkLastCheckTime(linkDto.getLinkId());
                 return true;
             }
         }
@@ -77,7 +78,6 @@ public class LinkProcessService {
                 .url(linkDto.getUrl())
                 .tgChatIds(chatIds)
                 .build();
-            linkUpdater.updateLinkLastCheckTime(linkDto.getLinkId());
             updateClient.postRepositoryData(linkClientUpdateRequest);
         }
     }
