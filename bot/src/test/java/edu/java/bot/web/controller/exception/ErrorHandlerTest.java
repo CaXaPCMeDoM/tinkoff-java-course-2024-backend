@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,6 +35,7 @@ public class ErrorHandlerTest {
                 "  \"id\": 0,\n" +
                 "  \"url\": \"string\",\n" +
                 "  \"description\": \"string\",\n" +
+                "  \"typeOfUpdate\": \"string\",\n" +
                 "  \"tgChatIds\": [\n" +
                 "    0\n" +
                 "  ]\n" +
