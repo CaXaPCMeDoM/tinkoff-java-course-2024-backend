@@ -94,7 +94,10 @@ public class LinkDao {
                 linkDtoFromFindAll.setLinkId(rs.getLong(URL_ID_FIELD_FROM_SQL));
                 return linkDtoFromFindAll;
             };
-            return jdbcTemplate.query("SELECT * FROM Link WHERE last_check_time < NOW() - INTERVAL '1 minutes'", rowMapper2);
+            return jdbcTemplate.query(
+                "SELECT * FROM Link WHERE last_check_time < NOW() - INTERVAL '1 minutes'",
+                rowMapper2
+            );
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
