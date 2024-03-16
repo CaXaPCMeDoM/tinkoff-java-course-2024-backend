@@ -6,6 +6,7 @@ import edu.java.external.client.stackoverflow.client.StackOverflowClient;
 import edu.java.external.service.CommonDataResponseClient;
 import java.net.MalformedURLException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class StackOverflowLinkProcessor implements LinkProcess {
@@ -25,7 +26,10 @@ public class StackOverflowLinkProcessor implements LinkProcess {
         try {
             String id = ParserForStackOverflow.checkingIfThisIsAQuestionAndReturningTheId(link);
             if (id != null) {
-                DataForRequestStackoverflow dataForRequestStackoverflow = stackOverflowClient.fetchQuestion(id).block();
+                DataForRequestStackoverflow dataForRequestStackoverflow = stackOverflowClient.fetchQuestion(id)
+                    .onErrorResume(e -> Mono.empty())
+                    .blockOptional()
+                    .orElse(null);
                 if (dataForRequestStackoverflow != null) {
                     return dataForRequestStackoverflow;
                 }
