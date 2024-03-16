@@ -30,7 +30,7 @@ public class ReposResponse implements CommonDataResponseClient {
     }
 
     @Override
-    public String getTypeOfUpdate(){
+    public String getTypeOfUpdate() {
         return typeOfUpdate;
     }
 }
