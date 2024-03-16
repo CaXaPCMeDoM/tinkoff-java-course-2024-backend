@@ -28,4 +28,9 @@ public class DataForRequestStackoverflow implements CommonDataResponseClient {
     public OffsetDateTime getTimeLastModified() {
         return items.getFirst().getLastActivityDate();
     }
+
+    @Override
+    public String getTypeOfUpdate() {
+        return "";
+    }
 }

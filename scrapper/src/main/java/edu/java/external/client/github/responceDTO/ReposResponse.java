@@ -13,6 +13,8 @@ public class ReposResponse implements CommonDataResponseClient {
     private Long id;
     @JsonProperty("created_at")
     private OffsetDateTime createdAt;
+    @JsonProperty("type")
+    private String typeOfUpdate;
 
     public ReposResponse() {
     }
@@ -25,5 +27,10 @@ public class ReposResponse implements CommonDataResponseClient {
     @Override
     public OffsetDateTime getTimeLastModified() {
         return createdAt;
+    }
+
+    @Override
+    public String getTypeOfUpdate(){
+        return typeOfUpdate;
     }
 }

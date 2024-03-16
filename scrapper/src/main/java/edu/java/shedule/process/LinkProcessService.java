@@ -77,6 +77,7 @@ public class LinkProcessService {
                 .id(linkDto.getLinkId())
                 .url(linkDto.getUrl())
                 .tgChatIds(chatIds)
+                .typeOfUpdate(response.getTypeOfUpdate())
                 .build();
             updateClient.postRepositoryData(linkClientUpdateRequest);
         }

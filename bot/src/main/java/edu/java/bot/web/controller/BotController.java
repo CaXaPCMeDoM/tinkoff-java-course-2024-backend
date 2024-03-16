@@ -31,7 +31,7 @@ public class BotController {
         LOGGER.info("Был вызван /updates. Пришли id: \n");
         for (Long chatId : linkUpdateRequest.getTgChatIds()) {
             LOGGER.info("id: " + chatId.toString() + "url: " + linkUpdateRequest.getUrl() + "\n");
-            bot.sendAMessageAboutUpdatingLinks(chatId, linkUpdateRequest.getUrl());
+            bot.sendAMessageAboutUpdatingLinks(chatId, linkUpdateRequest);
         }
     }
 }
