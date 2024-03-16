@@ -21,13 +21,18 @@ public class LinkDao {
     private static final int LAST_CHECK_TIME_INDEX = 2;
     private static final int CREATED_AT_INDEX = 3;
     private static final int CREATED_BY_INDEX = 4;
+    private static final String URL_FIELD_FROM_SQL = "url";
+    private static final String URL_ID_FIELD_FROM_SQL = "url_id";
+    private static final String LAST_CHECK_TIME_FIELD_FROM_SQL = "last_check_time";
+    private static final String CREATED_AT_FIELD_FROM_SQL = "created_at";
+    private static final String CREATED_BY_FIELD_FROM_SQL = "created_by";
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<LinkDto> rowMapper = (rs, rowNum) -> new LinkDto(
-        rs.getString("url"),
-        rs.getTimestamp("last_check_time").toLocalDateTime(),
-        rs.getTimestamp("created_at").toLocalDateTime(),
-        rs.getString("created_by")
+        rs.getString(URL_FIELD_FROM_SQL),
+        rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
+        rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
+        rs.getString(CREATED_BY_FIELD_FROM_SQL)
     );
 
     public LinkDao(JdbcTemplate jdbcTemplate) {
@@ -81,12 +86,12 @@ public class LinkDao {
         try {
             RowMapper<LinkDto> rowMapper2 = (rs, rowNum) -> {
                 LinkDto linkDtoFromFindAll = new LinkDto(
-                    rs.getString("url"),
-                    rs.getTimestamp("last_check_time").toLocalDateTime(),
-                    rs.getTimestamp("created_at").toLocalDateTime(),
-                    rs.getString("created_by")
+                    rs.getString(URL_FIELD_FROM_SQL),
+                    rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
+                    rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
+                    rs.getString(CREATED_BY_FIELD_FROM_SQL)
                 );
-                linkDtoFromFindAll.setLinkId(rs.getLong("url_id"));
+                linkDtoFromFindAll.setLinkId(rs.getLong(URL_ID_FIELD_FROM_SQL));
                 return linkDtoFromFindAll;
             };
             return jdbcTemplate.query("SELECT * FROM Link", rowMapper2);

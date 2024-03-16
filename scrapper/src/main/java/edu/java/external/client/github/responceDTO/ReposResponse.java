@@ -2,8 +2,8 @@ package edu.java.external.client.github.responceDTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 import edu.java.external.service.CommonDataResponseClient;
+import java.time.OffsetDateTime;
 import lombok.Data;
 
 @Data

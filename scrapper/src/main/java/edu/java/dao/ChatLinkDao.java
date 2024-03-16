@@ -14,12 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Repository
 public class ChatLinkDao {
-    private static final String CHAT_ID_FIELD_FROM_SQL = "url_id";
+    private static final String URL_ID_FIELD_FROM_SQL = "url_id";
+    private static final String CHAT_ID_FIELD_FROM_SQL = "chat_id";
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<ChatLinkDto> rowMapper = (rs, rowNum) -> new ChatLinkDto(
-        rs.getLong("chat_id"),
-        rs.getLong(CHAT_ID_FIELD_FROM_SQL)
+        rs.getLong(CHAT_ID_FIELD_FROM_SQL),
+        rs.getLong(URL_ID_FIELD_FROM_SQL)
     );
 
     public ChatLinkDao(JdbcTemplate jdbcTemplate) {
@@ -33,7 +34,7 @@ public class ChatLinkDao {
                 "INSERT INTO CHAT_LINK (chat_id, url_id) VALUES (?, ?)",
                 chatLink.getChatId(), chatLink.getUrlId()
             );
-        } catch (DuplicateKeyException e){
+        } catch (DuplicateKeyException e) {
             log.warn("Повторяющийся ключ");
         }
     }
@@ -42,7 +43,7 @@ public class ChatLinkDao {
         return jdbcTemplate.query(
             "SELECT chat_id FROM CHAT_LINK WHERE url_id = ?",
             new Object[] {linkId},
-            (rs, rowNum) -> rs.getLong("chat_id")
+            (rs, rowNum) -> rs.getLong(CHAT_ID_FIELD_FROM_SQL)
         );
     }
 
@@ -52,7 +53,7 @@ public class ChatLinkDao {
         String sqlGetUrlByUrlId = "SELECT url FROM Link WHERE url_id = ?";
 
         RowMapper<Long> rowMapper1 = ((rs, rowNum) ->
-            rs.getLong(CHAT_ID_FIELD_FROM_SQL)
+            rs.getLong(URL_ID_FIELD_FROM_SQL)
         );
         RowMapper<String> rowMapper2 = ((rs, rowNum) ->
             rs.getString("url")

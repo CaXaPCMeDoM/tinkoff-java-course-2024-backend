@@ -1,8 +1,8 @@
 package edu.java.external.client.stackoverflow;
 
+import edu.java.external.service.CommonDataResponseClient;
 import java.time.OffsetDateTime;
 import java.util.List;
-import edu.java.external.service.CommonDataResponseClient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

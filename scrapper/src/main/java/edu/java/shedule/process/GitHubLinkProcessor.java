@@ -4,8 +4,8 @@ import edu.java.external.client.github.DataForRepositoryGitHub;
 import edu.java.external.client.github.ParserForGitHub;
 import edu.java.external.client.github.client.GitHubClient;
 import edu.java.external.client.github.responceDTO.ReposResponse;
-import java.net.URISyntaxException;
 import edu.java.external.service.CommonDataResponseClient;
+import java.net.URISyntaxException;
 import org.springframework.stereotype.Service;
 
 @Service
