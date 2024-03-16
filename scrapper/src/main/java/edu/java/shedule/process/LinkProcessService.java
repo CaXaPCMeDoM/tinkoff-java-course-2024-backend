@@ -49,11 +49,10 @@ public class LinkProcessService {
     public boolean processLink(LinkDto linkDto) {
         for (LinkProcess linkProcessor : linkProcessors) {
             CommonDataResponseClient response = linkProcessor.process(linkDto.getUrl());
-            if (!linkProcessor.canProcess(linkDto.getUrl()) && response == null) {
-                continue;
+            if (response != null && linkProcessor.canProcess(linkDto.getUrl())) {
+                handleResponse(linkDto, response);
+                return true;
             }
-            handleResponse(linkDto, response);
-            return true;
         }
         return false;
     }
