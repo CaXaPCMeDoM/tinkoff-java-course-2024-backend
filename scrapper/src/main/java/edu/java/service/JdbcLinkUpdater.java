@@ -1,9 +1,11 @@
 package edu.java.service;
 
 import edu.java.dao.LinkDao;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
+@Primary
 public class JdbcLinkUpdater implements LinkUpdater {
     private final LinkDao linkDao;
 

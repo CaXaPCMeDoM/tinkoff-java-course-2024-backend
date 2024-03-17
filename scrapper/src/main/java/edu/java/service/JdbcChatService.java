@@ -3,9 +3,11 @@ package edu.java.service;
 import edu.java.dao.ChatDao;
 import edu.java.dao.dto.ChatDto;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
+@Primary
 public class JdbcChatService implements ChatService {
     private final ChatDao chatDao;
     private ChatDto chatDto;

@@ -7,6 +7,7 @@ import edu.java.external.service.CommonDataResponseClient;
 import edu.java.internal.client.UpdateClient;
 import edu.java.internal.client.dto.LinkClientUpdateRequest;
 import edu.java.service.ChatLinkService;
+import edu.java.service.JdbcChatLinkService;
 import edu.java.service.LinkUpdater;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class LinkProcessService {
     private final UpdateClient updateClient;
 
-    private final ChatLinkService chatLinkService;
+    private final ChatLinkService chatLinkService = new JdbcChatLinkService();
     private final LinkUpdater linkUpdater;
 
     private LinkClientUpdateRequest linkClientUpdateRequest;
@@ -34,10 +35,8 @@ public class LinkProcessService {
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         UpdateClient updateClient,
-        ChatLinkService chatLinkService,
         LinkUpdater linkUpdater
     ) {
-        this.chatLinkService = chatLinkService;
         this.linkUpdater = linkUpdater;
         linkProcessors = Arrays.asList(
             new GitHubLinkProcessor(gitHubClient),
