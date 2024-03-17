@@ -20,11 +20,6 @@
 
         <skip.unit.tests>false</skip.unit.tests>
 
-        <!-- JOOQ -->
-        <spring-boot-starter-jooq.version>3.1.5</spring-boot-starter-jooq.version>
-        <jooq-codegen.version>3.18.7</jooq-codegen.version>
-        <jooq-meta-extensions-liquibase.version>3.18.7</jooq-meta-extensions-liquibase.version>
-        <liquibase-core.version>4.6.1</liquibase-core.version>
         <!-- Spring -->
         <spring-boot.version>3.2.2</spring-boot.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
@@ -60,26 +55,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-jooq</artifactId>
-                <version>${spring-boot-starter-jooq.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen</artifactId>
-                <version>${jooq-codegen.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-meta-extensions-liquibase</artifactId>
-                <version>${jooq-meta-extensions-liquibase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-core</artifactId>
-                <version>${liquibase-core.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.github.pengrad</groupId>
                 <artifactId>java-telegram-bot-api</artifactId>
