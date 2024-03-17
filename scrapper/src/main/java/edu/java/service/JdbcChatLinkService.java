@@ -15,7 +15,7 @@ public class JdbcChatLinkService implements ChatLinkService {
     }
 
     @Override
-    public List<Long> getChatidsByUrlId(Long urlId) {
+    public List<Long> getChatIdsByUrlId(Long urlId) {
         return chatLinkDao.getChatIdsByLinkId(urlId);
     }
 }

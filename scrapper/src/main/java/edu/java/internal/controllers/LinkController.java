@@ -41,6 +41,7 @@ public class LinkController {
         @RequestHeader("Tg-Chat-Id") Long id,
         @Valid @RequestBody LinkRequest link
     ) {
+        // jooqLinkService.add(id, link.getLink());
         linkService.add(id, link.getLink());
 
         LinkResponse linkResponse = new LinkResponse();
