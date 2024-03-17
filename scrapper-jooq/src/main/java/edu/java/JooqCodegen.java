@@ -1,7 +1,15 @@
 package edu.java;
 
+import org.jooq.codegen.GenerationTool;
+import org.jooq.meta.jaxb.Configuration;
+import org.jooq.meta.jaxb.Database;
+import org.jooq.meta.jaxb.Generate;
+import org.jooq.meta.jaxb.Generator;
+import org.jooq.meta.jaxb.Property;
+import org.jooq.meta.jaxb.Target;
+
 public class JooqCodegen {
-    /*public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         Database database = new Database()
             .withName("org.jooq.meta.extensions.liquibase.LiquibaseDatabase")
             .withProperties(
@@ -39,5 +47,5 @@ public class JooqCodegen {
             );
 
         GenerationTool.generate(configuration);
-    }*/
+    }
 }
