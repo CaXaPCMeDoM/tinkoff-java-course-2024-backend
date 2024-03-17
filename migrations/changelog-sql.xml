@@ -19,7 +19,11 @@
         <sqlFile path="sql/v1/link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="chat-link_tables_v4" author="Vladislav Khakimov">
+    <changeSet id="triggers_v1" author="Vladislav Khakimov">
+        <sqlFile path="sql/v1/link_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="chat-link_tables_v6" author="Vladislav Khakimov">
         <sqlFile path="sql/v1/chat-link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
