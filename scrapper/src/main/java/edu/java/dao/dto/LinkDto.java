@@ -1,11 +1,10 @@
 package edu.java.dao.dto;
 
-import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+import java.time.LocalDateTime;
+
+@Data
 public class LinkDto {
     private Long linkId;
     private String url;
