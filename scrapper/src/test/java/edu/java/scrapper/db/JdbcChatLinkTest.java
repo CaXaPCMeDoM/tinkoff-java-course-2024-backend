@@ -7,7 +7,6 @@ import edu.java.dao.dto.ChatDto;
 import edu.java.dao.dto.ChatLinkDto;
 import edu.java.dao.dto.LinkDto;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,10 +78,8 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
 
         chatLinkDao.remove(CHAT_ID, linkId);
 
-        List<ChatLinkDto> chatLinkDtos = chatLinkDao.findAll();
         int sizeBeforeRemove = sizeAfterRemove - 1;
 
-        System.out.println(chatLinkDtos);
         assertThat(chatLinkDao.findAll().size()).isEqualTo(sizeBeforeRemove);
     }
 }
