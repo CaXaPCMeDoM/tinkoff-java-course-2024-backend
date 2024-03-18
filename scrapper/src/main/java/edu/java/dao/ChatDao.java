@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class ChatDao {
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<ChatDto> rowMapper = (rs, rowNum) -> new ChatDto(rs.getLong("chat_id"));
+    private static final RowMapper<ChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new ChatDto(rs.getLong("chat_id"));
 
     public ChatDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -39,6 +39,6 @@ public class ChatDao {
     }
 
     public List<ChatDto> findAll() {
-        return jdbcTemplate.query("SELECT * FROM Chat", rowMapper);
+        return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
     }
 }
