@@ -4,23 +4,27 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
 
-    <changeSet id="tag" author="some_user">
+    <changeSet id="tag" author="Vladislav Khakimov">
         <tagDatabase tag="tag1"/>
     </changeSet>
 
-    <changeSet id="chat_tables_v1" author="some_user">
+    <changeSet id="chat_tables_v1" author="Vladislav Khakimov">
         <sqlFile path="sql/v1/chat_table.sql" relativeToChangelogFile="true"/>
         <rollback>
             <sqlFile path="sql/v1/drop_chat_table.sql" relativeToChangelogFile="true"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="link_tables_v1" author="some_user">
+    <changeSet id="link_tables_v1" author="Vladislav Khakimov">
         <sqlFile path="sql/v1/link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="chat-link_tables_v1" author="some_user">
+    <changeSet id="chat-link_tables_v2" author="Vladislav Khakimov">
         <sqlFile path="sql/v1/chat-link_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="create_index_v1" author="Vladislav Khakimov">
+        <sqlFile path="sql/v1/create_index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog>

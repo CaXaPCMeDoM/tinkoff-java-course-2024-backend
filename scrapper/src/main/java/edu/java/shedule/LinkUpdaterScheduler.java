@@ -1,6 +1,7 @@
 package edu.java.shedule;
 
-import edu.java.model.LinkData;
+import edu.java.dao.dto.LinkDto;
+import edu.java.service.LinkService;
 import edu.java.shedule.process.LinkProcessService;
 import java.time.Duration;
 import java.util.List;
@@ -14,23 +15,25 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 public class LinkUpdaterScheduler {
+    private final LinkService linkService;
     private final Duration schedulerInterval;
     private final LinkProcessService linkProcessService;
-    private final LinkData linkData = new LinkData();
 
     public LinkUpdaterScheduler(
+        LinkService linkService,
         @Qualifier("schedulerInterval") Duration schedulerInterval,
         LinkProcessService linkProcessService
     ) {
+        this.linkService = linkService;
         this.schedulerInterval = schedulerInterval;
         this.linkProcessService = linkProcessService;
     }
 
     @Scheduled(fixedDelayString = "#{@schedulerInterval.toMillis()}")
     public void update() {
-        List<String> links = linkData.getAllLinks();
-        for (String link : links) {
-            linkProcessService.processLink(link);
+        List<LinkDto> linksDtos = linkService.listAll();
+        for (LinkDto linkDto : linksDtos) {
+            linkProcessService.processLink(linkDto);
         }
     }
 }

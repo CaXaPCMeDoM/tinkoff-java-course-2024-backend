@@ -4,7 +4,7 @@ import edu.java.ApiErrorResponse;
 import edu.java.internal.controllers.dto.LinkRequest;
 import edu.java.internal.controllers.dto.LinkResponse;
 import edu.java.internal.controllers.dto.ListLinksResponse;
-import edu.java.model.LinkData;
+import edu.java.service.LinkService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,7 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/links")
 public class LinkController {
-    LinkData linkData = new LinkData();
+    private LinkService linkService;
+
+    public LinkController(LinkService linkService) {
+        this.linkService = linkService;
+    }
 
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Ссылка успешно добавлена",
@@ -37,10 +41,12 @@ public class LinkController {
         @RequestHeader("Tg-Chat-Id") Long id,
         @Valid @RequestBody LinkRequest link
     ) {
+        linkService.add(id, link.getLink());
+
         LinkResponse linkResponse = new LinkResponse();
         linkResponse.setId(id);
-        linkResponse.setUrl(link.getLink());
-        linkData.addLink(id, link.getLink());
+        linkResponse.setUrl(link.getLink().toString());
+
         return ResponseEntity.ok(linkResponse);
     }
 
@@ -56,9 +62,7 @@ public class LinkController {
     public ResponseEntity<ListLinksResponse> getTrackingLinks(
         @RequestHeader("Tg-Chat-Id") Long id
     ) {
-        ListLinksResponse listLinksResponse = new ListLinksResponse();
-        listLinksResponse.setLinks(id);
-        return ResponseEntity.ok(listLinksResponse);
+        return ResponseEntity.ok(linkService.listAllByChatId(id));
     }
 
     @ApiResponses(value = {
@@ -77,10 +81,12 @@ public class LinkController {
         @RequestHeader("Tg-Chat-Id") Long id,
         @Valid @RequestBody LinkRequest linkRequest
     ) {
+        linkService.remove(id, linkRequest.getLink());
+
         LinkResponse linkResponse = new LinkResponse();
         linkResponse.setId(id);
-        linkResponse.setUrl(linkRequest.getLink());
-        linkData.deleteLink(id, linkRequest.getLink());
+        linkResponse.setUrl(linkRequest.getLink().toString());
+
         return ResponseEntity.ok(linkResponse);
     }
 }

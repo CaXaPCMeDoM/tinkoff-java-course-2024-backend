@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.external.client.github.client.GitHubClient;
-import edu.java.external.client.github.responceDTO.ReposResponce;
+import edu.java.external.client.github.responceDTO.ReposResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -51,7 +51,7 @@ public class GitHubClientTest {
                     .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                     .withBody(jsonContent)));
 
-        ReposResponce response = gitHubClient.getRepositoryData(owner, repo).block();
+        ReposResponse response = gitHubClient.getRepositoryData(owner, repo).block();
 
         Assertions.assertEquals(35982505038L, response.getId());
         Assertions.assertEquals(OffsetDateTime.parse("2024-02-25T10:19:29Z"), response.getCreatedAt());

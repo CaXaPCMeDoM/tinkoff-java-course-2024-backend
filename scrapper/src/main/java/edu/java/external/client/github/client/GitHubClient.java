@@ -1,6 +1,6 @@
 package edu.java.external.client.github.client;
 
-import edu.java.external.client.github.responceDTO.ReposResponce;
+import edu.java.external.client.github.responceDTO.ReposResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,7 +14,7 @@ public class GitHubClient {
         webClient = gitHubWebClient;
     }
 
-    public Mono<ReposResponce> getRepositoryData(
+    public Mono<ReposResponse> getRepositoryData(
         @PathVariable String owner,
         @PathVariable String repo
     ) {
@@ -26,7 +26,7 @@ public class GitHubClient {
                 repo
             )
             .retrieve()
-            .bodyToFlux(ReposResponce.class)
+            .bodyToFlux(ReposResponse.class)
             .next();
     }
 }

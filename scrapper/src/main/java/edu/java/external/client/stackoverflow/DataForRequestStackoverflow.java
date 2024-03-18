@@ -1,5 +1,7 @@
 package edu.java.external.client.stackoverflow;
 
+import edu.java.external.service.CommonDataResponseClient;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DataForRequestStackoverflow {
+public class DataForRequestStackoverflow implements CommonDataResponseClient {
     private List<Item> items;
 
     @Override
@@ -20,5 +22,10 @@ public class DataForRequestStackoverflow {
             resultString.append(s.getQuestionId().toString());
         }
         return String.valueOf(resultString);
+    }
+
+    @Override
+    public OffsetDateTime getTimeLastModified() {
+        return items.getFirst().getLastActivityDate();
     }
 }
