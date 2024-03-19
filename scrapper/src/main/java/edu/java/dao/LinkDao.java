@@ -28,7 +28,7 @@ public class LinkDao {
     private static final String CREATED_BY_FIELD_FROM_SQL = "created_by";
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<LinkDto> rowMapper = (rs, rowNum) -> new LinkDto(
+    private static final RowMapper<LinkDto> ROW_MAPPER_ALL = (rs, rowNum) -> new LinkDto(
         rs.getString(URL_FIELD_FROM_SQL),
         rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
         rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
