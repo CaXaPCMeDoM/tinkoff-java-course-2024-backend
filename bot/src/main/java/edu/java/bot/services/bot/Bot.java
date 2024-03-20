@@ -60,11 +60,11 @@ public class Bot {
 
     public void sendAMessageAboutUpdatingLinks(Long chatId, LinkUpdateRequest linkUpdateRequest) {
         StringBuilder messageStringBuilder = new StringBuilder();
-        messageStringBuilder.append("Произошло обновление ссылки: ");
-        messageStringBuilder.append(linkUpdateRequest.getUrl());
+        messageStringBuilder.append("Произошло обновление ссылки: ")
+            .append(linkUpdateRequest.getUrl());
         if (linkUpdateRequest.getTypeOfUpdate() != null || !linkUpdateRequest.getTypeOfUpdate().isEmpty()) {
-            messageStringBuilder.append("\nТип обновления: ");
-            messageStringBuilder.append(linkUpdateRequest.getTypeOfUpdate());
+            messageStringBuilder.append("\nТип обновления: ")
+                .append(linkUpdateRequest.getTypeOfUpdate());
         }
         telegramBot.execute(new SendMessage(chatId, messageStringBuilder.toString()));
     }
