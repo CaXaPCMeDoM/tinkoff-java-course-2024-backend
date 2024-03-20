@@ -21,9 +21,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JooqLinkService implements LinkService {
-    private DSLContext dslContext;
     private final static Link LINK = Link.LINK;
     private final static ChatLink CHAT_LINK = ChatLink.CHAT_LINK;
+    private DSLContext dslContext;
 
     public JooqLinkService(DSLContext dslContext) {
         this.dslContext = dslContext;
