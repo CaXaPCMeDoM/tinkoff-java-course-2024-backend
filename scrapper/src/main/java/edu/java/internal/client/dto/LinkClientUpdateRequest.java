@@ -10,5 +10,6 @@ public class LinkClientUpdateRequest {
     private Long id;
     private String url;
     private String description;
+    private String typeOfUpdate;
     List<Long> tgChatIds;
 }

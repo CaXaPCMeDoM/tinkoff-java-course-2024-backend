@@ -30,8 +30,8 @@
         <java-telegram-bot-api.version>7.0.1</java-telegram-bot-api.version>
 
         <!-- Tests -->
-        <testcontainers.version>1.19.4</testcontainers.version>
-        <wiremock.version>3.3.1</wiremock.version>
+        <testcontainers.version>1.19.7</testcontainers.version>
+        <wiremock.version>3.4.2</wiremock.version>
 
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
@@ -50,6 +50,7 @@
         <module>bot</module>
         <module>scrapper</module>
         <module>api-commons</module>
+        <module>scrapper-jooq</module>
     </modules>
 
     <dependencyManagement>
@@ -133,7 +134,6 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
             </plugin>
-
         </plugins>
 
         <pluginManagement>

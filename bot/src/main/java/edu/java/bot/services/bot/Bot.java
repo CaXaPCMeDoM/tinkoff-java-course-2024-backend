@@ -10,6 +10,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.data.ListOfSupportedCommands;
 import edu.java.bot.services.command.chain.ChainOfCommand;
+import edu.java.bot.web.controller.dto.LinkUpdateRequest;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +58,15 @@ public class Bot {
         });
     }
 
-    public void sendAMessageAboutUpdatingLinks(Long chatId, String url) {
-        String message = "Произошло обновление ссылки: " + url;
-        telegramBot.execute(new SendMessage(chatId, message));
+    public void sendAMessageAboutUpdatingLinks(Long chatId, LinkUpdateRequest linkUpdateRequest) {
+        StringBuilder messageStringBuilder = new StringBuilder();
+        messageStringBuilder.append("Произошло обновление ссылки: ");
+        messageStringBuilder.append(linkUpdateRequest.getUrl());
+        if (linkUpdateRequest.getTypeOfUpdate() != null || !linkUpdateRequest.getTypeOfUpdate().isEmpty()) {
+            messageStringBuilder.append("\nТип обновления: ");
+            messageStringBuilder.append(linkUpdateRequest.getTypeOfUpdate());
+        }
+        telegramBot.execute(new SendMessage(chatId, messageStringBuilder.toString()));
     }
 
     private void handlerUpdate(@NotNull Update update) {

@@ -72,11 +72,12 @@ public class LinkProcessService {
                 timeFromResponse
             );
 
-            List<Long> chatIds = chatLinkService.getChatidsByUrlId(linkDto.getLinkId());
+            List<Long> chatIds = chatLinkService.getChatIdsByUrlId(linkDto.getLinkId());
             linkClientUpdateRequest = LinkClientUpdateRequest.builder()
                 .id(linkDto.getLinkId())
                 .url(linkDto.getUrl())
                 .tgChatIds(chatIds)
+                .typeOfUpdate(response.getTypeOfUpdate())
                 .build();
             updateClient.postRepositoryData(linkClientUpdateRequest);
         }

@@ -8,9 +8,11 @@ import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
+@Primary
 public class JdbcLinkService implements LinkService {
     private LinkDto linkDto;
     private final LinkDao linkDao;
