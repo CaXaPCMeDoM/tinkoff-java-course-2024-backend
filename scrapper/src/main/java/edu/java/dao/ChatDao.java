@@ -38,6 +38,7 @@ public class ChatDao {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<ChatDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
     }
