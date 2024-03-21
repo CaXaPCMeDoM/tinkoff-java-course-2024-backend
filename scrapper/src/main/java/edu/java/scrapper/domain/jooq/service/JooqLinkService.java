@@ -18,18 +18,20 @@ import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class JooqLinkService implements LinkService {
-    private DSLContext dslContext;
     private final static Link LINK = Link.LINK;
     private final static ChatLink CHAT_LINK = ChatLink.CHAT_LINK;
+    private DSLContext dslContext;
 
     public JooqLinkService(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 
     @Override
+    @Transactional
     public Long add(long tgChatId, URI url) {
         LinkRecord linkRecord = dslContext.insertInto(LINK)
             .set(LINK.URL, url.toString())
@@ -51,6 +53,7 @@ public class JooqLinkService implements LinkService {
     }
 
     @Override
+    @Transactional
     public void remove(long tgChatId, URI url) {
         Long linkId;
         @Nullable Record1<Long> linkRecord = dslContext.select(LINK.URL_ID)

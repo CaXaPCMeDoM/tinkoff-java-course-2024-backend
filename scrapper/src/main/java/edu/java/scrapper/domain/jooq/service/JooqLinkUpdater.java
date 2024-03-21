@@ -7,16 +7,9 @@ import java.time.ZoneOffset;
 import org.jooq.DSLContext;
 
 public class JooqLinkUpdater implements LinkUpdater {
-    private DSLContext dslContext;
     private final static Link LINK = Link.LINK;
+    private DSLContext dslContext;
 
-    /*
-    @Transactional
-    public void updateLastCheckTimeByLink(Long linkId) {
-        String sqlQuery = "UPDATE Link SET last_check_time = ? where url_id = ?";
-        jdbcTemplate.update(sqlQuery, Timestamp.valueOf(LocalDateTime.now()), linkId);
-    }
-     */
     @Override
     public void updateLinkLastCheckTime(Long linkId) {
         dslContext.update(LINK)

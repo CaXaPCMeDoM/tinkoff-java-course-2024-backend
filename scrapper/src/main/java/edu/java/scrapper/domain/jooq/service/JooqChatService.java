@@ -5,8 +5,8 @@ import edu.java.service.ChatService;
 import org.jooq.DSLContext;
 
 public class JooqChatService implements ChatService {
-    private DSLContext dslContext;
     private final Chat chat = Chat.CHAT;
+    private DSLContext dslContext;
 
     public JooqChatService(DSLContext dslContext) {
         this.dslContext = dslContext;

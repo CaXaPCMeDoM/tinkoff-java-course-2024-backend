@@ -6,8 +6,8 @@ import java.util.List;
 import org.jooq.DSLContext;
 
 public class JooqChatLinkService implements ChatLinkService {
-    private DSLContext dslContext;
     private final ChatLink chatLink = ChatLink.CHAT_LINK;
+    private DSLContext dslContext;
 
     public JooqChatLinkService(DSLContext dslContext) {
         this.dslContext = dslContext;

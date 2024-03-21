@@ -39,6 +39,7 @@ public class ChatLinkDao {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Long> getChatIdsByLinkId(Long linkId) {
         return jdbcTemplate.query(
             "SELECT chat_id FROM CHAT_LINK WHERE url_id = ?",
@@ -75,6 +76,7 @@ public class ChatLinkDao {
         jdbcTemplate.update("DELETE FROM CHAT_LINK WHERE chat_id = ? AND url_id = ?", chatId, urlId);
     }
 
+    @Transactional(readOnly = true)
     public List<ChatLinkDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM CHAT_LINK", ROW_MAPPER_CHAT_AND_URL_ID);
     }
