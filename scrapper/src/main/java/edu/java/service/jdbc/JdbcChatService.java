@@ -1,7 +1,8 @@
-package edu.java.service;
+package edu.java.service.jdbc;
 
-import edu.java.dao.ChatDao;
-import edu.java.dao.dto.ChatDto;
+import edu.java.dao.jdbc.ChatDao;
+import edu.java.dto.jdbc.JdbcChatDto;
+import edu.java.service.ChatService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Primary
 public class JdbcChatService implements ChatService {
     private final ChatDao chatDao;
-    private ChatDto chatDto;
+    private JdbcChatDto jdbcChatDto;
 
     public JdbcChatService(ChatDao chatDao) {
         this.chatDao = chatDao;
@@ -18,9 +19,9 @@ public class JdbcChatService implements ChatService {
 
     @Override
     public void register(@NotNull long tgChatId) {
-        chatDto = new ChatDto(tgChatId);
-        chatDao.add(chatDto);
-        chatDto = null;
+        jdbcChatDto = new JdbcChatDto(tgChatId);
+        chatDao.add(jdbcChatDto);
+        jdbcChatDto = null;
     }
 
     @Override

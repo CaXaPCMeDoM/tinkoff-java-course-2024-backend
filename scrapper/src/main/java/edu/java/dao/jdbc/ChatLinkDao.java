@@ -1,6 +1,6 @@
-package edu.java.dao;
+package edu.java.dao.jdbc;
 
-import edu.java.dao.dto.ChatLinkDto;
+import edu.java.dto.jdbc.JdbcChatLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +18,7 @@ public class ChatLinkDao {
     private static final String CHAT_ID_FIELD_FROM_SQL = "chat_id";
 
     private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<ChatLinkDto> ROW_MAPPER_CHAT_AND_URL_ID = (rs, rowNum) -> new ChatLinkDto(
+    private static final RowMapper<JdbcChatLinkDto> ROW_MAPPER_CHAT_AND_URL_ID = (rs, rowNum) -> new JdbcChatLinkDto(
         rs.getLong(CHAT_ID_FIELD_FROM_SQL),
         rs.getLong(URL_ID_FIELD_FROM_SQL)
     );
@@ -28,7 +28,7 @@ public class ChatLinkDao {
     }
 
     @Transactional
-    public void add(ChatLinkDto chatLink) {
+    public void add(JdbcChatLinkDto chatLink) {
         try {
             jdbcTemplate.update(
                 "INSERT INTO CHAT_LINK (chat_id, url_id) VALUES (?, ?)",
@@ -77,7 +77,7 @@ public class ChatLinkDao {
     }
 
     @Transactional(readOnly = true)
-    public List<ChatLinkDto> findAll() {
+    public List<JdbcChatLinkDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM CHAT_LINK", ROW_MAPPER_CHAT_AND_URL_ID);
     }
 }

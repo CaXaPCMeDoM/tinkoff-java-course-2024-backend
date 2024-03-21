@@ -1,23 +1,25 @@
-package edu.java.service;
+package edu.java.service.jdbc;
 
-import edu.java.dao.ChatLinkDao;
-import edu.java.dao.LinkDao;
-import edu.java.dao.dto.ChatLinkDto;
-import edu.java.dao.dto.LinkDto;
+import edu.java.dao.jdbc.ChatLinkDao;
+import edu.java.dao.jdbc.LinkDao;
+import edu.java.dto.jdbc.JdbcChatLinkDto;
+import edu.java.dto.jdbc.JdbcLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import edu.java.service.LinkService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
 @Primary
 public class JdbcLinkService implements LinkService {
-    private LinkDto linkDto;
+    private JdbcLinkDto jdbcLinkDto;
     private final LinkDao linkDao;
 
-    private ChatLinkDto chatLinkDto;
+    private JdbcChatLinkDto jdbcChatLinkDto;
     private final ChatLinkDao chatLinkDao;
 
     public JdbcLinkService(LinkDao linkDao, ChatLinkDao chatLinkDao) {
@@ -27,11 +29,11 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public Long add(long tgChatId, URI url) {
-        linkDto = new LinkDto(url.toString(), LocalDateTime.now(), LocalDateTime.now(), String.valueOf(tgChatId));
-        linkDao.add(linkDto);
+        jdbcLinkDto = new JdbcLinkDto(url.toString(), LocalDateTime.now(), LocalDateTime.now(), String.valueOf(tgChatId));
+        linkDao.add(jdbcLinkDto);
         Long linkId = linkDao.getIdByUrl(url.toString());
-        chatLinkDto = new ChatLinkDto(tgChatId, linkId);
-        chatLinkDao.add(chatLinkDto);
+        jdbcChatLinkDto = new JdbcChatLinkDto(tgChatId, linkId);
+        chatLinkDao.add(jdbcChatLinkDto);
 
         return linkId;
     }
@@ -51,7 +53,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public List<LinkDto> listAll() {
+    public List<JdbcLinkDto> listAll() {
         return linkDao.findAll();
     }
 }

@@ -1,6 +1,6 @@
 package edu.java.shedule.process;
 
-import edu.java.dao.dto.LinkDto;
+import edu.java.dto.jdbc.JdbcLinkDto;
 import edu.java.external.client.github.client.GitHubClient;
 import edu.java.external.client.stackoverflow.client.StackOverflowClient;
 import edu.java.external.service.CommonDataResponseClient;
@@ -46,20 +46,20 @@ public class LinkProcessService {
         this.updateClient = updateClient;
     }
 
-    public boolean processLink(LinkDto linkDto) {
+    public boolean processLink(JdbcLinkDto jdbcLinkDto) {
         for (LinkProcess linkProcessor : linkProcessors) {
-            CommonDataResponseClient response = linkProcessor.process(linkDto.getUrl());
-            if (response != null && linkProcessor.canProcess(linkDto.getUrl())) {
-                handleResponse(linkDto, response);
-                linkUpdater.updateLinkLastCheckTime(linkDto.getLinkId());
+            CommonDataResponseClient response = linkProcessor.process(jdbcLinkDto.getUrl());
+            if (response != null && linkProcessor.canProcess(jdbcLinkDto.getUrl())) {
+                handleResponse(jdbcLinkDto, response);
+                linkUpdater.updateLinkLastCheckTime(jdbcLinkDto.getLinkId());
                 return true;
             }
         }
         return false;
     }
 
-    private void handleResponse(LinkDto linkDto, CommonDataResponseClient response) {
-        LocalDateTime linkCreate = linkDto.getLastCheckTime();
+    private void handleResponse(JdbcLinkDto jdbcLinkDto, CommonDataResponseClient response) {
+        LocalDateTime linkCreate = jdbcLinkDto.getLastCheckTime();
         OffsetDateTime timeFromResponse = response.getTimeLastModified();
 
         ZoneId zoneId = ZoneId.systemDefault();
@@ -68,14 +68,14 @@ public class LinkProcessService {
         if (linkCreateOffset.isBefore(timeFromResponse)) {
             LOGGER.info(
                 "Данные по ссылке {} изменились! Ответ: {}",
-                linkDto.getUrl(),
+                jdbcLinkDto.getUrl(),
                 timeFromResponse
             );
 
-            List<Long> chatIds = chatLinkService.getChatIdsByUrlId(linkDto.getLinkId());
+            List<Long> chatIds = chatLinkService.getChatIdsByUrlId(jdbcLinkDto.getLinkId());
             linkClientUpdateRequest = LinkClientUpdateRequest.builder()
-                .id(linkDto.getLinkId())
-                .url(linkDto.getUrl())
+                .id(jdbcLinkDto.getLinkId())
+                .url(jdbcLinkDto.getUrl())
                 .tgChatIds(chatIds)
                 .typeOfUpdate(response.getTypeOfUpdate())
                 .build();

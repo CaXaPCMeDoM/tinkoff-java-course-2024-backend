@@ -1,12 +1,12 @@
-package edu.java.dao.dto;
+package edu.java.dto.jdbc;
 
 import lombok.Data;
 
 @Data
-public class ChatDto {
+public class JdbcChatDto {
     private Long chatId;
 
-    public ChatDto(Long chatId) {
+    public JdbcChatDto(Long chatId) {
         this.chatId = chatId;
     }
 }

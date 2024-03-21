@@ -1,11 +1,11 @@
 package edu.java.scrapper.db;
 
-import edu.java.dao.ChatDao;
-import edu.java.dao.ChatLinkDao;
-import edu.java.dao.LinkDao;
-import edu.java.dao.dto.ChatDto;
-import edu.java.dao.dto.ChatLinkDto;
-import edu.java.dao.dto.LinkDto;
+import edu.java.dao.jdbc.ChatDao;
+import edu.java.dao.jdbc.ChatLinkDao;
+import edu.java.dao.jdbc.LinkDao;
+import edu.java.dto.jdbc.JdbcChatDto;
+import edu.java.dto.jdbc.JdbcChatLinkDto;
+import edu.java.dto.jdbc.JdbcLinkDto;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +34,17 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
     void addTest() {
         int sizeAfterAdd = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
-        LinkDto linkDto = new LinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
-        linkDao.add(linkDto);
-        Long linkId = linkDao.getIdByUrl(linkDto.getUrl());
+        JdbcLinkDto
+            jdbcLinkDto = new JdbcLinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
+        linkDao.add(jdbcLinkDto);
+        Long linkId = linkDao.getIdByUrl(jdbcLinkDto.getUrl());
 
-        ChatDto chatDto = new ChatDto(CHAT_ID);
-        chatDao.add(chatDto);
+        JdbcChatDto jdbcChatDto = new JdbcChatDto(CHAT_ID);
+        chatDao.add(jdbcChatDto);
 
-        ChatLinkDto chatLinkDto = new ChatLinkDto(CHAT_ID, linkId);
+        JdbcChatLinkDto jdbcChatLinkDto = new JdbcChatLinkDto(CHAT_ID, linkId);
 
-        chatLinkDao.add(chatLinkDto);
+        chatLinkDao.add(jdbcChatLinkDto);
 
         int sizeBeforeAdd = sizeAfterAdd + 1; // нужна проверка при переполнении
 
@@ -58,15 +59,16 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
 
         int sizeAfterAdd = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
-        LinkDto linkDto = new LinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
-        linkDao.add(linkDto);
-        Long linkId = linkDao.getIdByUrl(linkDto.getUrl());
+        JdbcLinkDto
+            jdbcLinkDto = new JdbcLinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
+        linkDao.add(jdbcLinkDto);
+        Long linkId = linkDao.getIdByUrl(jdbcLinkDto.getUrl());
 
-        ChatDto chatDto = new ChatDto(CHAT_ID);
-        chatDao.add(chatDto);
+        JdbcChatDto jdbcChatDto = new JdbcChatDto(CHAT_ID);
+        chatDao.add(jdbcChatDto);
 
-        ChatLinkDto chatLinkDto = new ChatLinkDto(CHAT_ID, linkId);
-        chatLinkDao.add(chatLinkDto);
+        JdbcChatLinkDto jdbcChatLinkDto = new JdbcChatLinkDto(CHAT_ID, linkId);
+        chatLinkDao.add(jdbcChatLinkDto);
 
         int sizeBeforeAdd = sizeAfterAdd + 1; // нужна проверка при переполнении
 

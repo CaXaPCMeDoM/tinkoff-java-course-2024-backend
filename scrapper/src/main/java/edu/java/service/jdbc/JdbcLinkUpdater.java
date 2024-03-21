@@ -1,6 +1,7 @@
-package edu.java.service;
+package edu.java.service.jdbc;
 
-import edu.java.dao.LinkDao;
+import edu.java.dao.jdbc.LinkDao;
+import edu.java.service.LinkUpdater;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

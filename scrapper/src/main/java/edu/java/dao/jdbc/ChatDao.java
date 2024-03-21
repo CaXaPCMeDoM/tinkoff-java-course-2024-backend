@@ -1,6 +1,6 @@
-package edu.java.dao;
+package edu.java.dao.jdbc;
 
-import edu.java.dao.dto.ChatDto;
+import edu.java.dto.jdbc.JdbcChatDto;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class ChatDao {
     private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<ChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new ChatDto(rs.getLong("chat_id"));
+    private static final RowMapper<JdbcChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new JdbcChatDto(rs.getLong("chat_id"));
 
     public ChatDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Transactional
-    public void add(ChatDto chat) {
+    public void add(JdbcChatDto chat) {
         try {
             jdbcTemplate.update("INSERT INTO Chat (chat_id) VALUES (?)", chat.getChatId());
         } catch (DuplicateKeyException e) {
@@ -39,7 +39,7 @@ public class ChatDao {
     }
 
     @Transactional(readOnly = true)
-    public List<ChatDto> findAll() {
+    public List<JdbcChatDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
     }
 }

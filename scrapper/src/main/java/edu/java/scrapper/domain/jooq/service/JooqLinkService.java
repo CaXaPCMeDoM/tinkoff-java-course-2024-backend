@@ -1,6 +1,6 @@
 package edu.java.scrapper.domain.jooq.service;
 
-import edu.java.dao.dto.LinkDto;
+import edu.java.dto.jdbc.JdbcLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.Link;
@@ -93,9 +93,9 @@ public class JooqLinkService implements LinkService {
     }
 
     @Override
-    public List<LinkDto> listAll() {
+    public List<JdbcLinkDto> listAll() {
         return dslContext.selectFrom(LINK)
             .fetch()
-            .into(LinkDto.class);
+            .into(JdbcLinkDto.class);
     }
 }
