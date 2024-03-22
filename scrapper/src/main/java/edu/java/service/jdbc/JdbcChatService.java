@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
-@Primary
 public class JdbcChatService implements ChatService {
     private final ChatDao chatDao;
     private JdbcChatDto jdbcChatDto;

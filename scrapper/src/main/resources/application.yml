@@ -5,6 +5,10 @@ stackoverflow:
 bot-local-host:
   base-url: http://localhost:8090
 
+link:
+  update:
+    delay: 5000 # в миллисекундах
+
 app:
   scheduler:
     enable: true
