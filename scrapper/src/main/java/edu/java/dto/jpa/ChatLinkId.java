@@ -11,9 +11,9 @@ import lombok.Data;
 @Embeddable
 public class ChatLinkId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "chat_id")
-    private JpaChatDto chatId;
+    @JoinColumn(name = "chat")
+    private JpaChatDto Chat;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "url_id")
-    private JpaLinkDto linkId;
+    @JoinColumn(name = "link")
+    private JpaLinkDto Link;
 }
