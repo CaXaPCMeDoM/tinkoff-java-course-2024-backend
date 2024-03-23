@@ -25,7 +25,11 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public Long add(long tgChatId, URI url) {
-        linkDto = new LinkDto(url.toString(), Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), String.valueOf(tgChatId));
+        linkDto = new LinkDto(url.toString(),
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()),
+            String.valueOf(tgChatId)
+        );
         linkDao.add(linkDto);
         Long linkId = linkDao.getIdByUrl(url.toString());
         jdbcChatLinkDto = new JdbcChatLinkDto(tgChatId, linkId);

@@ -1,11 +1,11 @@
 package edu.java.configuration.access.jooq;
 
-import edu.java.service.jooq.JooqChatLinkService;
-import edu.java.service.jooq.JooqChatService;
-import edu.java.service.jooq.JooqLinkService;
 import edu.java.service.ChatLinkService;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
+import edu.java.service.jooq.JooqChatLinkService;
+import edu.java.service.jooq.JooqChatService;
+import edu.java.service.jooq.JooqLinkService;
 import org.jooq.DSLContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

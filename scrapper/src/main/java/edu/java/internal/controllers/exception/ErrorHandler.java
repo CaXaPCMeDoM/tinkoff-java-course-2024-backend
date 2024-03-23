@@ -1,9 +1,9 @@
 package edu.java.internal.controllers.exception;
 
 import edu.java.ApiErrorResponse;
+import edu.java.my.exception.ChatNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import edu.java.my.exception.ChatNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -55,7 +55,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    private ResponseEntity<ApiErrorResponse> httpStatusNotFound(Exception ex){
+    private ResponseEntity<ApiErrorResponse> httpStatusNotFound(Exception ex) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setDescription(ex.getMessage());
         apiErrorResponse.setCode(HttpStatus.NOT_FOUND.toString());

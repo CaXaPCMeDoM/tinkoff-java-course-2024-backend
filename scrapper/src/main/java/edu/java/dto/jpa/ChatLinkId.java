@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 public class ChatLinkId implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chat_id")
-    private ChatDto Chat;
+    private ChatDto chat;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "url_id")
-    private LinkDto Link;
+    private LinkDto link;
 }

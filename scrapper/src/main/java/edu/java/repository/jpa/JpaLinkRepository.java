@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JpaLinkRepository extends JpaRepository<LinkDto, Long> {
     LinkDto findByUrl(String url);
+
     List<LinkDto> findAllByLastCheckTimeBefore(Timestamp lastCheckTime);
 
     @Modifying
