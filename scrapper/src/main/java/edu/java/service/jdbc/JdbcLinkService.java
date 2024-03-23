@@ -6,11 +6,11 @@ import edu.java.dto.LinkDto;
 import edu.java.dto.jdbc.JdbcChatLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.service.LinkService;
-import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public class JdbcLinkService implements LinkService {
     private LinkDto linkDto;
