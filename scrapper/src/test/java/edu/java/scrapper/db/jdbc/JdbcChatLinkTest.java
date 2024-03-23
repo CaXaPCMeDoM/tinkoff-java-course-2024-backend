@@ -28,7 +28,7 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
     @Autowired
     private ChatDao chatDao;
 
-    private static final Long CHAT_ID = 1L;
+    private static final Long CHAT_ID = -1L;
 
     @Test
     @Transactional

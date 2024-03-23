@@ -12,7 +12,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
@@ -39,7 +38,6 @@ public class LinkDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Transactional(readOnly = true)
     public Long getIdByUrl(String url) {
         String sql = "SELECT url_id FROM Link WHERE url = ?";
         try {
@@ -49,13 +47,11 @@ public class LinkDao {
         }
     }
 
-    @Transactional
     public void updateLastCheckTimeByLink(Long linkId) {
         String sqlQuery = "UPDATE Link SET last_check_time = ? where url_id = ?";
         jdbcTemplate.update(sqlQuery, Timestamp.valueOf(LocalDateTime.now()), linkId);
     }
 
-    @Transactional
     public void add(LinkDto linkDto) {
         try {
             jdbcTemplate.update(
@@ -76,12 +72,10 @@ public class LinkDao {
         }
     }
 
-    @Transactional
     public void remove(Long urlId) {
         jdbcTemplate.update("DELETE FROM Link WHERE url_id = ?", urlId);
     }
 
-    @Transactional(readOnly = true)
     public List<LinkDto> findAll() {
         try {
             RowMapper<LinkDto> rowMapper2 = (rs, rowNum) -> {

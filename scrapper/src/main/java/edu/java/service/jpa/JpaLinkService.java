@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 public class JpaLinkService implements LinkService {
@@ -35,6 +36,7 @@ public class JpaLinkService implements LinkService {
         this.jpaChatRepository = jpaChatRepository;
     }
 
+    @Transactional
     @Override
     public Long add(long tgChatId, URI url) {
         try {
@@ -61,6 +63,7 @@ public class JpaLinkService implements LinkService {
         return null;
     }
 
+    @Transactional
     @Override
     public void remove(long tgChatId, URI url) {
         LinkDto linkDto = jpaLinkRepository.findByUrl(url.toString());
@@ -72,6 +75,7 @@ public class JpaLinkService implements LinkService {
         }
     }
 
+    @Transactional
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
         List<Long> urlIds = jpaChatLinkRepository.findLinkIdsByChatId(tgChatId);
@@ -88,6 +92,7 @@ public class JpaLinkService implements LinkService {
         return response;
     }
 
+    @Transactional
     @Override
     public List<LinkDto> listAll() {
         LocalDateTime time = LocalDateTime.now().minusMinutes(1);

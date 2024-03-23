@@ -66,6 +66,7 @@ public class JooqLinkService implements LinkService {
         }
     }
 
+    @Transactional
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
         ListLinksResponse response = new ListLinksResponse();
@@ -90,6 +91,7 @@ public class JooqLinkService implements LinkService {
         return response;
     }
 
+    @Transactional
     @Override
     public List<LinkDto> listAll() {
         return dslContext.selectFrom(LINK)

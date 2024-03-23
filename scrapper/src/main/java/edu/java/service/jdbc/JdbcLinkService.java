@@ -6,6 +6,7 @@ import edu.java.dto.LinkDto;
 import edu.java.dto.jdbc.JdbcChatLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.service.LinkService;
+import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class JdbcLinkService implements LinkService {
         this.chatLinkDao = chatLinkDao;
     }
 
+    @Transactional
     @Override
     public Long add(long tgChatId, URI url) {
         linkDto = new LinkDto(url.toString(),
@@ -38,6 +40,7 @@ public class JdbcLinkService implements LinkService {
         return linkId;
     }
 
+    @Transactional
     @Override
     public void remove(long tgChatId, URI url) {
         Long urlId = linkDao.getIdByUrl(url.toString());
@@ -47,6 +50,7 @@ public class JdbcLinkService implements LinkService {
         }
     }
 
+    @Transactional
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
         return chatLinkDao.getUrlByChatId(tgChatId);
