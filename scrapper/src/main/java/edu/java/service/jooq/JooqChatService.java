@@ -1,4 +1,4 @@
-package edu.java.scrapper.domain.jooq.service;
+package edu.java.service.jooq;
 
 import edu.java.scrapper.domain.jooq.tables.Chat;
 import edu.java.service.ChatService;
@@ -19,8 +19,8 @@ public class JooqChatService implements ChatService {
     }
 
     @Override
-    public void unregister(long tgChatId) {
-        dslContext.delete(chat)
+    public Long unregister(long tgChatId) {
+        return (long) dslContext.delete(chat)
             .where(chat.CHAT_ID.eq(tgChatId))
             .execute();
     }

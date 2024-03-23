@@ -1,6 +1,6 @@
 package edu.java.dao.jdbc;
 
-import edu.java.dto.jdbc.JdbcLinkDto;
+import edu.java.dto.LinkDto;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -28,10 +28,10 @@ public class LinkDao {
     private static final String CREATED_BY_FIELD_FROM_SQL = "created_by";
 
     private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<JdbcLinkDto> ROW_MAPPER_ALL = (rs, rowNum) -> new JdbcLinkDto(
+    private static final RowMapper<LinkDto> ROW_MAPPER_ALL = (rs, rowNum) -> new LinkDto(
         rs.getString(URL_FIELD_FROM_SQL),
-        rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
-        rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
+        rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL),
+        rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL),
         rs.getString(CREATED_BY_FIELD_FROM_SQL)
     );
 
@@ -56,7 +56,7 @@ public class LinkDao {
     }
 
     @Transactional
-    public void add(JdbcLinkDto jdbcLinkDto) {
+    public void add(LinkDto linkDto) {
         try {
             jdbcTemplate.update(
                 connection -> {
@@ -64,10 +64,10 @@ public class LinkDao {
                         "INSERT INTO link (url, last_check_time, created_at, created_by) VALUES (?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                     );
-                    ps.setString(URL_INDEX, jdbcLinkDto.getUrl());
-                    ps.setTimestamp(LAST_CHECK_TIME_INDEX, Timestamp.valueOf(jdbcLinkDto.getLastCheckTime()));
-                    ps.setTimestamp(CREATED_AT_INDEX, Timestamp.valueOf(jdbcLinkDto.getCreatedAt()));
-                    ps.setString(CREATED_BY_INDEX, jdbcLinkDto.getCreatedBy());
+                    ps.setString(URL_INDEX, linkDto.getUrl());
+                    ps.setTimestamp(LAST_CHECK_TIME_INDEX, linkDto.getLastCheckTime());
+                    ps.setTimestamp(CREATED_AT_INDEX, linkDto.getCreatedAt());
+                    ps.setString(CREATED_BY_INDEX, linkDto.getCreatedBy());
                     return ps;
                 }
             );
@@ -82,17 +82,17 @@ public class LinkDao {
     }
 
     @Transactional(readOnly = true)
-    public List<JdbcLinkDto> findAll() {
+    public List<LinkDto> findAll() {
         try {
-            RowMapper<JdbcLinkDto> rowMapper2 = (rs, rowNum) -> {
-                JdbcLinkDto jdbcLinkDtoFromFindAll = new JdbcLinkDto(
+            RowMapper<LinkDto> rowMapper2 = (rs, rowNum) -> {
+                LinkDto linkDtoFromFindAll = new LinkDto(
                     rs.getString(URL_FIELD_FROM_SQL),
-                    rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
-                    rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
+                    rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL),
+                    rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL),
                     rs.getString(CREATED_BY_FIELD_FROM_SQL)
                 );
-                jdbcLinkDtoFromFindAll.setLinkId(rs.getLong(URL_ID_FIELD_FROM_SQL));
-                return jdbcLinkDtoFromFindAll;
+                linkDtoFromFindAll.setLinkId(rs.getLong(URL_ID_FIELD_FROM_SQL));
+                return linkDtoFromFindAll;
             };
             return jdbcTemplate.query(
                 "SELECT * FROM Link WHERE last_check_time < NOW() - INTERVAL '1 minutes'",

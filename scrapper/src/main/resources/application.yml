@@ -10,6 +10,7 @@ link:
     delay: 5000 # в миллисекундах
 
 app:
+  database-access-type: JDBC
   scheduler:
     enable: true
     interval: 10s

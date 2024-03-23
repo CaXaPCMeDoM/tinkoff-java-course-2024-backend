@@ -1,18 +1,14 @@
 package edu.java.service.jpa;
 
-import edu.java.dto.jdbc.JdbcLinkDto;
+import edu.java.dto.ChatDto;
+import edu.java.dto.LinkDto;
 import edu.java.dto.jpa.ChatLinkId;
-import edu.java.dto.jpa.JpaChatDto;
 import edu.java.dto.jpa.JpaChatLinkDto;
-import edu.java.dto.jpa.JpaLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.repository.jpa.JpaChatLinkRepository;
 import edu.java.repository.jpa.JpaChatRepository;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.service.LinkService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -20,28 +16,37 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
-@Service
 @Slf4j
 public class JpaLinkService implements LinkService {
     @Value("${link.update.delay}")
     private long delay;
-    private JpaLinkRepository jpaLinkRepository;
-    private JpaChatLinkRepository jpaChatLinkRepository;
-    private JpaChatRepository jpaChatRepository;
+    private final JpaLinkRepository jpaLinkRepository;
+    private final JpaChatLinkRepository jpaChatLinkRepository;
+    private final JpaChatRepository jpaChatRepository;
+
+    public JpaLinkService(JpaLinkRepository jpaLinkRepository, JpaChatLinkRepository jpaChatLinkRepository,
+        JpaChatRepository jpaChatRepository
+    ) {
+        this.jpaLinkRepository = jpaLinkRepository;
+        this.jpaChatLinkRepository = jpaChatLinkRepository;
+        this.jpaChatRepository = jpaChatRepository;
+    }
 
     @Override
     public Long add(long tgChatId, URI url) {
         try {
-            JpaLinkDto jpaLinkDto = new JpaLinkDto(tgChatId, url.toString());
-            JpaLinkDto jpaLinkDtoWithLinkId = jpaLinkRepository.save(jpaLinkDto);
-            Long linkId = jpaLinkDtoWithLinkId.getLinkId();
+            LinkDto linkDto = new LinkDto(tgChatId, url.toString());
+            LinkDto linkDtoWithLinkId = jpaLinkRepository.save(linkDto);
+            Long linkId = linkDtoWithLinkId.getLinkId();
 
-            Optional<JpaChatDto> optionalJpaChatDto = jpaChatRepository.findById(tgChatId);
+            Optional<ChatDto> optionalJpaChatDto = jpaChatRepository.findById(tgChatId);
             if (optionalJpaChatDto.isPresent()) {
-                JpaChatDto jpaChatDto = optionalJpaChatDto.get();
+                ChatDto chatDto = optionalJpaChatDto.get();
 
-                ChatLinkId chatLinkId = new ChatLinkId(jpaChatDto, jpaLinkDto);
+                ChatLinkId chatLinkId = new ChatLinkId(chatDto, linkDto);
                 JpaChatLinkDto jpaChatLinkDto = new JpaChatLinkDto(chatLinkId);
 
                 jpaChatLinkRepository.save(jpaChatLinkDto);
@@ -58,25 +63,25 @@ public class JpaLinkService implements LinkService {
 
     @Override
     public void remove(long tgChatId, URI url) {
-        JpaLinkDto jpaLinkDto = jpaLinkRepository.findByUrl(url.toString());
+        LinkDto linkDto = jpaLinkRepository.findByUrl(url.toString());
 
-        if (jpaLinkDto != null) {
-            Long linkId = jpaLinkDto.getLinkId();
+        if (linkDto != null) {
+            Long linkId = linkDto.getLinkId();
 
-            jpaChatLinkRepository.deleteByChatLinkId_Chat_ChatIdAndChatLinkId_Link_LinkId(tgChatId, linkId);
+            jpaChatLinkRepository.deleteByChatIdAndLinkId(tgChatId, linkId);
         }
     }
 
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
-        List<Long> urlIds = jpaChatLinkRepository.findAllByChatLinkId_Chat_ChatId(tgChatId);
+        List<Long> urlIds = jpaChatLinkRepository.findLinkIdsByChatId(tgChatId);
         //List<Long> urlIds = jpaChatLinkRepository.findUrlIdsByChatId(tgChatId);
         ListLinksResponse response = new ListLinksResponse();
 
         for (Long urlId : urlIds) {
-            JpaLinkDto jpaLinkDto = jpaLinkRepository.findById(urlId).orElse(null);
-            if (jpaLinkDto != null) {
-                response.setLinks(Collections.singletonList(jpaLinkDto.getUrl()), urlId);
+            LinkDto linkDto = jpaLinkRepository.findById(urlId).orElse(null);
+            if (linkDto != null) {
+                response.setLinks(Collections.singletonList(linkDto.getUrl()), urlId);
             }
         }
 
@@ -84,7 +89,7 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    public List<JdbcLinkDto> listAll() {
+    public List<LinkDto> listAll() {
         LocalDateTime time = LocalDateTime.now().minusMinutes(1);
         Timestamp timestamp = Timestamp.valueOf(time);
         return jpaLinkRepository.findAllByLastCheckTimeBefore(timestamp);

@@ -1,4 +1,4 @@
-package edu.java.scrapper.domain.jooq.service;
+package edu.java.service.jooq;
 
 import edu.java.scrapper.domain.jooq.tables.Link;
 import edu.java.service.LinkUpdater;

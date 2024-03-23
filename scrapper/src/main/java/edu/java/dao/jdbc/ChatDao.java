@@ -1,8 +1,7 @@
 package edu.java.dao.jdbc;
 
-import edu.java.dto.jdbc.JdbcChatDto;
+import edu.java.dto.ChatDto;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class ChatDao {
     private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<JdbcChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new JdbcChatDto(rs.getLong("chat_id"));
+    private static final RowMapper<ChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new ChatDto(rs.getLong("chat_id"));
 
     public ChatDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Transactional
-    public void add(JdbcChatDto chat) {
+    public void add(ChatDto chat) {
         try {
             jdbcTemplate.update("INSERT INTO Chat (chat_id) VALUES (?)", chat.getChatId());
         } catch (DuplicateKeyException e) {
@@ -31,15 +30,11 @@ public class ChatDao {
 
     @Transactional
     public Long remove(Long chatId) {
-        if (jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId) > 0) {
-            return chatId;
-        } else {
-            throw new NoSuchElementException(String.format("Чат с ID %s не найден", chatId));
-        }
+        return (long) jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId);
     }
 
     @Transactional(readOnly = true)
-    public List<JdbcChatDto> findAll() {
+    public List<ChatDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
     }
 }

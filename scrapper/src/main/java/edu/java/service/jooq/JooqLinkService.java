@@ -1,6 +1,6 @@
-package edu.java.scrapper.domain.jooq.service;
+package edu.java.service.jooq;
 
-import edu.java.dto.jdbc.JdbcLinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.Link;
@@ -17,10 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 public class JooqLinkService implements LinkService {
     private final static Link LINK = Link.LINK;
     private final static ChatLink CHAT_LINK = ChatLink.CHAT_LINK;
@@ -93,9 +91,9 @@ public class JooqLinkService implements LinkService {
     }
 
     @Override
-    public List<JdbcLinkDto> listAll() {
+    public List<LinkDto> listAll() {
         return dslContext.selectFrom(LINK)
             .fetch()
-            .into(JdbcLinkDto.class);
+            .into(LinkDto.class);
     }
 }

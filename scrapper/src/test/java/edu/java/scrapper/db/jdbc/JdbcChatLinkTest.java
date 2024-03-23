@@ -1,12 +1,14 @@
-package edu.java.scrapper.db;
+package edu.java.scrapper.db.jdbc;
 
 import edu.java.dao.jdbc.ChatDao;
 import edu.java.dao.jdbc.ChatLinkDao;
 import edu.java.dao.jdbc.LinkDao;
-import edu.java.dto.jdbc.JdbcChatDto;
+import edu.java.dto.ChatDto;
 import edu.java.dto.jdbc.JdbcChatLinkDto;
-import edu.java.dto.jdbc.JdbcLinkDto;
+import edu.java.dto.LinkDto;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import edu.java.scrapper.db.IntegrationEnvironment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,13 +36,17 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
     void addTest() {
         int sizeAfterAdd = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
-        JdbcLinkDto
-            jdbcLinkDto = new JdbcLinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
-        linkDao.add(jdbcLinkDto);
-        Long linkId = linkDao.getIdByUrl(jdbcLinkDto.getUrl());
+        LinkDto
+            linkDto = new LinkDto("https://edu.tinkoff.ru",
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()),
+            "testUser"
+        );
+        linkDao.add(linkDto);
+        Long linkId = linkDao.getIdByUrl(linkDto.getUrl());
 
-        JdbcChatDto jdbcChatDto = new JdbcChatDto(CHAT_ID);
-        chatDao.add(jdbcChatDto);
+        ChatDto chatDto = new ChatDto(CHAT_ID);
+        chatDao.add(chatDto);
 
         JdbcChatLinkDto jdbcChatLinkDto = new JdbcChatLinkDto(CHAT_ID, linkId);
 
@@ -59,13 +65,13 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
 
         int sizeAfterAdd = chatLinkDao.findAll().size(); // нужна проверка при переполнении
 
-        JdbcLinkDto
-            jdbcLinkDto = new JdbcLinkDto("https://edu.tinkoff.ru", LocalDateTime.now(), LocalDateTime.now(), "testUser");
-        linkDao.add(jdbcLinkDto);
-        Long linkId = linkDao.getIdByUrl(jdbcLinkDto.getUrl());
+        LinkDto
+            linkDto = new LinkDto("https://edu.tinkoff.ru", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), "testUser");
+        linkDao.add(linkDto);
+        Long linkId = linkDao.getIdByUrl(linkDto.getUrl());
 
-        JdbcChatDto jdbcChatDto = new JdbcChatDto(CHAT_ID);
-        chatDao.add(jdbcChatDto);
+        ChatDto chatDto = new ChatDto(CHAT_ID);
+        chatDao.add(chatDto);
 
         JdbcChatLinkDto jdbcChatLinkDto = new JdbcChatLinkDto(CHAT_ID, linkId);
         chatLinkDao.add(jdbcChatLinkDto);

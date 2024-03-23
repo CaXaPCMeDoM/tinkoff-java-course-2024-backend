@@ -3,6 +3,7 @@ package edu.java.internal.controllers.exception;
 import edu.java.ApiErrorResponse;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import edu.java.my.exception.ChatNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,15 +33,12 @@ public class ErrorHandler {
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResponse> handleNoSuchElementException(NoSuchElementException ex) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
-        apiErrorResponse.setDescription(ex.getMessage());
-        apiErrorResponse.setCode(HttpStatus.NOT_FOUND.toString());
-        String errorId = UUID.randomUUID().toString();
-        apiErrorResponse.setErrorId(errorId);
+        return httpStatusNotFound(ex);
+    }
 
-        LOGGER.error(ERROR_MESSAGE, errorId, ex);
-
-        return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
+    @ExceptionHandler
+    public ResponseEntity<ApiErrorResponse> handleNoSuchElementException(ChatNotFoundException ex) {
+        return httpStatusNotFound(ex);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -54,5 +52,18 @@ public class ErrorHandler {
         LOGGER.error(ERROR_MESSAGE, errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ApiErrorResponse> httpStatusNotFound(Exception ex){
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+        apiErrorResponse.setDescription(ex.getMessage());
+        apiErrorResponse.setCode(HttpStatus.NOT_FOUND.toString());
+        String errorId = UUID.randomUUID().toString();
+        apiErrorResponse.setErrorId(errorId);
+
+        LOGGER.error(ERROR_MESSAGE, errorId, ex);
+
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
     }
 }

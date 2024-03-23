@@ -1,4 +1,4 @@
-package edu.java.dto.jpa;
+package edu.java.dto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -17,24 +17,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "link")
-public class JpaLinkDto {
+public class LinkDto {
     @Id
     @Column(name = "url_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long linkId;
-    @Column(name = "url")
+    @Column(name = "url", unique = true, nullable = false)
     private String url;
-    @Column(name = "last_check_time")
+    @Column(name = "last_check_time", nullable = false)
     private Timestamp lastCheckTime;
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
-    @Column(name = "created_by")
+    @Column(name = "created_by", nullable = false)
     private String createdBy;
 
-    public JpaLinkDto(Long chatId, String url) {
+    public LinkDto(Long chatId, String url) {
         this.url = url;
         lastCheckTime = Timestamp.valueOf(LocalDateTime.now());
         createdAt = Timestamp.valueOf(LocalDateTime.now());
         createdBy = chatId.toString();
+    }
+
+    public LinkDto(String url, Timestamp lastCheckTime, Timestamp createdAt, String createdBy) {
+        this.url = url;
+        this.lastCheckTime = lastCheckTime;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 }

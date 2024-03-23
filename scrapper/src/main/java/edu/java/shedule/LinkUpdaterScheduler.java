@@ -1,6 +1,6 @@
 package edu.java.shedule;
 
-import edu.java.dto.jdbc.JdbcLinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.service.LinkService;
 import edu.java.shedule.process.LinkProcessService;
 import java.time.Duration;
@@ -31,9 +31,9 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "#{@schedulerInterval.toMillis()}")
     public void update() {
-        List<JdbcLinkDto> linksDtos = linkService.listAll();
-        for (JdbcLinkDto jdbcLinkDto : linksDtos) {
-            linkProcessService.processLink(jdbcLinkDto);
+        List<LinkDto> linksDtos = linkService.listAll();
+        for (LinkDto linkDto : linksDtos) {
+            linkProcessService.processLink(linkDto);
         }
     }
 }

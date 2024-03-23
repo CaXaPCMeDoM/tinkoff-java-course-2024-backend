@@ -1,4 +1,4 @@
-package edu.java.dto.jpa;
+package edu.java.dto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "chat")
-public class JpaChatDto {
+public class ChatDto {
     @Id
     @Column(name = "chat_id")
     private Long chatId;
 }
+

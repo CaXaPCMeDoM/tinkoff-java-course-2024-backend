@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.dto.jdbc.JdbcLinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.net.URI;
 import java.util.List;
@@ -12,5 +12,5 @@ public interface LinkService {
 
     ListLinksResponse listAllByChatId(long tgChatId);
 
-    List<JdbcLinkDto> listAll();
+    List<LinkDto> listAll();
 }

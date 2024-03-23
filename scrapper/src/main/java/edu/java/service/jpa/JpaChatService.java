@@ -1,19 +1,31 @@
 package edu.java.service.jpa;
 
-import edu.java.dto.jpa.JpaChatDto;
+import edu.java.dto.ChatDto;
 import edu.java.repository.jpa.JpaChatRepository;
 import edu.java.service.ChatService;
 
 public class JpaChatService implements ChatService {
-    private JpaChatRepository jpaChatRepository;
-    @Override
-    public void register(long tgChatId) {
-        JpaChatDto jpaChatDto = new JpaChatDto(tgChatId);
-        jpaChatRepository.save(jpaChatDto);
+    private final JpaChatRepository jpaChatRepository;
+    private final static Long THE_RECORD_EXISTS = 1L;
+    private final static Long THE_RECORD_NOT_EXISTS = 0L;
+
+    public JpaChatService(JpaChatRepository jpaChatRepository) {
+        this.jpaChatRepository = jpaChatRepository;
     }
 
     @Override
-    public void unregister(long tgChatId) {
-        jpaChatRepository.deleteById(tgChatId);
+    public void register(long tgChatId) {
+        ChatDto chatDto = new ChatDto(tgChatId);
+        jpaChatRepository.save(chatDto);
+    }
+
+    @Override
+    public Long unregister(long tgChatId) {
+        if (jpaChatRepository.existsById(tgChatId)) {
+            jpaChatRepository.deleteById(tgChatId);
+            return THE_RECORD_EXISTS;
+        } else {
+            return THE_RECORD_NOT_EXISTS;
+        }
     }
 }
