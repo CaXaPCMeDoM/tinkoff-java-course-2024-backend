@@ -1,8 +1,8 @@
 package edu.java.dao.jooq;
 
 import edu.java.dto.ChatDto;
-import java.util.List;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
+import java.util.List;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
