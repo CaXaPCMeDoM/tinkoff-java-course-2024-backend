@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
-public class LinkDao {
+public class JdbcLinkDao {
     private static final int URL_INDEX = 1;
     private static final int LAST_CHECK_TIME_INDEX = 2;
     private static final int CREATED_AT_INDEX = 3;
@@ -34,7 +34,7 @@ public class LinkDao {
         rs.getString(CREATED_BY_FIELD_FROM_SQL)
     );
 
-    public LinkDao(JdbcTemplate jdbcTemplate) {
+    public JdbcLinkDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

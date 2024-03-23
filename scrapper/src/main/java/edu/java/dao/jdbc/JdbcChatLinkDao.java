@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
-public class ChatLinkDao {
+public class JdbcChatLinkDao {
     private static final String URL_ID_FIELD_FROM_SQL = "url_id";
     private static final String CHAT_ID_FIELD_FROM_SQL = "chat_id";
 
@@ -22,7 +22,7 @@ public class ChatLinkDao {
         rs.getLong(URL_ID_FIELD_FROM_SQL)
     );
 
-    public ChatLinkDao(JdbcTemplate jdbcTemplate) {
+    public JdbcChatLinkDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

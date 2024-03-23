@@ -1,8 +1,8 @@
 package edu.java.configuration.access.jdbc;
 
-import edu.java.dao.jdbc.ChatDao;
-import edu.java.dao.jdbc.ChatLinkDao;
-import edu.java.dao.jdbc.LinkDao;
+import edu.java.dao.jdbc.JdbcChatDao;
+import edu.java.dao.jdbc.JdbcChatLinkDao;
+import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.service.ChatLinkService;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
@@ -18,22 +18,22 @@ import org.springframework.context.annotation.Configuration;
 public class JdbcAccessConfiguration {
     @Bean
     public ChatService chatServices(
-        ChatDao chatDao
+        JdbcChatDao jdbcChatDao
     ) {
-        return new JdbcChatService(chatDao);
+        return new JdbcChatService(jdbcChatDao);
     }
 
     @Bean
     public LinkService linkService(
-        LinkDao linkDao,
-        ChatLinkDao chatLinkDao
+        JdbcLinkDao jdbcLinkDao,
+        JdbcChatLinkDao jdbcChatLinkDao
     ) {
-        return new JdbcLinkService(linkDao, chatLinkDao);
+        return new JdbcLinkService(jdbcLinkDao, jdbcChatLinkDao);
     }
 
     @Bean ChatLinkService chatLinkService(
-        ChatLinkDao chatLinkDao
+        JdbcChatLinkDao jdbcChatLinkDao
     ) {
-        return new JdbcChatLinkService(chatLinkDao);
+        return new JdbcChatLinkService(jdbcChatLinkDao);
     }
 }

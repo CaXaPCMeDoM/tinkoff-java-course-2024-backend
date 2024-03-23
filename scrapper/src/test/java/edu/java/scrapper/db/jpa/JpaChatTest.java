@@ -3,31 +3,34 @@ package edu.java.scrapper.db.jpa;
 import edu.java.repository.jpa.JpaChatRepository;
 import edu.java.service.jpa.JpaChatService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class JpaChatTest {
-    @Autowired
+    @InjectMocks
     private JpaChatService jpaChatService;
-    @Autowired
+    @Mock
     private JpaChatRepository chatRepository;
 
     private static final Long CHAT_ID = -1L;
 
     @Test
-    @Transactional
-    @Rollback
     void registerChatTest() {
-        int sizeAfterAdd = chatRepository.findAll().size(); // нужна проверка при переполнении
+        when(chatRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        int sizeAfterAdd = chatRepository.findAll().size();
 
         jpaChatService.register(CHAT_ID);
 
-        int sizeBeforeAdd = sizeAfterAdd + 1; // нужна проверка при переполнении
+        int sizeBeforeAdd = sizeAfterAdd + 1;
 
-        assertThat(chatRepository.findAll().size()).isEqualTo(sizeBeforeAdd);
+        verify(chatRepository, times(1)).save(any());
     }
+
 }

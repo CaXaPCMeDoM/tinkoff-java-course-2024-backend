@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
-public class ChatDao {
+public class JdbcChatDao {
     private final JdbcTemplate jdbcTemplate;
     private static final RowMapper<ChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new ChatDto(rs.getLong("chat_id"));
 
-    public ChatDao(JdbcTemplate jdbcTemplate) {
+    public JdbcChatDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

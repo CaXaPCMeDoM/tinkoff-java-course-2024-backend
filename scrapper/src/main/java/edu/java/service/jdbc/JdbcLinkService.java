@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
-import edu.java.dao.jdbc.ChatLinkDao;
-import edu.java.dao.jdbc.LinkDao;
+import edu.java.dao.jdbc.JdbcChatLinkDao;
+import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.dto.LinkDto;
 import edu.java.dto.jdbc.JdbcChatLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class JdbcLinkService implements LinkService {
     private LinkDto linkDto;
-    private final LinkDao linkDao;
+    private final JdbcLinkDao jdbcLinkDao;
 
     private JdbcChatLinkDto jdbcChatLinkDto;
-    private final ChatLinkDao chatLinkDao;
+    private final JdbcChatLinkDao jdbcChatLinkDao;
 
-    public JdbcLinkService(LinkDao linkDao, ChatLinkDao chatLinkDao) {
-        this.linkDao = linkDao;
-        this.chatLinkDao = chatLinkDao;
+    public JdbcLinkService(JdbcLinkDao jdbcLinkDao, JdbcChatLinkDao jdbcChatLinkDao) {
+        this.jdbcLinkDao = jdbcLinkDao;
+        this.jdbcChatLinkDao = jdbcChatLinkDao;
     }
 
     @Transactional
@@ -32,10 +32,10 @@ public class JdbcLinkService implements LinkService {
             Timestamp.valueOf(LocalDateTime.now()),
             String.valueOf(tgChatId)
         );
-        linkDao.add(linkDto);
-        Long linkId = linkDao.getIdByUrl(url.toString());
+        jdbcLinkDao.add(linkDto);
+        Long linkId = jdbcLinkDao.getIdByUrl(url.toString());
         jdbcChatLinkDto = new JdbcChatLinkDto(tgChatId, linkId);
-        chatLinkDao.add(jdbcChatLinkDto);
+        jdbcChatLinkDao.add(jdbcChatLinkDto);
 
         return linkId;
     }
@@ -43,21 +43,21 @@ public class JdbcLinkService implements LinkService {
     @Transactional
     @Override
     public void remove(long tgChatId, URI url) {
-        Long urlId = linkDao.getIdByUrl(url.toString());
+        Long urlId = jdbcLinkDao.getIdByUrl(url.toString());
 
         if (urlId != null) {
-            chatLinkDao.remove(tgChatId, urlId);
+            jdbcChatLinkDao.remove(tgChatId, urlId);
         }
     }
 
     @Transactional
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
-        return chatLinkDao.getUrlByChatId(tgChatId);
+        return jdbcChatLinkDao.getUrlByChatId(tgChatId);
     }
 
     @Override
     public List<LinkDto> listAll() {
-        return linkDao.findAll();
+        return jdbcLinkDao.findAll();
     }
 }
