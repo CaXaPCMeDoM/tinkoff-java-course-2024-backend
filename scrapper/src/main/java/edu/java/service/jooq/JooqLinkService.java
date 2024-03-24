@@ -2,14 +2,12 @@ package edu.java.service.jooq;
 
 import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
+import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.Link;
 import edu.java.scrapper.domain.jooq.tables.records.ChatLinkRecord;
-import edu.java.scrapper.domain.jooq.tables.records.LinkRecord;
 import edu.java.service.LinkService;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
+import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 public class JooqLinkService implements LinkService {
@@ -24,28 +23,30 @@ public class JooqLinkService implements LinkService {
     private final static ChatLink CHAT_LINK = ChatLink.CHAT_LINK;
     private DSLContext dslContext;
 
-    public JooqLinkService(DSLContext dslContext) {
+    private JooqLinkRepository jooqLinkRepository;
+
+    public JooqLinkService(DSLContext dslContext, JooqLinkRepository jooqLinkRepository) {
         this.dslContext = dslContext;
+        this.jooqLinkRepository = jooqLinkRepository;
     }
 
     @Override
-    @Transactional
     public Long add(long tgChatId, URI url) {
-        LinkRecord linkRecord = dslContext.insertInto(LINK)
-            .set(LINK.URL, url.toString())
-            .set(LINK.CREATED_AT, LocalDateTime.now().atOffset(ZoneOffset.UTC))
-            .set(LINK.CREATED_BY, String.valueOf(tgChatId))
-            .set(LINK.LAST_CHECK_TIME, LocalDateTime.now().atOffset(ZoneOffset.UTC))
-            .returning()
-            .fetchOne();
+        LinkDto linkDto;
+        try {
+            linkDto = new LinkDto(tgChatId, url.toString());
+            jooqLinkRepository.add(linkDto);
 
-        if (linkRecord != null) {
+        } catch (DataAccessException e) {
+            linkDto = jooqLinkRepository.findUrlIdByLink(url.toString());
+        }
+        if (linkDto != null) {
             ChatLinkRecord chatLinkRecord = dslContext.insertInto(ChatLink.CHAT_LINK)
                 .set(ChatLink.CHAT_LINK.CHAT_ID, tgChatId)
-                .set(ChatLink.CHAT_LINK.URL_ID, linkRecord.getUrlId())
+                .set(ChatLink.CHAT_LINK.URL_ID, linkDto.getLinkId())
                 .returning()
                 .fetchOne();
-            return linkRecord.getUrlId();
+            return linkDto.getLinkId();
         }
         return null;
     }

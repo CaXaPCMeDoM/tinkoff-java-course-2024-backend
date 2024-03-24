@@ -17,7 +17,8 @@ public class JooqChatService implements ChatService {
     @Override
     public void register(long tgChatId) {
         dslContext.insertInto(chat)
-            .set(chat.CHAT_ID, tgChatId);
+            .set(chat.CHAT_ID, tgChatId)
+            .execute();
     }
 
     @Transactional

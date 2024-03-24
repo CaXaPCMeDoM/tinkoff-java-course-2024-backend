@@ -6,8 +6,8 @@ import edu.java.service.ChatService;
 
 public class JpaChatService implements ChatService {
     private final JpaChatRepository jpaChatRepository;
-    private final static Long THE_RECORD_EXISTS = 1L;
-    private final static Long THE_RECORD_NOT_EXISTS = 0L;
+    public final static Long THE_RECORD_EXISTS = 1L;
+    public final static Long THE_RECORD_NOT_EXISTS = 0L;
 
     public JpaChatService(JpaChatRepository jpaChatRepository) {
         this.jpaChatRepository = jpaChatRepository;

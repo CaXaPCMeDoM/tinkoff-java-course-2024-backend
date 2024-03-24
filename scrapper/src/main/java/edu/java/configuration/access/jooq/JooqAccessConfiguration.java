@@ -1,5 +1,6 @@
 package edu.java.configuration.access.jooq;
 
+import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.service.ChatLinkService;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
@@ -23,9 +24,10 @@ public class JooqAccessConfiguration {
 
     @Bean
     public LinkService linkService(
-        DSLContext dslContext
+        DSLContext dslContext,
+        JooqLinkRepository jooqLinkRepository
     ) {
-        return new JooqLinkService(dslContext);
+        return new JooqLinkService(dslContext, jooqLinkRepository);
     }
 
     @Bean

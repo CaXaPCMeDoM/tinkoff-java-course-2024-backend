@@ -17,13 +17,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @Slf4j
 public class JpaLinkService implements LinkService {
-    @Value("${link.update.delay}")
-    private long delay;
     private final JpaLinkRepository jpaLinkRepository;
     private final JpaChatLinkRepository jpaChatLinkRepository;
     private final JpaChatRepository jpaChatRepository;
@@ -83,7 +80,6 @@ public class JpaLinkService implements LinkService {
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
         List<Long> urlIds = jpaChatLinkRepository.findLinkIdsByChatId(tgChatId);
-        //List<Long> urlIds = jpaChatLinkRepository.findUrlIdsByChatId(tgChatId);
         ListLinksResponse response = new ListLinksResponse();
 
         for (Long urlId : urlIds) {
