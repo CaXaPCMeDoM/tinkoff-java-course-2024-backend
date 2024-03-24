@@ -1,12 +1,17 @@
 package edu.java.service.jpa;
 
+import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.service.LinkUpdater;
-import org.springframework.transaction.annotation.Transactional;
 
 public class JpaLinkUpdater implements LinkUpdater {
-    @Transactional
+    private final JpaLinkRepository jpaLinkRepository;
+
+    public JpaLinkUpdater(JpaLinkRepository jpaLinkRepository) {
+        this.jpaLinkRepository = jpaLinkRepository;
+    }
+
     @Override
     public void updateLinkLastCheckTime(Long linkId) {
-
+        jpaLinkRepository.updateLastCheckTimeByLink(linkId);
     }
 }

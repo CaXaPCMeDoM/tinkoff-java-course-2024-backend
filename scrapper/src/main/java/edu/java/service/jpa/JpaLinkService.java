@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @Slf4j
 public class JpaLinkService implements LinkService {
@@ -28,7 +28,8 @@ public class JpaLinkService implements LinkService {
     private final JpaChatLinkRepository jpaChatLinkRepository;
     private final JpaChatRepository jpaChatRepository;
 
-    public JpaLinkService(JpaLinkRepository jpaLinkRepository, JpaChatLinkRepository jpaChatLinkRepository,
+    public JpaLinkService(
+        JpaLinkRepository jpaLinkRepository, JpaChatLinkRepository jpaChatLinkRepository,
         JpaChatRepository jpaChatRepository
     ) {
         this.jpaLinkRepository = jpaLinkRepository;
@@ -36,13 +37,18 @@ public class JpaLinkService implements LinkService {
         this.jpaChatRepository = jpaChatRepository;
     }
 
-    @Transactional
     @Override
     public Long add(long tgChatId, URI url) {
         try {
             LinkDto linkDto = new LinkDto(tgChatId, url.toString());
-            LinkDto linkDtoWithLinkId = jpaLinkRepository.save(linkDto);
+            LinkDto linkDtoWithLinkId = null;
+            try {
+                linkDtoWithLinkId = jpaLinkRepository.save(linkDto);
+            } catch (DataIntegrityViolationException e) {
+                linkDtoWithLinkId = jpaLinkRepository.findByUrl(url.toString());
+            }
             Long linkId = linkDtoWithLinkId.getLinkId();
+            linkDto.setLinkId(linkId);
 
             Optional<ChatDto> optionalJpaChatDto = jpaChatRepository.findById(tgChatId);
             if (optionalJpaChatDto.isPresent()) {
@@ -63,7 +69,6 @@ public class JpaLinkService implements LinkService {
         return null;
     }
 
-    @Transactional
     @Override
     public void remove(long tgChatId, URI url) {
         LinkDto linkDto = jpaLinkRepository.findByUrl(url.toString());
@@ -75,7 +80,6 @@ public class JpaLinkService implements LinkService {
         }
     }
 
-    @Transactional
     @Override
     public ListLinksResponse listAllByChatId(long tgChatId) {
         List<Long> urlIds = jpaChatLinkRepository.findLinkIdsByChatId(tgChatId);
@@ -92,7 +96,6 @@ public class JpaLinkService implements LinkService {
         return response;
     }
 
-    @Transactional
     @Override
     public List<LinkDto> listAll() {
         LocalDateTime time = LocalDateTime.now().minusMinutes(1);

@@ -28,8 +28,7 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index IDX_LAST_CHECK_TIME = Internal.createIndex(
-        DSL.name("IDX_LAST_CHECK_TIME"),
+    public static final Index IDX_LAST_CHECK_TIME = Internal.createIndex(DSL.name("IDX_LAST_CHECK_TIME"),
         Link.LINK,
         new OrderField[] {Link.LINK.LAST_CHECK_TIME},
         false

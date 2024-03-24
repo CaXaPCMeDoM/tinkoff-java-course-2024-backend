@@ -7,6 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
@@ -18,6 +19,7 @@ public class JdbcChatDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
     public void add(ChatDto chat) {
         try {
             jdbcTemplate.update("INSERT INTO Chat (chat_id) VALUES (?)", chat.getChatId());
@@ -26,10 +28,12 @@ public class JdbcChatDao {
         }
     }
 
+    @Transactional
     public Long remove(Long chatId) {
         return (long) jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId);
     }
 
+    @Transactional(readOnly = true)
     public List<ChatDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
     }

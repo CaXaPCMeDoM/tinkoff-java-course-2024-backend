@@ -10,7 +10,7 @@ link:
     delay: 5000 # в миллисекундах
 
 app:
-  database-access-type: JDBC
+  database-access-type: JPA
   scheduler:
     enable: true
     interval: 10s

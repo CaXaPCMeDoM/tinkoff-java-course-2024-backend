@@ -9,6 +9,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
@@ -26,6 +27,7 @@ public class JdbcChatLinkDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
     public void add(JdbcChatLinkDto chatLink) {
         try {
             jdbcTemplate.update(
@@ -37,6 +39,7 @@ public class JdbcChatLinkDao {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Long> getChatIdsByLinkId(Long linkId) {
         return jdbcTemplate.query(
             "SELECT chat_id FROM CHAT_LINK WHERE url_id = ?",
@@ -45,6 +48,7 @@ public class JdbcChatLinkDao {
         );
     }
 
+    @Transactional(readOnly = true)
     public ListLinksResponse getUrlByChatId(Long chatId) {
         String sqlGetUrlIdByChatId = "SELECT url_id FROM CHAT_LINK WHERE chat_id = ?";
         String sqlGetUrlByUrlId = "SELECT url FROM Link WHERE url_id = ?";
@@ -67,10 +71,12 @@ public class JdbcChatLinkDao {
         return response;
     }
 
+    @Transactional
     public void remove(Long chatId, Long urlId) {
         jdbcTemplate.update("DELETE FROM CHAT_LINK WHERE chat_id = ? AND url_id = ?", chatId, urlId);
     }
 
+    @Transactional(readOnly = true)
     public List<JdbcChatLinkDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM CHAT_LINK", ROW_MAPPER_CHAT_AND_URL_ID);
     }
