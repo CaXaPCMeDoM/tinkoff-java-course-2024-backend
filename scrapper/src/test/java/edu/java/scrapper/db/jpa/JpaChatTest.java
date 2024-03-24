@@ -24,13 +24,18 @@ public class JpaChatTest {
     @Test
     void registerChatTest() {
         when(chatRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        int sizeAfterAdd = chatRepository.findAll().size();
 
         jpaChatService.register(CHAT_ID);
-
-        int sizeBeforeAdd = sizeAfterAdd + 1;
 
         verify(chatRepository, times(1)).save(any());
     }
 
+    @Test
+    void unregisterChatTest() {
+        when(chatRepository.existsById(any())).thenReturn(true);
+
+        jpaChatService.unregister(CHAT_ID);
+
+        verify(chatRepository, times(1)).deleteById(any());
+    }
 }
