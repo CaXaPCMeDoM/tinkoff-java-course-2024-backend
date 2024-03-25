@@ -11,6 +11,7 @@
 
     <properties>
         <spring-boot-starter-test.version>3.2.0</spring-boot-starter-test.version>
+        <h2.version>2.1.214</h2.version>
     </properties>
     <artifactId>scrapper</artifactId>
     <version>${revision}</version>
@@ -168,6 +169,12 @@
             <artifactId>testng</artifactId>
             <version>7.9.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+            <version>${h2.version}</version>
         </dependency>
         <!-- Hibernate ORM -->
         <dependency>
