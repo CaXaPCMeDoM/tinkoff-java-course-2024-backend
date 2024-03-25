@@ -3,13 +3,16 @@ package edu.java.scrapper.db.jdbc;
 import edu.java.dao.jdbc.JdbcChatDao;
 import edu.java.dto.ChatDto;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class JdbcChatTest {
     @Autowired
     private JdbcChatDao jdbcChatDao;
