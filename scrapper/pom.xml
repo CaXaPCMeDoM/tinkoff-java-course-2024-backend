@@ -9,6 +9,9 @@
         <version>${revision}</version>
     </parent>
 
+    <properties>
+        <spring-boot-starter-test.version>3.2.0</spring-boot-starter-test.version>
+    </properties>
     <artifactId>scrapper</artifactId>
     <version>${revision}</version>
 
@@ -100,6 +103,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <version>${spring-boot-starter-test.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -217,7 +221,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
