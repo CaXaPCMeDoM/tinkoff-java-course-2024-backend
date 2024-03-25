@@ -15,7 +15,6 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
-
 spring:
   application:
     name: scrapper
@@ -27,6 +26,8 @@ spring:
   liquibase:
     enabled: false
   jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
     show-sql: true
