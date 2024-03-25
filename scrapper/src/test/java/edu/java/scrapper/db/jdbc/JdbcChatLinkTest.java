@@ -6,20 +6,18 @@ import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.dto.ChatDto;
 import edu.java.dto.LinkDto;
 import edu.java.dto.jdbc.JdbcChatLinkDto;
+import edu.java.scrapper.db.IntegrationEnvironment;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
-public class JdbcChatLinkTest {
+public class JdbcChatLinkTest extends IntegrationEnvironment {
     @Autowired
     private JdbcChatLinkDao jdbcChatLinkDao;
     @Autowired
