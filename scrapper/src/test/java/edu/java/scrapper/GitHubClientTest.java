@@ -5,6 +5,11 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.external.client.github.client.GitHubClient;
 import edu.java.external.client.github.responceDTO.ReposResponse;
+import edu.java.scrapper.db.IntegrationEnvironment;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -14,10 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.OffsetDateTime;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
@@ -25,7 +26,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WireMockTest
-public class GitHubClientTest {
+public class GitHubClientTest extends IntegrationEnvironment {
     @Autowired
     private GitHubClient gitHubClient;
 
@@ -40,7 +41,7 @@ public class GitHubClientTest {
     }
 
     @Test
-    void checkingTheCorrectnessOfTheData() throws IOException {
+    public void checkingTheCorrectnessOfTheData() throws IOException {
         String owner = "sanyarnd";
         String repo = "java-course-2023-backend-template";
         String question_id = "17432735";

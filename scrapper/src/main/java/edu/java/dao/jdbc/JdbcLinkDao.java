@@ -1,6 +1,6 @@
-package edu.java.dao;
+package edu.java.dao.jdbc;
 
-import edu.java.dao.dto.LinkDto;
+import edu.java.dto.LinkDto;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
-public class LinkDao {
+public class JdbcLinkDao {
     private static final int URL_INDEX = 1;
     private static final int LAST_CHECK_TIME_INDEX = 2;
     private static final int CREATED_AT_INDEX = 3;
@@ -30,12 +30,12 @@ public class LinkDao {
     private final JdbcTemplate jdbcTemplate;
     private static final RowMapper<LinkDto> ROW_MAPPER_ALL = (rs, rowNum) -> new LinkDto(
         rs.getString(URL_FIELD_FROM_SQL),
-        rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
-        rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
+        rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL),
+        rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL),
         rs.getString(CREATED_BY_FIELD_FROM_SQL)
     );
 
-    public LinkDao(JdbcTemplate jdbcTemplate) {
+    public JdbcLinkDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -65,8 +65,8 @@ public class LinkDao {
                         Statement.RETURN_GENERATED_KEYS
                     );
                     ps.setString(URL_INDEX, linkDto.getUrl());
-                    ps.setTimestamp(LAST_CHECK_TIME_INDEX, Timestamp.valueOf(linkDto.getLastCheckTime()));
-                    ps.setTimestamp(CREATED_AT_INDEX, Timestamp.valueOf(linkDto.getCreatedAt()));
+                    ps.setTimestamp(LAST_CHECK_TIME_INDEX, linkDto.getLastCheckTime());
+                    ps.setTimestamp(CREATED_AT_INDEX, linkDto.getCreatedAt());
                     ps.setString(CREATED_BY_INDEX, linkDto.getCreatedBy());
                     return ps;
                 }
@@ -87,8 +87,8 @@ public class LinkDao {
             RowMapper<LinkDto> rowMapper2 = (rs, rowNum) -> {
                 LinkDto linkDtoFromFindAll = new LinkDto(
                     rs.getString(URL_FIELD_FROM_SQL),
-                    rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL).toLocalDateTime(),
-                    rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL).toLocalDateTime(),
+                    rs.getTimestamp(LAST_CHECK_TIME_FIELD_FROM_SQL),
+                    rs.getTimestamp(CREATED_AT_FIELD_FROM_SQL),
                     rs.getString(CREATED_BY_FIELD_FROM_SQL)
                 );
                 linkDtoFromFindAll.setLinkId(rs.getLong(URL_ID_FIELD_FROM_SQL));

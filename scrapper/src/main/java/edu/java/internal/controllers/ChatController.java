@@ -1,7 +1,9 @@
 package edu.java.internal.controllers;
 
 import edu.java.ApiErrorResponse;
+import edu.java.my.exception.ChatNotFoundException;
 import edu.java.service.ChatService;
+import edu.java.service.decorator.ValueToBeDeletedExistsDecorator;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,7 +41,7 @@ public class ChatController {
                      content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     @DeleteMapping("/{id}")
-    public void deleteChat(@PathVariable Long id) {
-        chatService.unregister(id);
+    public void deleteChat(@PathVariable Long id) throws ChatNotFoundException {
+        (new ValueToBeDeletedExistsDecorator(chatService)).unregister(id);
     }
 }

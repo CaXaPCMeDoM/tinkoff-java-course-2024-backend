@@ -5,12 +5,16 @@ stackoverflow:
 bot-local-host:
   base-url: http://localhost:8090
 
+link:
+  update:
+    delay: 5000 # в миллисекундах
+
 app:
+  database-access-type: JPA
   scheduler:
     enable: true
     interval: 10s
     force-check-delay: 10s
-
 spring:
   application:
     name: scrapper
@@ -18,10 +22,14 @@ spring:
     password: postgres
     username: postgres
     url: jdbc:postgresql://localhost:5437/scrapper
-    driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: false
-
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
 server:
   port: 8080
 

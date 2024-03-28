@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.dao.dto.LinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.net.URI;
 import java.util.List;

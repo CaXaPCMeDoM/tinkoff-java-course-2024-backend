@@ -19,7 +19,7 @@
         <sqlFile path="sql/v1/link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="triggers_v1" author="Vladislav Khakimov">
+    <changeSet id="triggers_v3" author="Vladislav Khakimov">
         <sqlFile path="sql/v1/link_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
