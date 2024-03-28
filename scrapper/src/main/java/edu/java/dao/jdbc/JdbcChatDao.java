@@ -4,6 +4,7 @@ import edu.java.dto.ChatDto;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -36,5 +37,19 @@ public class JdbcChatDao {
     @Transactional(readOnly = true)
     public List<ChatDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
+    }
+
+    @Transactional(readOnly = true)
+    public ChatDto findByChatId(Long chatId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "SELECT chat.chat_id FROM chat where chat_id = ?",
+                new Object[] {chatId},
+                ROW_MAPPER_ID
+            );
+        } catch (EmptyResultDataAccessException e) {
+            log.info("Не найден chatId в таблице Chat");
+            return null;
+        }
     }
 }

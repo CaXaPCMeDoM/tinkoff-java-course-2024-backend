@@ -1,4 +1,4 @@
-package edu.java.dto.jpa;
+package edu.java.dto;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "chat_link")
-public class JpaChatLinkDto {
+public class ChatLinkDto {
     @EmbeddedId
-    public ChatLinkId chatLinkId;
+    private ChatLinkId chatLinkId;
 }

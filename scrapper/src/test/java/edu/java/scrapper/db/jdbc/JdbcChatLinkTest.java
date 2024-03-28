@@ -5,7 +5,8 @@ import edu.java.dao.jdbc.JdbcChatLinkDao;
 import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.dto.ChatDto;
 import edu.java.dto.LinkDto;
-import edu.java.dto.jdbc.JdbcChatLinkDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.ChatLinkDto;
 import edu.java.scrapper.db.IntegrationEnvironment;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -45,9 +46,9 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
         ChatDto chatDto = new ChatDto(CHAT_ID);
         jdbcChatDao.add(chatDto);
 
-        JdbcChatLinkDto jdbcChatLinkDto = new JdbcChatLinkDto(CHAT_ID, linkId);
+        ChatLinkDto chatLinkDto = new ChatLinkDto(new ChatLinkId(chatDto, linkDto));
 
-        jdbcChatLinkDao.add(jdbcChatLinkDto);
+        jdbcChatLinkDao.add(chatLinkDto);
 
         int sizeBeforeAdd = sizeAfterAdd + 1;
 
@@ -70,8 +71,8 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
         ChatDto chatDto = new ChatDto(CHAT_ID);
         jdbcChatDao.add(chatDto);
 
-        JdbcChatLinkDto jdbcChatLinkDto = new JdbcChatLinkDto(CHAT_ID, linkId);
-        jdbcChatLinkDao.add(jdbcChatLinkDto);
+        ChatLinkDto chatLinkDto =  new ChatLinkDto(new ChatLinkId(chatDto, linkDto));
+        jdbcChatLinkDao.add(chatLinkDto);
 
         int sizeBeforeAdd = sizeAfterAdd + 1;
 

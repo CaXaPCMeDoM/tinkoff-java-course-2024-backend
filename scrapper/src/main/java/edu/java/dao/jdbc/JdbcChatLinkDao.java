@@ -1,6 +1,9 @@
 package edu.java.dao.jdbc;
 
-import edu.java.dto.jdbc.JdbcChatLinkDto;
+import edu.java.dto.ChatDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.ChatLinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import java.util.Collections;
 import java.util.List;
@@ -18,21 +21,25 @@ public class JdbcChatLinkDao {
     private static final String CHAT_ID_FIELD_FROM_SQL = "chat_id";
 
     private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<JdbcChatLinkDto> ROW_MAPPER_CHAT_AND_URL_ID = (rs, rowNum) -> new JdbcChatLinkDto(
-        rs.getLong(CHAT_ID_FIELD_FROM_SQL),
-        rs.getLong(URL_ID_FIELD_FROM_SQL)
-    );
+    private static final RowMapper<ChatLinkDto> ROW_MAPPER_CHAT_AND_URL_ID = (rs, rowNum) -> {
+        ChatDto chat = new ChatDto();
+        chat.setChatId(rs.getLong(CHAT_ID_FIELD_FROM_SQL));
+        LinkDto link = new LinkDto();
+        link.setLinkId(rs.getLong(URL_ID_FIELD_FROM_SQL));
+        ChatLinkId chatLinkId = new ChatLinkId(chat, link);
+        return new ChatLinkDto(chatLinkId);
+    };
 
     public JdbcChatLinkDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Transactional
-    public void add(JdbcChatLinkDto chatLink) {
+    public void add(ChatLinkDto chatLink) {
         try {
             jdbcTemplate.update(
                 "INSERT INTO CHAT_LINK (chat_id, url_id) VALUES (?, ?)",
-                chatLink.getChatId(), chatLink.getUrlId()
+                chatLink.getChatLinkId().getChat().getChatId(), chatLink.getChatLinkId().getLink().getLinkId()
             );
         } catch (DuplicateKeyException e) {
             log.warn("Повторяющийся ключ");
@@ -77,7 +84,7 @@ public class JdbcChatLinkDao {
     }
 
     @Transactional(readOnly = true)
-    public List<JdbcChatLinkDto> findAll() {
+    public List<ChatLinkDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM CHAT_LINK", ROW_MAPPER_CHAT_AND_URL_ID);
     }
 }

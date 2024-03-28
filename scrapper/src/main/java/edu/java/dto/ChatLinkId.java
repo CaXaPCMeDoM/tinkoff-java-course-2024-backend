@@ -1,7 +1,5 @@
-package edu.java.dto.jpa;
+package edu.java.dto;
 
-import edu.java.dto.ChatDto;
-import edu.java.dto.LinkDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;

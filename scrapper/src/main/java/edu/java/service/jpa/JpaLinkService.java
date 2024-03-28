@@ -2,8 +2,8 @@ package edu.java.service.jpa;
 
 import edu.java.dto.ChatDto;
 import edu.java.dto.LinkDto;
-import edu.java.dto.jpa.ChatLinkId;
-import edu.java.dto.jpa.JpaChatLinkDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.ChatLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.repository.jpa.JpaChatLinkRepository;
 import edu.java.repository.jpa.JpaChatRepository;
@@ -52,9 +52,9 @@ public class JpaLinkService implements LinkService {
                 ChatDto chatDto = optionalJpaChatDto.get();
 
                 ChatLinkId chatLinkId = new ChatLinkId(chatDto, linkDto);
-                JpaChatLinkDto jpaChatLinkDto = new JpaChatLinkDto(chatLinkId);
+                ChatLinkDto chatLinkDto = new ChatLinkDto(chatLinkId);
 
-                jpaChatLinkRepository.save(jpaChatLinkDto);
+                jpaChatLinkRepository.save(chatLinkDto);
                 log.info("Исключение не было вызвано. Метод add отработал в JpaLinkService");
                 return linkId;
             } else {

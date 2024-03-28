@@ -1,9 +1,12 @@
 package edu.java.service.jdbc;
 
+import edu.java.dao.jdbc.JdbcChatDao;
 import edu.java.dao.jdbc.JdbcChatLinkDao;
 import edu.java.dao.jdbc.JdbcLinkDao;
+import edu.java.dto.ChatDto;
 import edu.java.dto.LinkDto;
-import edu.java.dto.jdbc.JdbcChatLinkDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.ChatLinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.service.LinkService;
 import java.net.URI;
@@ -13,9 +16,11 @@ import java.util.List;
 
 public class JdbcLinkService implements LinkService {
     private LinkDto linkDto;
+    private ChatDto chatDto;
     private final JdbcLinkDao jdbcLinkDao;
 
-    private JdbcChatLinkDto jdbcChatLinkDto;
+    private ChatLinkDto jdbcChatLinkDto;
+    private JdbcChatDao jdbcChatDao;
     private final JdbcChatLinkDao jdbcChatLinkDao;
 
     public JdbcLinkService(JdbcLinkDao jdbcLinkDao, JdbcChatLinkDao jdbcChatLinkDao) {
@@ -25,17 +30,23 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public Long add(long tgChatId, URI url) {
-        linkDto = new LinkDto(url.toString(),
+        linkDto = new LinkDto(
+            url.toString(),
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()),
             String.valueOf(tgChatId)
         );
         jdbcLinkDao.add(linkDto);
-        Long linkId = jdbcLinkDao.getIdByUrl(url.toString());
-        jdbcChatLinkDto = new JdbcChatLinkDto(tgChatId, linkId);
-        jdbcChatLinkDao.add(jdbcChatLinkDto);
+        chatDto = jdbcChatDao.findByChatId(tgChatId);
+        if (chatDto != null) {
+            jdbcChatLinkDto = new ChatLinkDto(new ChatLinkId(chatDto, linkDto));
+            jdbcChatLinkDao.add(jdbcChatLinkDto);
 
-        return linkId;
+            return linkDto.getLinkId();
+        }
+        else{
+            return null;
+        }
     }
 
     @Override

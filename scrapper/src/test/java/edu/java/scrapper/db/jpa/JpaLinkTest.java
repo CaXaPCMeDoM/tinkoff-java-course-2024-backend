@@ -2,8 +2,8 @@ package edu.java.scrapper.db.jpa;
 
 import edu.java.dto.ChatDto;
 import edu.java.dto.LinkDto;
-import edu.java.dto.jpa.ChatLinkId;
-import edu.java.dto.jpa.JpaChatLinkDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.ChatLinkDto;
 import edu.java.repository.jpa.JpaChatLinkRepository;
 import edu.java.repository.jpa.JpaChatRepository;
 import edu.java.repository.jpa.JpaLinkRepository;
@@ -46,18 +46,18 @@ public class JpaLinkTest {
         ChatDto chatDto = new ChatDto();
         chatDto.setChatId(CHAT_ID);
         Optional<ChatDto> optionalChatDto = Optional.of(chatDto);
-        JpaChatLinkDto jpaChatLinkDto = new JpaChatLinkDto(new ChatLinkId(chatDto, linkDto));
+        ChatLinkDto chatLinkDto = new ChatLinkDto(new ChatLinkId(chatDto, linkDto));
 
         when(jpaLinkRepository.save(any(LinkDto.class))).thenReturn(linkDtoWithLinkId);
         when(jpaChatRepository.findById(anyLong())).thenReturn(optionalChatDto);
-        when(jpaChatLinkRepository.save(any(JpaChatLinkDto.class))).thenReturn(jpaChatLinkDto);
+        when(jpaChatLinkRepository.save(any(ChatLinkDto.class))).thenReturn(chatLinkDto);
 
         Long result = jpaLinkService.add(CHAT_ID, LINK_URI);
 
         Assertions.assertEquals(linkDtoWithLinkId.getLinkId(), result);
         verify(jpaLinkRepository, times(1)).save(any(LinkDto.class));
         verify(jpaChatRepository, times(1)).findById(anyLong());
-        verify(jpaChatLinkRepository, times(1)).save(any(JpaChatLinkDto.class));
+        verify(jpaChatLinkRepository, times(1)).save(any(ChatLinkDto.class));
     }
 
     @Test
