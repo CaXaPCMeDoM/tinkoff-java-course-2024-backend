@@ -4,9 +4,9 @@ import edu.java.dao.jdbc.JdbcChatDao;
 import edu.java.dao.jdbc.JdbcChatLinkDao;
 import edu.java.dao.jdbc.JdbcLinkDao;
 import edu.java.dto.ChatDto;
-import edu.java.dto.LinkDto;
-import edu.java.dto.ChatLinkId;
 import edu.java.dto.ChatLinkDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.service.LinkService;
 import java.net.URI;
@@ -43,8 +43,7 @@ public class JdbcLinkService implements LinkService {
             jdbcChatLinkDao.add(jdbcChatLinkDto);
 
             return linkDto.getLinkId();
-        }
-        else{
+        } else {
             return null;
         }
     }

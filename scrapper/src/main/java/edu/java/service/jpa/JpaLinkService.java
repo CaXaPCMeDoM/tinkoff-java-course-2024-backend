@@ -1,9 +1,9 @@
 package edu.java.service.jpa;
 
 import edu.java.dto.ChatDto;
-import edu.java.dto.LinkDto;
-import edu.java.dto.ChatLinkId;
 import edu.java.dto.ChatLinkDto;
+import edu.java.dto.ChatLinkId;
+import edu.java.dto.LinkDto;
 import edu.java.internal.controllers.dto.ListLinksResponse;
 import edu.java.repository.jpa.JpaChatLinkRepository;
 import edu.java.repository.jpa.JpaChatRepository;

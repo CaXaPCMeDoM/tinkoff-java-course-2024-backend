@@ -42,6 +42,7 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
         );
         jdbcLinkDao.add(linkDto);
         Long linkId = jdbcLinkDao.getIdByUrl(linkDto.getUrl());
+        linkDto.setLinkId(linkId);
 
         ChatDto chatDto = new ChatDto(CHAT_ID);
         jdbcChatDao.add(chatDto);
@@ -67,6 +68,7 @@ public class JdbcChatLinkTest extends IntegrationEnvironment {
             linkDto = new LinkDto("https://edu.tinkoff.ru", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), "testUser");
         jdbcLinkDao.add(linkDto);
         Long linkId = jdbcLinkDao.getIdByUrl(linkDto.getUrl());
+        linkDto.setLinkId(linkId);
 
         ChatDto chatDto = new ChatDto(CHAT_ID);
         jdbcChatDao.add(chatDto);
