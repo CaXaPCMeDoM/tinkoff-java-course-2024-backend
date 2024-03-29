@@ -1,6 +1,6 @@
 package edu.java.shedule;
 
-import edu.java.dao.dto.LinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.service.LinkService;
 import edu.java.shedule.process.LinkProcessService;
 import java.time.Duration;

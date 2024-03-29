@@ -1,10 +1,10 @@
-package edu.java.dao;
+package edu.java.dao.jdbc;
 
-import edu.java.dao.dto.ChatDto;
+import edu.java.dto.ChatDto;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
-public class ChatDao {
+public class JdbcChatDao {
     private final JdbcTemplate jdbcTemplate;
     private static final RowMapper<ChatDto> ROW_MAPPER_ID = (rs, rowNum) -> new ChatDto(rs.getLong("chat_id"));
 
-    public ChatDao(JdbcTemplate jdbcTemplate) {
+    public JdbcChatDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -31,15 +31,25 @@ public class ChatDao {
 
     @Transactional
     public Long remove(Long chatId) {
-        if (jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId) > 0) {
-            return chatId;
-        } else {
-            throw new NoSuchElementException(String.format("Чат с ID %s не найден", chatId));
-        }
+        return (long) jdbcTemplate.update("DELETE FROM Chat WHERE chat_id = ?", chatId);
     }
 
     @Transactional(readOnly = true)
     public List<ChatDto> findAll() {
         return jdbcTemplate.query("SELECT * FROM Chat", ROW_MAPPER_ID);
+    }
+
+    @Transactional(readOnly = true)
+    public ChatDto findByChatId(Long chatId) {
+        try {
+            return jdbcTemplate.queryForObject(
+                "SELECT chat.chat_id FROM chat where chat_id = ?",
+                new Object[] {chatId},
+                ROW_MAPPER_ID
+            );
+        } catch (EmptyResultDataAccessException e) {
+            log.info("Не найден chatId в таблице Chat");
+            return null;
+        }
     }
 }

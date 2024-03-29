@@ -1,6 +1,6 @@
 package edu.java.shedule.process;
 
-import edu.java.dao.dto.LinkDto;
+import edu.java.dto.LinkDto;
 import edu.java.external.client.github.client.GitHubClient;
 import edu.java.external.client.stackoverflow.client.StackOverflowClient;
 import edu.java.external.service.CommonDataResponseClient;
@@ -59,7 +59,7 @@ public class LinkProcessService {
     }
 
     private void handleResponse(LinkDto linkDto, CommonDataResponseClient response) {
-        LocalDateTime linkCreate = linkDto.getLastCheckTime();
+        LocalDateTime linkCreate = linkDto.getLastCheckTime().toLocalDateTime();
         OffsetDateTime timeFromResponse = response.getTimeLastModified();
 
         ZoneId zoneId = ZoneId.systemDefault();
