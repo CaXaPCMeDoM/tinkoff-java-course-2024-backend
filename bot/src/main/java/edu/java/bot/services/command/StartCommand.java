@@ -37,7 +37,7 @@ public class StartCommand extends CommandHandler {
 
     @Override
     public boolean handlerCommand(Update update) {
-        if (update.message().text().equals(NAME)) {
+        if (update.message().text() != null && update.message().text().equals(NAME)) {
             handleStartCommand(update);
         } else {
             handleOtherCommands(update);
