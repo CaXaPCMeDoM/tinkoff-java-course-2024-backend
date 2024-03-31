@@ -54,7 +54,7 @@ bucket4j:
       strategy: first
       http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
       rate-limits:
-        - cache-key: "getRemoteAddr()"
+        - cache-key: getHeader('X-Forwarded-For')
           bandwidths:
             - capacity: 1
               time: 1
@@ -64,7 +64,7 @@ bucket4j:
       strategy: first
       http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
       rate-limits:
-        - cache-key: "getRemoteAddr()"
+        - cache-key: getHeader('X-Forwarded-For')
           bandwidths:
             - capacity: 1
               time: 1
