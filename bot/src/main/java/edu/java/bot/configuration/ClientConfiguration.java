@@ -23,9 +23,7 @@ public class ClientConfiguration {
 
     private final BackOff backOff;
 
-    private final ExchangeFilterFunction exchangeFilterFunction = (request, next) -> {
-        return retryForClient(request, next, 0);
-    };
+    private final ExchangeFilterFunction exchangeFilterFunction = (request, next) -> retryForClient(request, next, 0);
 
     public ClientConfiguration(BackOff backOff, RetryConfigProperties retryConfigProperties) {
         this.backOff = backOff;

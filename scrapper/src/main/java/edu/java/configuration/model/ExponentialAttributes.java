@@ -1,8 +1,7 @@
 package edu.java.configuration.model;
 
-import lombok.Data;
-
 import java.time.Duration;
+import lombok.Data;
 
 @Data
 public class ExponentialAttributes {
