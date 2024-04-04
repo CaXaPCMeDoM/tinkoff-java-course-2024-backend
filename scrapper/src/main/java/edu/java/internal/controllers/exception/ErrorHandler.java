@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.support.MethodArgumentTy
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -54,7 +55,6 @@ public class ErrorHandler {
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
     private ResponseEntity<ApiErrorResponse> httpStatusNotFound(Exception ex) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
         apiErrorResponse.setDescription(ex.getMessage());
@@ -65,5 +65,17 @@ public class ErrorHandler {
         LOGGER.error(ERROR_MESSAGE, errorId, ex);
 
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HttpServerErrorException.class)
+    public ResponseEntity<ApiErrorResponse> handleAllOtherErrors(HttpServerErrorException ex) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+        apiErrorResponse.setCode(String.valueOf(ex.getStatusCode().value()));
+        String errorId = UUID.randomUUID().toString();
+        apiErrorResponse.setErrorId(errorId);
+
+        LOGGER.error(ERROR_MESSAGE, errorId, ex);
+
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

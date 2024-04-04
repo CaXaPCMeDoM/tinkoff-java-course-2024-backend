@@ -9,6 +9,13 @@ spring:
     name: bot
   jackson:
     time-zone: UTC
+  cache:
+    cache-names:
+      - rate-limit-buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
 
 server:
   port: 8090
@@ -19,3 +26,31 @@ logging:
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+client:
+  retry:
+    max-attempts: 10
+    back-off-type: EXPONENTIAL
+    status: 500, 501
+    delay-base: 1000
+    exponential-attributes:
+      multiplier-value: 2
+      random-interval-value: 10
+      random-interval-on: true
+      max-interval-value: 10000
+      max-interval-on: true
+
+# https://for-each.dev/lessons/b/-spring-bucket4j#6-стартер-spring-boot-bucket4j
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets
+      url: /updates.*
+      strategy: first
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: getHeader('X-Forwarded-For')
+          bandwidths:
+            - capacity: 1
+              time: 1
+              unit: hours

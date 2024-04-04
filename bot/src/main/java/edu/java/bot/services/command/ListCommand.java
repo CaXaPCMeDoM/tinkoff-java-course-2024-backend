@@ -35,23 +35,24 @@ public class ListCommand extends CommandHandler {
         String userId = GET_DATA_FROM_UPDATE.userIdString(update);
         String chatId = update.message().chat().id().toString();
         if (update.message().text().equals(NAME)) {
-            List<Link> linksList = Objects.requireNonNull(linkClient.getLinksById(update.message().chat().id())
-                    .block())
-                .getLinks();
-            StringBuilder stringBuilder = new StringBuilder();
-            int i = 1;
-            if (linksList == null) {
-                message = MESSAGE_LIST_IS_EMPTY;
-                bot.execute(new SendMessage(chatId, MESSAGE_LIST_IS_EMPTY));
-            } else {
-                for (Link link : linksList) {
-                    stringBuilder.append((i++) + ") ");
-                    stringBuilder.append(link.getUrl());
-                    stringBuilder.append("\n");
-                }
-                message = stringBuilder.toString();
-                bot.execute(new SendMessage(chatId, message));
-            }
+            Objects.requireNonNull(linkClient.getLinksById(update.message().chat().id())
+                .subscribe(response -> {
+                    List<Link> linksList = response.getLinks();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    int i = 1;
+                    if (linksList == null) {
+                        message = MESSAGE_LIST_IS_EMPTY;
+                        bot.execute(new SendMessage(chatId, MESSAGE_LIST_IS_EMPTY));
+                    } else {
+                        for (Link link : linksList) {
+                            stringBuilder.append((i++) + ") ");
+                            stringBuilder.append(link.getUrl());
+                            stringBuilder.append("\n");
+                        }
+                        message = stringBuilder.toString();
+                        bot.execute(new SendMessage(chatId, message));
+                    }
+                }));
 
             return true;
         } else {
