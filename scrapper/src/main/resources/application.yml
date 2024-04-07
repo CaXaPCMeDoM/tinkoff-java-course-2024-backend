@@ -10,6 +10,7 @@ link:
     delay: 5000 # в миллисекундах
 
 app:
+  useQueue: true
   database-access-type: JPA
   scheduler:
     enable: true
@@ -82,3 +83,8 @@ client:
       random-interval-on: true
       max-interval-value: 10000
       max-interval-on: true
+
+kafka:
+  bootstrap-servers: localhost:29091,localhost:29092,localhost:29093
+  acksMode: all
+  topic-name: topic-updates

@@ -1,4 +1,4 @@
-package edu.java.shedule.process;
+package edu.java.updates.process;
 
 import edu.java.external.service.CommonDataResponseClient;
 

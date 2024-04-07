@@ -38,6 +38,8 @@ services:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
   kafka1:
     image: confluentinc/cp-kafka:7.2.1
     hostname: kafka1
@@ -54,6 +56,8 @@ services:
       ZOOKEEPER: zookeeper:2181
     depends_on:
       - zookeeper
+    volumes:
+      - kafka-data:/var/lib/kafka
   kafka2:
     image: confluentinc/cp-kafka:7.2.1
     hostname: kafka2
@@ -70,6 +74,8 @@ services:
       ZOOKEEPER: zookeeper:2181
     depends_on:
       - zookeeper
+    volumes:
+      - kafka-data:/var/lib/kafka
   kafka3:
     image: confluentinc/cp-kafka:7.2.1
     hostname: kafka3
@@ -86,19 +92,28 @@ services:
       ZOOKEEPER: zookeeper:2181
     depends_on:
       - zookeeper
+    volumes:
+      - kafka-data:/var/lib/kafka
   init-kafka:
     image: confluentinc/cp-kafka:7.2.1
     depends_on:
       - kafka1
       - kafka2
       - kafka3
-    entrypoint: ["/bin/sh", "-e"]
+    entrypoint: [ "/bin/sh", "-c" ]
     command: |
       "
+        kafka-topics --bootstrap-server kafka1:9091,kafka2:9092,kafka3:9093 --list
+        echo -e 'Creating kafka topics'
+        kafka-topics --bootstrap-server kafka1:9091,kafka2:9092,kafka3:9093 --create --if-not-exists --topic topic-updates --replication-factor 2 --partitions 2
+
+        echo -e 'Successfully created the following topics:'
         kafka-topics --bootstrap-server kafka1:9091,kafka2:9092,kafka3:9093 --list
       "
 volumes:
   postgresql: { }
+  zookeeper-data: { }
+  kafka-data: { }
 
 networks:
   backend: { }
