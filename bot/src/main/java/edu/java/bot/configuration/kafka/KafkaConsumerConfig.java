@@ -41,7 +41,6 @@ public class KafkaConsumerConfig {
             ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class,
             ConsumerConfig.FETCH_MIN_BYTES_CONFIG, kafkaProperties.getFetchMinBytes(),
             ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName(),
-            JsonDeserializer.USE_TYPE_INFO_HEADERS, "false",
             JsonDeserializer.VALUE_DEFAULT_TYPE, LinkUpdateRequest.class,
             JsonDeserializer.KEY_DEFAULT_TYPE, StringDeserializer.class
         )));
