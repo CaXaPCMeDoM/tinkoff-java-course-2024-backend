@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package scrapper;
+
+message Message {
+    bytes id = 1;
+    string creator = 2;
+    string text = 4;
+}

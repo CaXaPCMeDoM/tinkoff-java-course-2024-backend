@@ -1,13 +1,13 @@
-package edu.java.shedule.process;
+package edu.java.updates.process;
 
 import edu.java.dto.LinkDto;
 import edu.java.external.client.github.client.GitHubClient;
 import edu.java.external.client.stackoverflow.client.StackOverflowClient;
 import edu.java.external.service.CommonDataResponseClient;
-import edu.java.internal.client.UpdateClient;
 import edu.java.internal.client.dto.LinkClientUpdateRequest;
 import edu.java.service.ChatLinkService;
 import edu.java.service.LinkUpdater;
+import edu.java.updates.notification.NotificationService;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LinkProcessService {
-    private final UpdateClient updateClient;
+    private final NotificationService notificationService;
 
     private final ChatLinkService chatLinkService;
     private final LinkUpdater linkUpdater;
@@ -33,17 +33,17 @@ public class LinkProcessService {
     public LinkProcessService(
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
-        UpdateClient updateClient,
+        NotificationService notificationService,
         ChatLinkService chatLinkService,
         LinkUpdater linkUpdater
     ) {
+        this.notificationService = notificationService;
         this.chatLinkService = chatLinkService;
         this.linkUpdater = linkUpdater;
         linkProcessors = Arrays.asList(
             new GitHubLinkProcessor(gitHubClient),
             new StackOverflowLinkProcessor(stackOverflowClient)
         );
-        this.updateClient = updateClient;
     }
 
     public boolean processLink(LinkDto linkDto) {
@@ -79,7 +79,7 @@ public class LinkProcessService {
                 .tgChatIds(chatIds)
                 .typeOfUpdate(response.getTypeOfUpdate())
                 .build();
-            updateClient.postRepositoryData(linkClientUpdateRequest);
+            notificationService.sender(linkClientUpdateRequest);
         }
     }
 }

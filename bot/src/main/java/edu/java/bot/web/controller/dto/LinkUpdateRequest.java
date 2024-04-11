@@ -3,13 +3,15 @@ package edu.java.bot.web.controller.dto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Data
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LinkUpdateRequest {
     @NotNull
     private Long id;

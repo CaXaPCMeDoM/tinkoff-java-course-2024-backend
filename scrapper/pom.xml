@@ -12,6 +12,7 @@
     <properties>
         <spring-boot-starter-test.version>3.2.0</spring-boot-starter-test.version>
         <h2.version>2.1.214</h2.version>
+        <protobuf-java.version>3.16.0</protobuf-java.version>
     </properties>
     <artifactId>scrapper</artifactId>
     <version>${revision}</version>
@@ -214,6 +215,13 @@
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>jcache</artifactId>
         </dependency>
+
+        <!-- Protobuf -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf-java.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -248,6 +256,37 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                        <configuration>
+                            <protoSourceRoot>${basedir}/src/main/resources/proto</protoSourceRoot>
+                            <protocArtifact>
+                                com.google.protobuf:protoc:${protobuf-java.version}:exe:${os.detected.classifier}
+                            </protocArtifact>
+                            <pluginId>proto-java</pluginId>
+                            <pluginArtifact>
+                                io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+                            </pluginArtifact>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+        </extensions>
     </build>
 </project>

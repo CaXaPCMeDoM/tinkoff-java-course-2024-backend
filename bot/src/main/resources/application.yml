@@ -3,6 +3,8 @@ scrapper-local-host:
 
 app:
   telegram-token: ${TELEGRAM_BOT_TOKEN}
+  scrapper-topic:
+    name: topic-updates
 
 spring:
   application:
@@ -16,6 +18,9 @@ spring:
       spec: maximumSize=100000,expireAfterAccess=3600s
     jcache:
       provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
+  kafka:
+    listener:
+      concurrency: 1
 
 server:
   port: 8090
@@ -51,6 +56,10 @@ bucket4j:
       rate-limits:
         - cache-key: getHeader('X-Forwarded-For')
           bandwidths:
-            - capacity: 1
+            - capacity: 10
               time: 1
-              unit: hours
+              unit: minutes
+kafka:
+  bootstrap-servers: localhost:29091,localhost:29092,localhost:29093
+  fetch-min-bytes: 1
+  group-id: updates-group

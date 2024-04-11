@@ -2,7 +2,7 @@ package edu.java.shedule;
 
 import edu.java.dto.LinkDto;
 import edu.java.service.LinkService;
-import edu.java.shedule.process.LinkProcessService;
+import edu.java.updates.process.LinkProcessService;
 import java.time.Duration;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
