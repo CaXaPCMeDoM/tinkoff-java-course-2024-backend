@@ -63,3 +63,17 @@ kafka:
   bootstrap-servers: localhost:29091,localhost:29092,localhost:29093
   fetch-min-bytes: 1
   group-id: updates-group
+
+spring-boot-starter-actuatormanagement:
+  server:
+    port: 3080
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus
+      base-path: /
+      path-mapping:
+        prometheus: metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}

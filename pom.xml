@@ -156,6 +156,12 @@
             <artifactId>jcache</artifactId>
             <version>${caffeine.version}</version>
         </dependency>
+
+        <!-- Loggers -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -9,6 +9,20 @@ link:
   update:
     delay: 5000 # в миллисекундах
 
+management:
+  server:
+    port: 3080
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus
+      base-path: /
+      path-mapping:
+        prometheus: metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
 app:
   useQueue: true
   database-access-type: JPA
