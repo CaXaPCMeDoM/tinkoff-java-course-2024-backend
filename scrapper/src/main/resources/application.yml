@@ -11,14 +11,14 @@ link:
 
 management:
   server:
-    port: 3080
+    port: 8081
   endpoints:
     web:
       exposure:
-        include: info,health,prometheus
+        include: "info,health,prometheus"
       base-path: /
       path-mapping:
-        prometheus: metrics
+        prometheus: "metrics"
   metrics:
     tags:
       application: ${spring.application.name}

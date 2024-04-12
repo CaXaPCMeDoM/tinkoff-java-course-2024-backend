@@ -64,16 +64,16 @@ kafka:
   fetch-min-bytes: 1
   group-id: updates-group
 
-spring-boot-starter-actuatormanagement:
+management:
   server:
-    port: 3080
+    port: 8091
   endpoints:
     web:
       exposure:
-        include: info,health,prometheus
+        include: "info,health,prometheus"
       base-path: /
       path-mapping:
-        prometheus: metrics
+        prometheus: "metrics"
   metrics:
     tags:
       application: ${spring.application.name}
