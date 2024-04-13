@@ -20,7 +20,7 @@ public class ChainOfCommand {
     private final CommandHandler untrackCommand;
     private final ListOfSupportedCommands listOfSupportedCommands;
     private final TelegramBot telegramBot;
-    private Counter messagesCounter = Counter
+    private final Counter messagesCounter = Counter
         .builder("messages_processed")
         .description("Number of processed messages")
         .register(Metrics.globalRegistry);
