@@ -5,6 +5,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.data.ListOfSupportedCommands;
 import edu.java.bot.services.command.handler.CommandHandler;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,10 @@ public class ChainOfCommand {
     private final CommandHandler untrackCommand;
     private final ListOfSupportedCommands listOfSupportedCommands;
     private final TelegramBot telegramBot;
+    private final Counter messagesCounter = Counter
+        .builder("messages_processed")
+        .description("Number of processed messages")
+        .register(Metrics.globalRegistry);
 
     public ChainOfCommand(
         CommandHandler helpCommand,
@@ -47,5 +53,6 @@ public class ChainOfCommand {
             telegramBot.execute(new SendMessage(
                 update.message().from().id(), messageFinal));
         }
+        messagesCounter.increment();
     }
 }

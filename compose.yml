@@ -110,6 +110,33 @@ services:
         echo -e 'Successfully created the following topics:'
         kafka-topics --bootstrap-server kafka1:9091,kafka2:9092,kafka3:9093 --list
       "
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    container_name: prometheus
+    hostname: prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+
+
+  grafana:
+    image: grafana/grafana-oss
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+
 volumes:
   postgresql: { }
   zookeeper-data: { }
