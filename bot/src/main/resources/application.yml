@@ -1,5 +1,5 @@
 scrapper-local-host:
-  base-url: http://localhost:8080
+  base-url: ${SCRAPPER_HOST:http://localhost:8080}
 
 app:
   telegram-token: ${TELEGRAM_BOT_TOKEN}
@@ -58,9 +58,9 @@ bucket4j:
           bandwidths:
             - capacity: 10
               time: 1
-              unit: minutes
+              unit: seconds
 kafka:
-  bootstrap-servers: localhost:29091,localhost:29092,localhost:29093
+  bootstrap-servers: ${KAFKA_URL_FIRST:localhost:29091},${KAFKA_URL_SECOND:localhost:29092},${KAFKA_URL_THIRD:localhost:29093}
   fetch-min-bytes: 1
   group-id: updates-group
 
