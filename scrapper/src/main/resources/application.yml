@@ -3,7 +3,7 @@ github:
 stackoverflow:
   base-url: https://api.stackexchange.com/2.3
 bot-local-host:
-  base-url: http://localhost:8090
+  base-url: ${BOT_HOST:http://localhost:8090}
 
 link:
   update:
@@ -36,7 +36,7 @@ spring:
   datasource:
     password: postgres
     username: postgres
-    url: jdbc:postgresql://localhost:5437/scrapper
+    url: jdbc:postgresql://${POSTGRESQL_HOST:localhost:5437}/scrapper
   liquibase:
     enabled: false
   jpa:
@@ -71,9 +71,9 @@ bucket4j:
       rate-limits:
         - cache-key: getHeader('X-Forwarded-For')
           bandwidths:
-            - capacity: 1
-              time: 1
-              unit: hours
+            - capacity: 10
+              time: 10
+              unit: seconds
     - cache-name: rate-limit-buckets
       url: /tg-chat.*
       strategy: first
@@ -81,9 +81,9 @@ bucket4j:
       rate-limits:
         - cache-key: getHeader('X-Forwarded-For')
           bandwidths:
-            - capacity: 1
-              time: 1
-              unit: hours
+            - capacity: 10
+              time: 10
+              unit: seconds
 
 client:
   retry:
@@ -99,6 +99,6 @@ client:
       max-interval-on: true
 
 kafka:
-  bootstrap-servers: localhost:29091,localhost:29092,localhost:29093
+  bootstrap-servers: ${KAFKA_URL_FIRST:localhost:29091},${KAFKA_URL_SECOND:localhost:29092},${KAFKA_URL_THIRD:localhost:29093}
   acksMode: all
   topic-name: topic-updates
